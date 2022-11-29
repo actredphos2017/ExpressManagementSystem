@@ -8,28 +8,24 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <unordered_map>
+
+#define DEFAULT_DATABASE_INFO_PATH "~/database.txt"
 
 using namespace std;
 
 class databaseInfo {
-private:
+public:
+    databaseInfo () = default;
+    explicit databaseInfo (istream& is);
+    databaseInfo (string, string, string, string);
+    bool read(istream& is);
+    void write (ostream& os);
+public:
     string hostName;
     string userName;
     string password;
     string databaseName;
-public:
-    databaseInfo ();
-    databaseInfo (istream& is);
-    databaseInfo (string, string, string, string);
-    void setHostName (string);
-    void setUserName (string);
-    void setPassword (string);
-    void setDatabaseName (string);
-    string getHostName ();
-    string getUserName ();
-    string getPassword ();
-    string getDatabaseName ();
-    bool haveRealWrite (ostream& os);
 };
 
 

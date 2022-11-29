@@ -4,7 +4,7 @@ use ExpressManagementSystem;
 
 drop table if exists account;
 create table account(
-    accountType enum('customer','waiter') default 'customer',
+    isWaiter boolean default false,
     userName varchar(15) default null,
     phoneNumber varchar(15) not null,
     password varchar(20) not null,

@@ -6,6 +6,7 @@
 #define EXPRESSMANAGEMENTSYSTEM_ACCOUNTINFO_H
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -25,5 +26,6 @@ public:
     string password;
 };
 
+typedef vector<accountInfo> accountGroup;
 
 #endif //EXPRESSMANAGEMENTSYSTEM_ACCOUNTINFO_H

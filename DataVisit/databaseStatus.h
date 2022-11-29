@@ -17,25 +17,31 @@
 #include "mysql_driver.h"
 
 #include "databaseInfo.h"
-#include "../BussinessLogical/orderInfo.h"
+#include "../BussinessLogic/orderInfo.h"
+#include "../BussinessLogic/accountInfo.h"
 
 using namespace std;
 using namespace sql;
 
 class databaseStatus {
 private:
-    Driver *dbDri;
-    Connection *dbCon;
-    Statement *dbSta;
-    PreparedStatement *dbPreSta;
-    ResultSet *dbRes;
+    Driver *dbDri{};
+    Connection *dbCon{};
+    Statement *dbSta{};
+    PreparedStatement *dbPreSta{};
+    ResultSet *dbRes{};
 public:
-    databaseStatus ();
-    databaseStatus (const databaseInfo& dbi);
-    bool connect(const databaseInfo& dbi);
+    databaseStatus () = default;
+    bool connect(const databaseInfo& dbi, ostream& errorOs = cout);
     bool available ();
-    void insertOrder (const orderGroup& og);
-    orderGroup& selectOrder (string condition);
+
+    bool insertAccount (const accountGroup& ag, ostream& errorOs);
+    accountGroup* selectAccount (const string& condition, ostream &errorOs);
+    bool updateAccount (const string& condition, const string& change, ostream &errorOs);
+
+    bool insertOrder (const orderGroup& og, ostream &errorOs);
+    orderGroup* selectOrder (const string& condition, ostream &errorOs);
+    bool updateOrder (const string& condition, const string& change, ostream &errorOs);
 };
 
 
