@@ -21,7 +21,7 @@ bool databaseStatus::available() {
     return !dbCon->isClosed();
 }
 
-bool databaseStatus::connect(const databaseInfo &dbi, ostream &errorOs) {
+bool databaseStatus::connect(const databaseOption &dbi, ostream &errorOs) {
     dbDri = new mysql::MySQL_Driver;
     try{
         dbCon = dbDri->connect(dbi.hostName,
@@ -34,13 +34,48 @@ bool databaseStatus::connect(const databaseInfo &dbi, ostream &errorOs) {
     dbSta = dbCon->createStatement();
     return true;
 }
+/*
+drop table if exists orderInfo;
+create table orderInfo(
+    trackNumber varchar(20) not null,
+    company varchar(10) not null,
+    recipentName varchar(10) not null,
+    recipentPhoneNum varchar(15) not null,
+    recipentLocation varchar(15) not null,
+    recipentPost int,
+    senderName varchar(10) not null,
+    senderPhoneNum varchar(15) not null,
+    senderLocation varchar(15) not null,
+    senderPost int,
+    itemWeight float,
+    pickCode varchar(10),
+    warehousingTime datetime default now(),
+    hasBeenTaken boolean default true,
+    primary key(trackNumber),
+    index(pickCode)
+)engine=InnoDB, charset=utf8;
+ */
 
 bool databaseStatus::insertOrder(const orderGroup &og, ostream &errorOs) {
     auto it = og.begin();
     try {
         while (it != og.end()) {
 
-            dbPreSta = dbCon->prepareStatement("insert into orderInfo values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            dbPreSta = dbCon->prepareStatement("insert into orderInfo ("
+                                                    "trackNumber, "
+                                                    "company, "
+                                                    "recipentName, "
+                                                    "recipentPhoneNum, "
+                                                    "recipentLocation, "
+                                                    "recipentPost, "
+                                                    "senderName, "
+                                                    "senderPhoneNum, "
+                                                    "senderLocation, "
+                                                    "senderPost, "
+                                                    "itemWeight, "
+                                                    "pickCode, "
+                                                    "hasBeenTaken"
+                                                    ") values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             dbPreSta->setString (1  , it->trackNumber);
             dbPreSta->setString (2  , it->company);

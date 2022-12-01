@@ -2,7 +2,7 @@
 // Created by sakunoakarinn on 22-11-29.
 //
 
-#ifndef EXPRESSMANAGEMENTSYSTEM_DATABASEINFO_H
+#ifndef EXPRESSMANAGEMENTSYSTEM_DATABASEOPTION_H
 #define EXPRESSMANAGEMENTSYSTEM_DATABASEINFO_H
 
 #include <iostream>
@@ -14,13 +14,13 @@
 
 using namespace std;
 
-class databaseInfo {
+class databaseOption {
 public:
-    databaseInfo () = default;
-    explicit databaseInfo (istream& is);
-    databaseInfo (string, string, string, string);
+    databaseOption () = default;
+    explicit databaseOption (istream& is);
+    databaseOption (string, string, string, string);
     bool read(istream& is);
-    void write (ostream& os);
+    void write (ostream& os) const;
 public:
     string hostName;
     string userName;
@@ -29,4 +29,4 @@ public:
 };
 
 
-#endif //EXPRESSMANAGEMENTSYSTEM_DATABASEINFO_H
+#endif //EXPRESSMANAGEMENTSYSTEM_DATABASEOPTION_H

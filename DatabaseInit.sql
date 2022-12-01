@@ -25,6 +25,7 @@ create table orderInfo(
     senderPost int,
     itemWeight float,
     pickCode varchar(10),
+    warehousingTime datetime default now(),
     hasBeenTaken boolean default true,
     primary key(trackNumber),
     index(pickCode)

@@ -15,7 +15,7 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(ExpressManagementSystem main.cpp DataVisit/databaseStatus.cpp DataVisit/databaseStatus.h DataVisit/databaseInfo.cpp DataVisit/databaseInfo.h BussinessLogic/orderInfo.cpp BussinessLogic/orderInfo.h BussinessLogic/accountInfo.cpp BussinessLogic/accountInfo.h)
+add_executable(ExpressManagementSystem main.cpp DataVisit/databaseStatus.cpp DataVisit/databaseStatus.h DataVisit/databaseInfo.cpp DataVisit/databaseInfo.h BussinessLogic/orderInfo.cpp BussinessLogic/orderInfo.h BussinessLogic/accountInfo.cpp BussinessLogic/accountInfo.h VisualWindows/loginDialog.cpp VisualWindows/loginDialog.h VisualWindows/databaseOption.cpp VisualWindows/databaseOption.h VisualWindows/registerDialog.cpp VisualWindows/registerDialog.h VisualWindows/mainWindows/menuForWaiter.cpp VisualWindows/mainWindows/menuForWaiter.h VisualWindows/mainWindows/menuForCustomer.cpp VisualWindows/mainWindows/menuForCustomer.h VisualWindows/userObjects/ClickableLabel.h)
 target_link_libraries(ExpressManagementSystem
         Qt::Core
         Qt::Gui

@@ -4,7 +4,7 @@
 
 #include "databaseInfo.h"
 
-void databaseInfo::write(ostream &os) {
+void databaseOption::write(ostream &os) const {
     os << "$DatabaseInfo" << endl;
     os << "HostName " << hostName << endl;
     os << "UserName " << userName << endl;
@@ -12,7 +12,7 @@ void databaseInfo::write(ostream &os) {
     os << "Database " << databaseName << endl;
 }
 
-bool databaseInfo::read(istream &is) {
+bool databaseOption::read(istream &is) {
     string checkStr;
     is >> checkStr;
     if(checkStr != "$DatabaseInfo"){
@@ -40,11 +40,11 @@ bool databaseInfo::read(istream &is) {
     infoPush(info, "Database", databaseName);
 }
 
-databaseInfo::databaseInfo(istream &is) {
+databaseOption::databaseOption(istream &is) {
     read(is);
 }
 
-databaseInfo::databaseInfo(string hostName, string userName, string password, string databaseName):
+databaseOption::databaseOption(string hostName, string userName, string password, string databaseName):
     hostName(std::move(hostName)),
     userName(std::move(userName)),
     password(std::move(password)),
