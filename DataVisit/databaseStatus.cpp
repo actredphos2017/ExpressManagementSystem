@@ -21,7 +21,7 @@ bool databaseStatus::available() {
     return !dbCon->isClosed();
 }
 
-bool databaseStatus::connect(const databaseOption &dbi, ostream &errorOs) {
+bool databaseStatus::connect(const databaseInfo &dbi, ostream &errorOs) {
     dbDri = new mysql::MySQL_Driver;
     try{
         dbCon = dbDri->connect(dbi.hostName,

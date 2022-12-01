@@ -39,7 +39,7 @@ private:
     void iniItems();
     void iniConnect();
 
-public signals:
+signals:
     void switchToDatabaseOption();
     void pushDatabaseConfBtn();
     void pushRegisterBtn();
@@ -48,10 +48,10 @@ public slots:
     void toRegister();
     void toConfigDatabase();
     void comeBack();
-    static void hw();
+    void signIn();
 
 public:
-    loginDialog(databaseStatus*);
+    loginDialog();
 };
 
 

@@ -32,7 +32,7 @@ private:
     ResultSet           *dbRes{};
 public:
     databaseStatus () = default;
-    bool connect(const databaseOption& dbi, ostream& errorOs = cout);
+    bool connect(const databaseInfo& dbi, ostream& errorOs = cout);
     bool available ();
 
     bool insertAccount (const accountGroup& ag, ostream& errorOs);

@@ -7,13 +7,10 @@
 #include "loginDialog.h"
 
 #include <QLayout>
-#include <iostream>
-#include <QDebug>
 
 #include "databaseOption.h"
 
-loginDialog::loginDialog(databaseStatus* databaseEntrance): 
-databaseEntrance(databaseEntrance) {
+loginDialog::loginDialog(){
     iniItems();
     iniConnect();
 }
@@ -98,7 +95,6 @@ void loginDialog::iniItems() {
         }
         mainLayout->addLayout(buttonGroup);
     }
-
     setLayout(mainLayout);
     setWindowTitle(tr("快件管理系统"));
 }
@@ -122,14 +118,14 @@ void loginDialog::iniConnect() {
         registerBtn, 
         SIGNAL(clicked()), 
         this, 
-        SLOT(hw())
+        SLOT(toRegister())
     ); //注册
 
     connect(
         loginBtn, 
         SIGNAL(clicked()), 
         this, 
-        SLOT(hw())
+        SLOT(signIn())
     ); //登录
 }
 
@@ -145,4 +141,8 @@ void loginDialog::toRegister(){
 
 void loginDialog::comeBack(){
     this->show();
+}
+
+void loginDialog::signIn() {
+
 }
