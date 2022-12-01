@@ -7,8 +7,10 @@
 
 #include "../../globalAttribute.h"
 
-class menuForCustomer {
+#include <QMainWindow>
 
+class menuForCustomer : public QMainWindow{
+Q_OBJECT
 };
 
 
