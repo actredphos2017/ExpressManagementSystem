@@ -9,6 +9,8 @@
 #include "VisualWindows/mainWindows/menuForCustomer.h"
 #include "VisualWindows/mainWindows/menuForWaiter.h"
 
+using namespace Qt;
+
 int main(int argc, char *argv[]) {
 
     auto databaseEntrance = new databaseStatus;
@@ -23,42 +25,42 @@ int main(int argc, char *argv[]) {
     menuForCustomer customerMainMenu;
     menuForWaiter   waiterMainMenu;
 
-    connect (
+    QObject::connect (
         &loginInterface,
         SIGNAL(pushRegisterBtn()),
         &registerInterface,
         SLOT(toRegister())
     ); //连接登录界面与注册界面
 
-    connect (
+    QObject::connect (
         &registerInterface,
         SIGNAL(pushBackBtn()),
         &loginInterface,
         SLOT(comeBack())
     ); //返回登录界面
 
-    connect (
+    QObject::connect (
         &loginInterface,
         SIGNAL(pushDatabaseConfBtn()),
         &databaseConfigInterface,
         SLOT(toConfigDatabase())
     ); //连接登录界面与数据库配置界面
 
-    connect (
+    QObject::connect (
         &databaseConfigInterface,
         SIGNAL(pushBackBtn()),
         &loginInterface,
         SLOT(comeBack())
     ); //返回登录界面
 
-    connect (
+    QObject::connect (
         &loginInterface,
         SIGNAL(customerLoginSuccess()),
         &customerMainMenu,
         SLOT(loginSuccess())
     ); //用户登录成功
 
-    connect (
+    QObject::connect (
         &loginInterface,
         SIGNAL(waiterLoginSuccess()),
         &waiterMainMenu,

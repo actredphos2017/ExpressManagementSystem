@@ -12,16 +12,8 @@
 #include "BussinessLogic/orderInfo.h"
 
 namespace Sakuno{
-
-class globalAttribute{
-public:
-    static databaseStatus* databaseEntrance;
-    static accountInfo* onlineAccount;
-};
-
-databaseStatus* globalAttribute::databaseEntrance = new databaseStatus;
-accountInfo*    globalAttribute::onlineAccount = null;
-
+    static databaseStatus* databaseEntrance = new databaseStatus;
+    static accountInfo* onlineAccount = nullptr;;
 } // namespace Sakuno
 
 #endif // __GLOBAL_ATTRIBUTE_H__
