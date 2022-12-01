@@ -2,6 +2,8 @@
 // Created by sakunoakarinn on 22-11-30.
 //
 
+#include "../globalAttribute.h"
+
 #include "loginDialog.h"
 
 #include <QLayout>
@@ -9,6 +11,12 @@
 #include <QDebug>
 
 #include "databaseOption.h"
+
+loginDialog::loginDialog(databaseStatus* databaseEntrance): 
+databaseEntrance(databaseEntrance) {
+    iniItems();
+    iniConnect();
+}
 
 void loginDialog::iniItems() {
     auto mainLayout = new QVBoxLayout;
@@ -96,32 +104,45 @@ void loginDialog::iniItems() {
 }
 
 void loginDialog::iniConnect() {
-    connect(databaseOptionEntrance, SIGNAL(clicked()), this, SLOT(showDatabaseOption()));
-    connect(cancelBtn, SIGNAL(clicked()), this, SLOT(close()));
-    connect(registerBtn, SIGNAL(clicked()), this, SLOT(hw()));
-    connect(loginBtn, SIGNAL(clicked()), this, SLOT(hw()));
+    connect(
+        databaseOptionEntrance,
+        SIGNAL(clicked()), 
+        this, 
+        SLOT(toConfigDatabase())
+    ); //数据库配置
+
+    connect(
+        cancelBtn, 
+        SIGNAL(clicked()), 
+        this, 
+        SLOT(close())
+    ); //退出
+
+    connect(
+        registerBtn, 
+        SIGNAL(clicked()), 
+        this, 
+        SLOT(hw())
+    ); //注册
+
+    connect(
+        loginBtn, 
+        SIGNAL(clicked()), 
+        this, 
+        SLOT(hw())
+    ); //登录
 }
 
-loginDialog::loginDialog() {
-    iniItems();
-    iniConnect();
+void loginDialog::toConfigDatabase(){
+    this->hide();
+    emit pushDatabaseConfBtn();
 }
 
-void loginDialog::hw() {
-    auto dl = new QDialog;
-    auto text = new QLabel(tr("Hello World!"));
-    auto btn = new QPushButton(tr("确定"));
-    auto lo = new QVBoxLayout;
-    lo->addWidget(text);
-    lo->addWidget(btn);
-    connect(btn, SIGNAL(clicked()), dl, SLOT(accept()));
-    dl->setLayout(lo);
-    dl->show();
+void loginDialog::toRegister(){
+    this->hide();
+    emit pushRegisterBtn();
 }
 
-void loginDialog::showDatabaseOption() {
-    databaseOption dbo;
-    std::cout << "Hello World" << std::endl;
-    accept();
-    dbo.show();
+void loginDialog::comeBack(){
+    this->show();
 }

@@ -5,6 +5,8 @@
 #ifndef EXPRESSMANAGEMENTSYSTEM_REGISTERDIALOG_H
 #define EXPRESSMANAGEMENTSYSTEM_REGISTERDIALOG_H
 
+#include "../globalAttribute.h"
+
 #include <QDialog>
 
 class registerDialog : public QDialog{

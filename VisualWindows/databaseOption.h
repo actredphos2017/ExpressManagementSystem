@@ -5,6 +5,8 @@
 #ifndef EXPRESSMANAGEMENTSYSTEM_DATABASEOPTION_H
 #define EXPRESSMANAGEMENTSYSTEM_DATABASEOPTION_H
 
+#include "../globalAttribute.h"
+
 #include <QDialog>
 #include <QLayout>
 #include <QPushButton>

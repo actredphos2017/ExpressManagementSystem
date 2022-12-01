@@ -5,6 +5,8 @@
 #ifndef EXPRESSMANAGEMENTSYSTEM_LOGINDIALOG_H
 #define EXPRESSMANAGEMENTSYSTEM_LOGINDIALOG_H
 
+#include "../globalAttribute.h"
+
 #include <QDialog>
 #include <QLabel>
 #include <QLineEdit>
@@ -16,9 +18,12 @@
 using namespace Qt;
 
 class loginDialog : public QDialog {
+
     Q_OBJECT
 
 private:
+    databaseStatus* databaseEntrance{};
+
     QLineEdit* userNameEdit{};
     QLineEdit* passwordEdit{};
     QCheckBox* rememberPassword{};
@@ -30,17 +35,23 @@ private:
     QLabel* databaseStatusTitle{};
     QLabel* databaseStatusInfo{};
     QPushButton* databaseOptionEntrance{};
+
     void iniItems();
     void iniConnect();
 
-signals:
+public signals:
     void switchToDatabaseOption();
+    void pushDatabaseConfBtn();
+    void pushRegisterBtn();
 
-private slots:
+public slots:
+    void toRegister();
+    void toConfigDatabase();
+    void comeBack();
     static void hw();
-    void showDatabaseOption();
+
 public:
-    loginDialog();
+    loginDialog(databaseStatus*);
 };
 
 

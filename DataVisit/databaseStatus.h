@@ -25,11 +25,11 @@ using namespace sql;
 
 class databaseStatus {
 private:
-    Driver *dbDri{};
-    Connection *dbCon{};
-    Statement *dbSta{};
-    PreparedStatement *dbPreSta{};
-    ResultSet *dbRes{};
+    Driver              *dbDri{};
+    Connection          *dbCon{};
+    Statement           *dbSta{};
+    PreparedStatement   *dbPreSta{};
+    ResultSet           *dbRes{};
 public:
     databaseStatus () = default;
     bool connect(const databaseOption& dbi, ostream& errorOs = cout);

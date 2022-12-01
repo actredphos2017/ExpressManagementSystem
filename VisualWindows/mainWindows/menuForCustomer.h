@@ -5,6 +5,7 @@
 #ifndef EXPRESSMANAGEMENTSYSTEM_MENUFORCUSTOMER_H
 #define EXPRESSMANAGEMENTSYSTEM_MENUFORCUSTOMER_H
 
+#include "../../globalAttribute.h"
 
 class menuForCustomer {
 
