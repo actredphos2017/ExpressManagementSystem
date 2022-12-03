@@ -28,6 +28,18 @@ namespace Sakuno{
     extern bool connectSuccess;
     extern AccountInfo* onlineAccount;
 
+    static string toVarchar(const string& old){
+        return (string)"\'" + old + '\'';
+    }
+
+    static bool isNumber(const char& c){
+        return c >= '0' && c <= '9';
+    }
+
+    static bool isLetter(const char& c){
+        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+    }
+
     static string getFileName(const string& fullDirName){
         stringstream ss;
         for(const char& it : fullDirName){

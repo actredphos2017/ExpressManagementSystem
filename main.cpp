@@ -21,6 +21,7 @@ namespace Sakuno{
 #include "VisualWindows/LoginDialog.h"
 #include "VisualWindows/RegisterDialog.h"
 #include "VisualWindows/DatabaseOption.h"
+#include "VisualWindows/PermissionGetDialog.h"
 #include "VisualWindows/mainWindows/MenuForCustomer.h"
 #include "VisualWindows/mainWindows/MenuForWaiter.h"
 
@@ -32,10 +33,11 @@ int main(int argc, char *argv[]) {
     LoginDialog     loginInterface;
     DatabaseOption  databaseConfigInterface;
     RegisterDialog  registerInterface;
+    PermissionGetDialog authenticateInterface;
     MenuForCustomer customerMainMenu;
     MenuForWaiter   waiterMainMenu;
 
-    //initGlobalAttributes
+    //初始化全局变量
     {
         Sakuno::dbInfo = new DatabaseInfo;
         Sakuno::haveDBInfo = false;
@@ -44,7 +46,7 @@ int main(int argc, char *argv[]) {
         Sakuno::onlineAccount = new AccountInfo;
     }
 
-    //initWindowsConnect
+    //初始化窗口呼出连接
     {
         QObject::connect (
                 &loginInterface,
@@ -53,6 +55,19 @@ int main(int argc, char *argv[]) {
                 SLOT(toRegister())
         ); //连接登录界面与注册界面
 
+        QObject::connect(
+                &registerInterface,
+                SIGNAL(toAuthenticate()),
+                &authenticateInterface,
+                SLOT(toAuthenticate())
+        ); //连接注册界面与认证界面
+
+        QObject::connect(
+                &authenticateInterface,
+                SIGNAL(comeBack()),
+                &registerInterface,
+                SLOT(comeBack())
+        ); //连接注册界面与认证界面
 
         QObject::connect (
                 &registerInterface,
@@ -90,7 +105,7 @@ int main(int argc, char *argv[]) {
         ); //服务员登录成功
     }
 
-    //initInfoConnect
+    //初始化窗体数据传递
     {
         QObject::connect (
                 &loginInterface,
@@ -103,6 +118,12 @@ int main(int argc, char *argv[]) {
                 SIGNAL(checkFinish()),
                 &loginInterface,
                 SLOT(checkResult())
+        );
+        QObject::connect(
+                &authenticateInterface,
+                SIGNAL(getPermissionCode(string, string)),
+                &registerInterface,
+                SLOT(authenticateSuccess(string, string))
         );
     }
 

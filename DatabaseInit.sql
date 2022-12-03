@@ -6,10 +6,13 @@ drop table if exists account;
 create table account(
     isWaiter boolean default false,
     userName varchar(15) default null,
-    phoneNumber varchar(15) not null,
+    phoneNumber varchar(15) default null,
     password varchar(20) not null,
+    permissionCode char(32) default md5(now()),
     primary key(userName, phoneNumber)
 )engine=InnoDB, charset=utf8;
+
+insert into account (isWaiter, userName, phoneNumber, password) values (1, 'root', '', 'helloworld');
 
 drop table if exists orderInfo;
 create table orderInfo(

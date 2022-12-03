@@ -38,7 +38,7 @@ add_executable(
         VisualWindows/mainWindows/MenuForCustomer.cpp
         VisualWindows/mainWindows/MenuForCustomer.h
         VisualWindows/userObjects/ClickableLabel.h
-)
+        VisualWindows/PermissionGetDialog.cpp VisualWindows/PermissionGetDialog.h)
 
 target_link_libraries(ExpressManagementSystem
         Qt::Core

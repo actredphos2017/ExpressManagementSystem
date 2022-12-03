@@ -35,13 +35,25 @@ public:
     bool connect(const DatabaseInfo& dbi, ostream& errorOs = cout);
     bool available ();
 
-    bool insertAccount (const accountGroup& ag, ostream& errorOs);
-    accountGroup* selectAccount (const string& condition, ostream &errorOs);
-    bool updateAccount (const string& condition, const string& change, ostream &errorOs);
+    bool insertAccount (const accountGroup& ag, ostream& errorOs = cout);
+    accountGroup* selectAccount (const string& condition, ostream &errorOs = cout);
+    bool updateAccount (const string& condition, const string& change, ostream &errorOs = cout);
 
-    bool insertOrder (const orderGroup& og, ostream &errorOs);
-    orderGroup* selectOrder (const string& condition, ostream &errorOs);
-    bool updateOrder (const string& condition, const string& change, ostream &errorOs);
+    bool insertOrder (const orderGroup& og, ostream &errorOs = cout);
+    orderGroup* selectOrder (const string& condition, ostream &errorOs = cout);
+    bool updateOrder (const string& condition, const string& change, ostream &errorOs = cout);
+
+    string getPermissionCode(const AccountInfo& waiterInfo, ostream &errorOs = cout);
+    string checkPermissionCode(const string& code, ostream &errorOs = cout);
+
+    bool checkPrepareAccount(const AccountInfo &accoInfo, ostream &errorOs = cout);
+
+    bool registerWaiterAccount(const AccountInfo& accoInfo, const string& permissionCode, ostream& errorOs = cout);
+
+    bool existSameUserName(const string& userName);
+    bool existSamePhoneNum(const string& phoneNum);
+    bool registerUserAccount(const AccountInfo& accoInfo, ostream& errorOs = cout);
+    bool loginAccount(const string& userNameOrPhoneNum, const string& password, ostream& errorOs = cout);
 };
 
 

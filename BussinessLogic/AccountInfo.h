@@ -15,10 +15,19 @@ typedef enum{Customer, Waiter} AccountType;
 class AccountInfo {
 public:
     AccountInfo () = default;
-    void setCustomerAccount(const string &, const string &);
-    void setCustomerAccount(const string &, const string &, const string &);
-    void setWaiterAccount(const string &, const string &);
-    void setWaiterAccount(const string &, const string &, const string &);
+    void setCustomerAccount(const string &pn,
+                            const string &pw);
+
+    void setCustomerAccount(const string &un,
+                            const string &pn,
+                            const string &pw);
+
+    void setWaiterAccount(const string &un,
+                          const string &pw);
+
+    void setWaiterAccount(const string &un,
+                          const string &pn,
+                          const string &pw);
 public:
     AccountType accountType = Customer;
     string userName;
