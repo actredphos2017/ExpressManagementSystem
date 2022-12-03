@@ -5,11 +5,11 @@
 #ifndef EXPRESSMANAGEMENTSYSTEM_MENUFORCUSTOMER_H
 #define EXPRESSMANAGEMENTSYSTEM_MENUFORCUSTOMER_H
 
-#include "../../globalAttribute.h"
+#include "../../GlobalAttribute.h"
 
 #include <QMainWindow>
 
-class menuForCustomer : public QMainWindow{
+class MenuForCustomer : public QMainWindow{
 Q_OBJECT
 };
 

@@ -2,72 +2,110 @@
 //  Create by sakunoakarinn on 22-12-01
 //
 
+#include "DataVisit/DatabaseInfo.h"
+#include "DataVisit/DatabaseStatus.h"
+
+#include "BussinessLogic/AccountInfo.h"
+#include "BussinessLogic/OrderInfo.h"
+
+
+namespace Sakuno{
+    DatabaseInfo* dbInfo = new DatabaseInfo;
+    bool haveDBInfo = false;
+    DatabaseStatus* databaseEntrance = new DatabaseStatus;
+    bool connectSuccess = new AccountInfo;
+    AccountInfo* onlineAccount = nullptr;
+}
+
 #include <QApplication>
-#include "VisualWindows/loginDialog.h"
-#include "VisualWindows/registerDialog.h"
-#include "VisualWindows/databaseOption.h"
-#include "VisualWindows/mainWindows/menuForCustomer.h"
-#include "VisualWindows/mainWindows/menuForWaiter.h"
+#include "VisualWindows/LoginDialog.h"
+#include "VisualWindows/RegisterDialog.h"
+#include "VisualWindows/DatabaseOption.h"
+#include "VisualWindows/mainWindows/MenuForCustomer.h"
+#include "VisualWindows/mainWindows/MenuForWaiter.h"
 
 using namespace Qt;
 
 int main(int argc, char *argv[]) {
-
-    auto databaseEntrance = new databaseStatus;
-    
-    accountInfo* onlineAccount{};
-
     QApplication a(argc, argv);
 
-    loginDialog     loginInterface;
-    databaseOption  databaseConfigInterface;
-    registerDialog  registerInterface;
-    menuForCustomer customerMainMenu;
-    menuForWaiter   waiterMainMenu;
+    LoginDialog     loginInterface;
+    DatabaseOption  databaseConfigInterface;
+    RegisterDialog  registerInterface;
+    MenuForCustomer customerMainMenu;
+    MenuForWaiter   waiterMainMenu;
 
-    QObject::connect (
-        &loginInterface,
-        SIGNAL(pushRegisterBtn()),
-        &registerInterface,
-        SLOT(toRegister())
-    ); //连接登录界面与注册界面
+    //initGlobalAttributes
+    {
+        Sakuno::dbInfo = new DatabaseInfo;
+        Sakuno::haveDBInfo = false;
+        Sakuno::databaseEntrance = new DatabaseStatus;
+        Sakuno::connectSuccess = false;
+        Sakuno::onlineAccount = new AccountInfo;
+    }
 
-    QObject::connect (
-        &registerInterface,
-        SIGNAL(pushBackBtn()),
-        &loginInterface,
-        SLOT(comeBack())
-    ); //返回登录界面
+    //initWindowsConnect
+    {
+        QObject::connect (
+                &loginInterface,
+                SIGNAL(pushRegisterBtn()),
+                &registerInterface,
+                SLOT(toRegister())
+        ); //连接登录界面与注册界面
 
-    QObject::connect (
-        &loginInterface,
-        SIGNAL(pushDatabaseConfBtn()),
-        &databaseConfigInterface,
-        SLOT(toConfigDatabase())
-    ); //连接登录界面与数据库配置界面
 
-    QObject::connect (
-        &databaseConfigInterface,
-        SIGNAL(pushBackBtn()),
-        &loginInterface,
-        SLOT(comeBack())
-    ); //返回登录界面
+        QObject::connect (
+                &registerInterface,
+                SIGNAL(pushBackBtn()),
+                &loginInterface,
+                SLOT(comeBack())
+        ); //返回登录界面
 
-    QObject::connect (
-        &loginInterface,
-        SIGNAL(customerLoginSuccess()),
-        &customerMainMenu,
-        SLOT(loginSuccess())
-    ); //用户登录成功
+        QObject::connect (
+                &loginInterface,
+                SIGNAL(pushDatabaseConfBtn()),
+                &databaseConfigInterface,
+                SLOT(toConfigDatabase())
+        ); //连接登录界面与数据库配置界面
 
-    QObject::connect (
-        &loginInterface,
-        SIGNAL(waiterLoginSuccess()),
-        &waiterMainMenu,
-        SLOT(loginSuccess())
-    ); //服务员登录成功
-    
-    loginInterface.show();
+        QObject::connect (
+                &databaseConfigInterface,
+                SIGNAL(pushBackBtn()),
+                &loginInterface,
+                SLOT(comeBack())
+        ); //返回登录界面
 
+        QObject::connect (
+                &loginInterface,
+                SIGNAL(customerLoginSuccess()),
+                &customerMainMenu,
+                SLOT(loginSuccess())
+        ); //用户登录成功
+
+        QObject::connect (
+                &loginInterface,
+                SIGNAL(waiterLoginSuccess()),
+                &waiterMainMenu,
+                SLOT(loginSuccess())
+        ); //服务员登录成功
+    }
+
+    //initInfoConnect
+    {
+        QObject::connect (
+                &loginInterface,
+                SIGNAL(checkSaveDBInfo()),
+                &databaseConfigInterface,
+                SLOT(checkSave())
+        );
+        QObject::connect(
+                &databaseConfigInterface,
+                SIGNAL(checkFinish()),
+                &loginInterface,
+                SLOT(checkResult())
+        );
+    }
+
+    loginInterface.init();
     return QApplication::exec();
 }

@@ -10,10 +10,10 @@
 
 using namespace std;
 
-class orderInfo {
+class OrderInfo {
 public:
-    orderInfo () = default;
-    orderInfo (string trackNumber,
+    OrderInfo () = default;
+    OrderInfo (string trackNumber,
                string company,
                string recipentName,
                string recipentPhoneNum,
@@ -26,7 +26,7 @@ public:
                float itemWeight,
                string pickCode,
                bool hasBeenTaken);
-    orderInfo& taken();
+    OrderInfo& taken();
 public:
     string trackNumber;
     string company;
@@ -43,6 +43,6 @@ public:
     bool hasBeenTaken{};
 };
 
-typedef vector<orderInfo> orderGroup;
+typedef vector<OrderInfo> orderGroup;
 
 #endif //EXPRESSMANAGEMENTSYSTEM_ORDERINFO_H

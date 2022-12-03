@@ -2,20 +2,21 @@
 // Created by sakunoakarinn on 22-11-30.
 //
 
-#include "../globalAttribute.h"
+#include "../GlobalAttribute.h"
 
-#include "loginDialog.h"
+#include "LoginDialog.h"
 
 #include <QLayout>
+#include <QMessageBox>
 
-#include "databaseOption.h"
+#include "DatabaseOption.h"
 
-loginDialog::loginDialog(){
-    iniItems();
-    iniConnect();
+LoginDialog::LoginDialog(){
+    initItems();
+    initConnect();
 }
 
-void loginDialog::iniItems() {
+void LoginDialog::initItems() {
     auto mainLayout = new QVBoxLayout;
     {
         auto databaseOptionLayout = new QHBoxLayout;
@@ -33,8 +34,15 @@ void loginDialog::iniItems() {
             }
             databaseOptionLayout->addLayout(databaseStatus);
 
-            databaseOptionEntrance = new QPushButton(tr("配置连接"));
-            databaseOptionLayout->addWidget(databaseOptionEntrance);
+            auto configConnect = new QVBoxLayout;
+            {
+                databaseOptionEntrance = new QPushButton(tr("配置连接"));
+                configConnect->addWidget(databaseOptionEntrance);
+
+                databaseConnectRetry = new QPushButton(tr("重试连接"));
+                configConnect->addWidget(databaseConnectRetry);
+            }
+            databaseOptionLayout->addLayout(configConnect);
         }
         mainLayout->addLayout(databaseOptionLayout);
 
@@ -99,7 +107,7 @@ void loginDialog::iniItems() {
     setWindowTitle(tr("快件管理系统"));
 }
 
-void loginDialog::iniConnect() {
+void LoginDialog::initConnect() {
     connect(
         databaseOptionEntrance,
         SIGNAL(clicked()), 
@@ -127,22 +135,54 @@ void loginDialog::iniConnect() {
         this, 
         SLOT(signIn())
     ); //登录
+
+    connect(
+        databaseConnectRetry,
+        SIGNAL(clicked()),
+        this,
+        SLOT(checkSave())
+    );
 }
 
-void loginDialog::toConfigDatabase(){
+void LoginDialog::toConfigDatabase(){
     this->hide();
     emit pushDatabaseConfBtn();
 }
 
-void loginDialog::toRegister(){
+void LoginDialog::toRegister(){
     this->hide();
     emit pushRegisterBtn();
 }
 
-void loginDialog::comeBack(){
-    this->show();
+void LoginDialog::comeBack(){
+    qDebug() << Sakuno::connectSuccess;
+    if(!Sakuno::connectSuccess)
+        databaseStatusInfo->setText(tr("未连接"));
+    else
+        databaseStatusInfo->setText(tr("已连接到 ") + Sakuno::dbInfo->connectName.c_str());
+    show();
 }
 
-void loginDialog::signIn() {
+void LoginDialog::signIn() {
+
+}
+
+void LoginDialog::init() {
+    show();
+    checkSave();
+}
+
+void LoginDialog::checkSave() {
+    databaseStatusInfo->setText("检查中……");
+    emit checkSaveDBInfo();
+}
+
+void LoginDialog::checkResult() {
+    if(!Sakuno::connectSuccess){
+        databaseStatusInfo->setText(tr("未连接"));
+        QMessageBox::information(this,tr("提示"),tr("未连接到数据库！请重试或重新配置连接！"));
+    }
+    else
+        databaseStatusInfo->setText(tr("已连接到 ") + Sakuno::dbInfo->connectName.c_str());
 
 }

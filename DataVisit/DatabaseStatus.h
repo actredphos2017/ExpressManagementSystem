@@ -16,14 +16,14 @@
 #include "mysql_connection.h"
 #include "mysql_driver.h"
 
-#include "databaseInfo.h"
-#include "../BussinessLogic/orderInfo.h"
-#include "../BussinessLogic/accountInfo.h"
+#include "DatabaseInfo.h"
+#include "../BussinessLogic/OrderInfo.h"
+#include "../BussinessLogic/AccountInfo.h"
 
 using namespace std;
 using namespace sql;
 
-class databaseStatus {
+class DatabaseStatus {
 private:
     Driver              *dbDri{};
     Connection          *dbCon{};
@@ -31,8 +31,8 @@ private:
     PreparedStatement   *dbPreSta{};
     ResultSet           *dbRes{};
 public:
-    databaseStatus () = default;
-    bool connect(const databaseInfo& dbi, ostream& errorOs = cout);
+    DatabaseStatus () = default;
+    bool connect(const DatabaseInfo& dbi, ostream& errorOs = cout);
     bool available ();
 
     bool insertAccount (const accountGroup& ag, ostream& errorOs);

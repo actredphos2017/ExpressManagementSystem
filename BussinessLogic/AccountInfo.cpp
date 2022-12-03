@@ -2,9 +2,9 @@
 // Created by sakunoakarinn on 22-11-29.
 //
 
-#include "accountInfo.h"
+#include "AccountInfo.h"
 
-void accountInfo::setCustomerAccount(const string &pn,
+void AccountInfo::setCustomerAccount(const string &pn,
                                      const string &pw) {
     accountType = Customer;
     userName = "";
@@ -12,7 +12,7 @@ void accountInfo::setCustomerAccount(const string &pn,
     password = pw;
 }
 
-void accountInfo::setCustomerAccount(const string &un,
+void AccountInfo::setCustomerAccount(const string &un,
                                      const string &pn,
                                      const string &pw) {
     accountType = Customer;
@@ -21,7 +21,7 @@ void accountInfo::setCustomerAccount(const string &un,
     password = pw;
 }
 
-void accountInfo::setWaiterAccount(const string &un,
+void AccountInfo::setWaiterAccount(const string &un,
                                    const string &pw) {
     accountType = Waiter;
     userName = un;
@@ -29,7 +29,7 @@ void accountInfo::setWaiterAccount(const string &un,
     password = pw;
 }
 
-void accountInfo::setWaiterAccount(const string &un,
+void AccountInfo::setWaiterAccount(const string &un,
                                    const string &pn,
                                    const string &pw) {
     accountType = Waiter;

@@ -18,27 +18,27 @@ find_package(Qt6 COMPONENTS
 add_executable(
         ExpressManagementSystem 
         main.cpp
-        globalAttribute.h
-        DataVisit/databaseStatus.cpp
-        DataVisit/databaseStatus.h
-        DataVisit/databaseInfo.cpp
-        DataVisit/databaseInfo.h
-        BussinessLogic/orderInfo.cpp
-        BussinessLogic/orderInfo.h
-        BussinessLogic/accountInfo.cpp
-        BussinessLogic/accountInfo.h
-        VisualWindows/loginDialog.cpp
-        VisualWindows/loginDialog.h
-        VisualWindows/databaseOption.cpp
-        VisualWindows/databaseOption.h
-        VisualWindows/registerDialog.cpp
-        VisualWindows/registerDialog.h
-        VisualWindows/mainWindows/menuForWaiter.cpp
-        VisualWindows/mainWindows/menuForWaiter.h
-        VisualWindows/mainWindows/menuForCustomer.cpp
-        VisualWindows/mainWindows/menuForCustomer.h
+        GlobalAttribute.h
+        DataVisit/DatabaseStatus.cpp
+        DataVisit/DatabaseStatus.h
+        DataVisit/DatabaseInfo.cpp
+        DataVisit/DatabaseInfo.h
+        BussinessLogic/OrderInfo.cpp
+        BussinessLogic/OrderInfo.h
+        BussinessLogic/AccountInfo.cpp
+        BussinessLogic/AccountInfo.h
+        VisualWindows/LoginDialog.cpp
+        VisualWindows/LoginDialog.h
+        VisualWindows/DatabaseOption.cpp
+        VisualWindows/DatabaseOption.h
+        VisualWindows/RegisterDialog.cpp
+        VisualWindows/RegisterDialog.h
+        VisualWindows/mainWindows/MenuForWaiter.cpp
+        VisualWindows/mainWindows/MenuForWaiter.h
+        VisualWindows/mainWindows/MenuForCustomer.cpp
+        VisualWindows/mainWindows/MenuForCustomer.h
         VisualWindows/userObjects/ClickableLabel.h
-        )
+)
 
 target_link_libraries(ExpressManagementSystem
         Qt::Core

@@ -2,11 +2,11 @@
 // Created by sakunoakarinn on 22-11-29.
 //
 
-#include "orderInfo.h"
+#include "OrderInfo.h"
 
 #include <utility>
 
-orderInfo::orderInfo(string trackNumber,
+OrderInfo::OrderInfo(string trackNumber,
                      string company,
                      string recipentName,
                      string recipentPhoneNum,
@@ -34,7 +34,7 @@ orderInfo::orderInfo(string trackNumber,
         hasBeenTaken(hasBeenTaken)
         {}
 
-orderInfo& orderInfo::taken() {
+OrderInfo& OrderInfo::taken() {
     bool old = hasBeenTaken;
     hasBeenTaken = true;
     return *this;

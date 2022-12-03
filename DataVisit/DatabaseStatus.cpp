@@ -1,8 +1,9 @@
 //
 // Created by sakunoakarinn on 22-11-29.
 //
+#include "../GlobalAttribute.h"
 
-#include "databaseStatus.h"
+#include "DatabaseStatus.h"
 #include <sstream>
 
 namespace Sakuno{
@@ -15,13 +16,13 @@ namespace Sakuno{
     }
 }
 
-bool databaseStatus::available() {
+bool DatabaseStatus::available() {
     if(dbCon == nullptr)
         return false;
     return !dbCon->isClosed();
 }
 
-bool databaseStatus::connect(const databaseInfo &dbi, ostream &errorOs) {
+bool DatabaseStatus::connect(const DatabaseInfo &dbi, ostream &errorOs) {
     dbDri = new mysql::MySQL_Driver;
     try{
         dbCon = dbDri->connect(dbi.hostName,
@@ -29,14 +30,49 @@ bool databaseStatus::connect(const databaseInfo &dbi, ostream &errorOs) {
                                dbi.password);
     }catch(exception& e){
         errorOs << "连接失败！请检查数据库信息。";
+#if SAKUNO_DEBUG_MODE
+        qDebug() << dbi.hostName.c_str() << dbi.userName.c_str() << dbi.password.c_str();
+#endif
+        Sakuno::close(dbCon);
+        return false;
+    }
+    try{
+        Statement* tempSM = dbCon->createStatement();
+        ResultSet* tempRS = tempSM->executeQuery("show databases");
+        bool hasTargetDatabase = false;
+        while(tempRS->next())
+            if(tempRS->getString(1).asStdString() == "ExpressManagementSystem"){
+                hasTargetDatabase = true;
+                break;
+            }
+        if(!hasTargetDatabase)
+            throw(1);
+        tempSM->execute("use ExpressManagementSystem");
+        tempRS = tempSM->executeQuery("show tables");
+        bool hasTargetTable[2] = {false, false};
+        while(tempRS->next()){
+            if(tempRS->getString(1).asStdString() == "account")
+                hasTargetTable[0] = true;
+            else if(tempRS->getString(1).asStdString() == "orderInfo")
+                hasTargetTable[1] = true;
+            qDebug() << tempRS->getString(1).asStdString().c_str();
+        }
+        if(!hasTargetTable[0] || !hasTargetTable[1])
+            throw(2);
+    }catch(int e){
+        errorOs << "错误！该数据库不符合要求！";
+#if SAKUNO_DEBUG_MODE
+        qDebug() << e;
+#endif
+        Sakuno::close(dbCon);
         return false;
     }
     dbSta = dbCon->createStatement();
     return true;
 }
 /*
-drop table if exists orderInfo;
-create table orderInfo(
+drop table if exists OrderInfo;
+create table OrderInfo(
     trackNumber varchar(20) not null,
     company varchar(10) not null,
     recipentName varchar(10) not null,
@@ -56,12 +92,12 @@ create table orderInfo(
 )engine=InnoDB, charset=utf8;
  */
 
-bool databaseStatus::insertOrder(const orderGroup &og, ostream &errorOs) {
+bool DatabaseStatus::insertOrder(const orderGroup &og, ostream &errorOs) {
     auto it = og.begin();
     try {
         while (it != og.end()) {
 
-            dbPreSta = dbCon->prepareStatement("insert into orderInfo ("
+            dbPreSta = dbCon->prepareStatement("insert into OrderInfo ("
                                                     "trackNumber, "
                                                     "company, "
                                                     "recipentName, "
@@ -106,13 +142,13 @@ bool databaseStatus::insertOrder(const orderGroup &og, ostream &errorOs) {
     return true;
 }
 
-orderGroup* databaseStatus::selectOrder(const string& condition, ostream &errorOs) {
-    orderInfo* oi;
+orderGroup* DatabaseStatus::selectOrder(const string& condition, ostream &errorOs) {
+    OrderInfo* oi;
     dbSta = dbCon->createStatement();
     try{
         dbRes = condition.empty() ?
-                dbSta->executeQuery("select * from orderInfo") :
-                dbSta->executeQuery("select * from orderInfo where " + condition);
+                dbSta->executeQuery("select * from OrderInfo") :
+                dbSta->executeQuery("select * from OrderInfo where " + condition);
     }catch(exception& e){
         errorOs << "订单信息查找错误! 请查找语法!";
         Sakuno::close(dbRes);
@@ -120,7 +156,7 @@ orderGroup* databaseStatus::selectOrder(const string& condition, ostream &errorO
     }
     auto res = new orderGroup;
     while(dbRes->next()){
-        res->push_back(orderInfo(
+        res->push_back(OrderInfo(
                 dbRes->getString(1).asStdString(),
                 dbRes->getString(2).asStdString(),
                 dbRes->getString(3).asStdString(),
@@ -140,9 +176,9 @@ orderGroup* databaseStatus::selectOrder(const string& condition, ostream &errorO
     return res;
 }
 
-bool databaseStatus::updateOrder(const string& condition, const string& change, ostream &errorOs) {
+bool DatabaseStatus::updateOrder(const string& condition, const string& change, ostream &errorOs) {
     try{
-        dbPreSta = dbCon->prepareStatement("update orderInfo set " + change + " where " + condition);
+        dbPreSta = dbCon->prepareStatement("update OrderInfo set " + change + " where " + condition);
         dbPreSta->executeQuery();
     }catch(exception& e){
         errorOs << "订单关系数据更新错误! 请检查条件与改变表达式!";
@@ -155,7 +191,7 @@ bool databaseStatus::updateOrder(const string& condition, const string& change, 
     return true;
 }
 
-bool databaseStatus::insertAccount(const accountGroup &ag, ostream &errorOs) {
+bool DatabaseStatus::insertAccount(const accountGroup &ag, ostream &errorOs) {
     auto it = ag.begin();
     try {
         while (it != ag.end()) {
@@ -182,8 +218,8 @@ bool databaseStatus::insertAccount(const accountGroup &ag, ostream &errorOs) {
     return true;
 }
 
-accountGroup *databaseStatus::selectAccount(const string& condition, ostream &errorOs) {
-    orderInfo* oi;
+accountGroup *DatabaseStatus::selectAccount(const string& condition, ostream &errorOs) {
+    OrderInfo* oi;
     dbSta = dbCon->createStatement();
     try{
         dbRes = condition.empty() ?
@@ -196,7 +232,7 @@ accountGroup *databaseStatus::selectAccount(const string& condition, ostream &er
     }
     auto res = new accountGroup;
     while(dbRes->next()){
-        accountInfo accoInfo;
+        AccountInfo accoInfo;
         if(dbRes->getBoolean(1))
             accoInfo.setWaiterAccount(dbRes->getString(2).asStdString(),
                                       dbRes->getString(3).asStdString(),
@@ -211,7 +247,7 @@ accountGroup *databaseStatus::selectAccount(const string& condition, ostream &er
     return res;
 }
 
-bool databaseStatus::updateAccount(const string& condition, const string& change, ostream &errorOs) {
+bool DatabaseStatus::updateAccount(const string& condition, const string& change, ostream &errorOs) {
     try{
         dbPreSta = dbCon->prepareStatement("update account set " + change + " where " + condition);
         dbPreSta->executeQuery();

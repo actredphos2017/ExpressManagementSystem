@@ -12,9 +12,9 @@ using namespace std;
 
 typedef enum{Customer, Waiter} AccountType;
 
-class accountInfo {
+class AccountInfo {
 public:
-    accountInfo () = default;
+    AccountInfo () = default;
     void setCustomerAccount(const string &, const string &);
     void setCustomerAccount(const string &, const string &, const string &);
     void setWaiterAccount(const string &, const string &);
@@ -26,6 +26,6 @@ public:
     string password;
 };
 
-typedef vector<accountInfo> accountGroup;
+typedef vector<AccountInfo> accountGroup;
 
 #endif //EXPRESSMANAGEMENTSYSTEM_ACCOUNTINFO_H
