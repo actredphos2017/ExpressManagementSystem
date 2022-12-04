@@ -29,6 +29,7 @@ add_executable(
         BussinessLogic/AccountInfo.h
         VisualWindows/LoginDialog.cpp
         VisualWindows/LoginDialog.h
+        VisualWindows/LoginDialog.ui
         VisualWindows/DatabaseOption.cpp
         VisualWindows/DatabaseOption.h
         VisualWindows/RegisterDialog.cpp
@@ -38,7 +39,9 @@ add_executable(
         VisualWindows/mainWindows/MenuForCustomer.cpp
         VisualWindows/mainWindows/MenuForCustomer.h
         VisualWindows/userObjects/ClickableLabel.h
-        VisualWindows/PermissionGetDialog.cpp VisualWindows/PermissionGetDialog.h)
+        VisualWindows/PermissionGetDialog.cpp
+        VisualWindows/PermissionGetDialog.h
+)
 
 target_link_libraries(ExpressManagementSystem
         Qt::Core

@@ -2,44 +2,46 @@
 // Created by sakunoakarinn on 22-11-30.
 //
 
-#ifndef EXPRESSMANAGEMENTSYSTEM_LOGINDIALOG_H
-#define EXPRESSMANAGEMENTSYSTEM_LOGINDIALOG_H
+#ifndef LOGINDIALOG_H
+#define LOGINDIALOG_H
 
 #include "../GlobalAttribute.h"
 
 #include <QDialog>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
-#include <QCheckBox>
+#include <QMouseEvent>
+#include <QRect>
+#include <QGroupBox>
 
-#include "userObjects/ClickableLabel.h"
+namespace Ui {
+class LoginDialog;
+}
 
-using namespace Qt;
-
-class LoginDialog : public QDialog {
-
+class LoginDialog : public QDialog
+{
     Q_OBJECT
 
+public:
+    explicit LoginDialog(QWidget *parent = nullptr);
+    ~LoginDialog() override;
+
+    QVector<QWidget*> dragSpaces;
+
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+
+    void setShadow(QWidget *qw);
+    void setBlur(QWidget *qw);
+
 private:
-    DatabaseStatus* databaseEntrance{};
+    Ui::LoginDialog *ui;
 
-    QLineEdit* userNameEdit{};
-    QLineEdit* passwordEdit{};
-    QCheckBox* rememberPassword{};
-    QCheckBox* autoLogin{};
-    QPushButton* loginBtn{};
-    QPushButton* cancelBtn{};
-    QLabel* registerText{};
-    ClickableLabel* registerBtn{};
-    QLabel* databaseStatusTitle{};
-    QLabel* databaseStatusInfo{};
-    QPushButton* databaseOptionEntrance{};
-    QPushButton* databaseConnectRetry{};
+    bool m_bDragging;
+    QPoint m_poStartPosition;
+    QPoint m_poFramePosition;
 
-    void initItems();
+    void initItem();
     void initConnect();
-
 
 signals:
     void switchToDatabaseOption();
@@ -54,11 +56,7 @@ public slots:
     void signIn();
     void checkResult();
     void checkSave();
-
-public:
-    LoginDialog();
     void init();
 };
 
-
-#endif //EXPRESSMANAGEMENTSYSTEM_LOGINDIALOG_H
+#endif // LOGINDIALOG_H

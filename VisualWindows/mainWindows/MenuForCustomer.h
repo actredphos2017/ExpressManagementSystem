@@ -10,7 +10,17 @@
 #include <QMainWindow>
 
 class MenuForCustomer : public QMainWindow{
-Q_OBJECT
+
+    Q_OBJECT
+
+private:
+
+public:
+
+public slots:
+
+signals:
+
 };
 
 
