@@ -1,45 +1,45 @@
-//
-// Created by sakunoakarinn on 22-11-30.
-//
-
-#ifndef EXPRESSMANAGEMENTSYSTEM_REGISTERDIALOG_H
-#define EXPRESSMANAGEMENTSYSTEM_REGISTERDIALOG_H
+#ifndef REGISTERDIALOG_H
+#define REGISTERDIALOG_H
 
 #include "../GlobalAttribute.h"
 
 #include <QDialog>
-#include <QLineEdit>
-#include <QLabel>
-#include <QRadioButton>
-#include <QPushButton>
+#include <QMouseEvent>
 
-class RegisterDialog : public QDialog{
 
+namespace Ui {
+class RegisterDialog;
+}
+
+class RegisterDialog : public QDialog
+{
     Q_OBJECT
 
+public:
+    explicit RegisterDialog(QWidget *parent = nullptr);
+    ~RegisterDialog() override;
+
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+
 private:
-    QLabel* regTypeTitle;
-    QLabel* userNameTitle;
-    QLabel* phoneNumTitle;
-    QLabel* passwordTitle;
-    QLabel* checkPasswordTitle;
-    QLabel* permissionInfo;
 
-    QLineEdit* userNameLine;
-    QLineEdit* phoneNumLine;
-    QLineEdit* passwordLine;
-    QLineEdit* checkPasswordLine;
+    Ui::RegisterDialog *ui;
 
-    QRadioButton* waiterType;
-    QRadioButton* customerType;
+    bool haveAsked = false;
+    string permissionCode;
 
-    QPushButton* permissionCheck;
-    QPushButton* registerBtn;
-    QPushButton* backBtn;
+    bool m_bDragging;
+    QPoint m_poStartPosition;
+    QPoint m_poFramePosition;
+
+    QVector<QWidget*> dragSpaces;
 
     void initItem();
     void initConnect();
-    string permissionCode;
+    void setShadow(QWidget *qw, int radius);
+    void setBlur(QWidget *qw, int radius);
 
 signals:
     void pushBackBtn();
@@ -55,10 +55,6 @@ public slots:
     void switchToWaiterType();
     void switchToCustomerType();
     void authenticateSuccess(string userName, string permCode);
-
-public:
-    RegisterDialog();
 };
 
-
-#endif //EXPRESSMANAGEMENTSYSTEM_REGISTERDIALOG_H
+#endif // REGISTERDIALOG_H

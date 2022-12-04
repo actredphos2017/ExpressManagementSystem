@@ -139,6 +139,7 @@ void PermissionGetDialog::beginAuthenticate() {
             return;
         }
         QMessageBox::information(this, tr("提示"), tr("认证成功"));
+        backToRegister();
         emit getPermissionCode(userNameOrPhoneNumLine->text().toStdString(), code);
     }
 }

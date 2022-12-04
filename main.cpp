@@ -18,7 +18,7 @@ namespace Sakuno{
 }
 
 #include <QApplication>
-#include "VisualWindows/LoginDialog.oldh"
+#include "VisualWindows/LoginDialog.h"
 #include "VisualWindows/RegisterDialog.h"
 #include "VisualWindows/DatabaseOption.h"
 #include "VisualWindows/PermissionGetDialog.h"

@@ -14,7 +14,6 @@ LoginDialog::LoginDialog(QWidget *parent) :
     initItem();
     initConnect();
     setWindowFlags(Qt::FramelessWindowHint);
-    resize(size());
 }
 
 LoginDialog::~LoginDialog()
@@ -22,35 +21,33 @@ LoginDialog::~LoginDialog()
     delete ui;
 }
 
-void LoginDialog::setBlur(QWidget* qw){
+void LoginDialog::setBlur(QWidget* qw, int radius){
     auto* blurEffect = new QGraphicsBlurEffect(this);
-    blurEffect->setBlurRadius(64);
+    blurEffect->setBlurRadius(radius);
     qw->setGraphicsEffect(blurEffect);
 }
 
-void LoginDialog::setShadow(QWidget *qw) {
+void LoginDialog::setShadow(QWidget *qw, int radius) {
     auto* shadowEffect = new QGraphicsDropShadowEffect(this);
     shadowEffect->setOffset(0, 0);
     shadowEffect->setColor(QColor("black"));
-    shadowEffect->setBlurRadius(12);
+    shadowEffect->setBlurRadius(radius);
 
     qw->setGraphicsEffect(shadowEffect);
 }
 void LoginDialog::initItem() {
-    setShadow(ui->connectCheckGroup);
-    setShadow(ui->loginBtn);
-    setShadow(ui->MainSpace);
-    setShadow(ui->picture);
-    setShadow(ui->cancelBtn);
+    setShadow(ui->connectCheckGroup, 12);
+    setShadow(ui->loginBtn, 12);
+    setShadow(ui->MainSpace, 12);
+    setShadow(ui->picture, 12);
+    setShadow(ui->cancelBtn, 12);
 
-    setBlur(ui->backGround);
+    setBlur(ui->backGround, 64);
 
-    dragSpaces.push_back(ui->MainSpace);
-    dragSpaces.push_back((ui->Title));
+    dragSpaces.push_back(ui->backGround);
 
     ui->userNameEdit->setPlaceholderText(tr("用户名/手机号"));
     ui->passwordEdit->setPlaceholderText(tr("密码"));
-    qDebug() << ui->picture->styleSheet();
 }
 
 void LoginDialog::initConnect() {
@@ -104,11 +101,16 @@ void LoginDialog::toRegister(){
 void LoginDialog::comeBack(){
     qDebug() << Sakuno::connectSuccess;
     if(!Sakuno::connectSuccess){
+        ui->databaseStatusTitle->setStyleSheet("color: red;font-size: 12px;");
         ui->databaseStatusTitle->setText(tr("未连接"));
+        ui->databaseStatusInfo->setStyleSheet("color: red;font-size: 12px;");
+        ui->databaseStatusInfo->setText(tr(""));
         QMessageBox::information(this,tr("提示"),tr("未连接到数据库！请重试或重新配置连接！"));
     }
     else{
+        ui->databaseStatusTitle->setStyleSheet("color: green;font-size: 12px;");
         ui->databaseStatusTitle->setText(tr("已连接到"));
+        ui->databaseStatusInfo->setStyleSheet("color: green;font-size: 12px;");
         ui->databaseStatusInfo->setText(tr(Sakuno::dbInfo->connectName.c_str()));
     }
     show();
@@ -130,11 +132,16 @@ void LoginDialog::checkSave() {
 
 void LoginDialog::checkResult() {
     if(!Sakuno::connectSuccess){
+        ui->databaseStatusTitle->setStyleSheet("color: red;font-size: 12px;");
         ui->databaseStatusTitle->setText(tr("未连接"));
+        ui->databaseStatusInfo->setStyleSheet("color: red;font-size: 12px;");
+        ui->databaseStatusInfo->setText(tr(""));
         QMessageBox::information(this,tr("提示"),tr("未连接到数据库！请重试或重新配置连接！"));
     }
     else{
+        ui->databaseStatusTitle->setStyleSheet("color: green;font-size: 12px;");
         ui->databaseStatusTitle->setText(tr("已连接到"));
+        ui->databaseStatusInfo->setStyleSheet("color: green;font-size: 12px;");
         ui->databaseStatusInfo->setText(tr(Sakuno::dbInfo->connectName.c_str()));
     }
 

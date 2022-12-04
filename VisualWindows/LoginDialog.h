@@ -30,8 +30,8 @@ public:
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
 
-    void setShadow(QWidget *qw);
-    void setBlur(QWidget *qw);
+    void setShadow(QWidget *qw, int radius);
+    void setBlur(QWidget *qw, int radius);
 
 private:
     Ui::LoginDialog *ui;

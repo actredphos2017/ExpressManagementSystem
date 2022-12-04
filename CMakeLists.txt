@@ -34,6 +34,7 @@ add_executable(
         VisualWindows/DatabaseOption.h
         VisualWindows/RegisterDialog.cpp
         VisualWindows/RegisterDialog.h
+        VisualWindows/RegisterDialog.ui
         VisualWindows/mainWindows/MenuForWaiter.cpp
         VisualWindows/mainWindows/MenuForWaiter.h
         VisualWindows/mainWindows/MenuForCustomer.cpp
