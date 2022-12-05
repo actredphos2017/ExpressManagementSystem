@@ -2148,7 +2148,8 @@ border-style: inset;}
    </property>
    <property name="styleSheet">
     <string notr="true">QGroupBox{
-background-image: url(res/registerBackground.jpeg);\nbackground-position:center
+background-image: url(:/res/registerBackground.jpeg);
+background-position:center
 }</string>
    </property>
    <property name="title">

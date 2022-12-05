@@ -127,6 +127,7 @@ int main(int argc, char *argv[]) {
         );
     }
 
-    loginInterface.init();
+    //loginInterface.init();
+    customerMainMenu.show();
     return QApplication::exec();
 }

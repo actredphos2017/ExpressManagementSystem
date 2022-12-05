@@ -1997,7 +1997,7 @@ background-color:rgb(246, 97, 81);
    <property name="styleSheet">
     <string notr="true">QGroupBox{
 border-radius:12px;
-background-image: url(res/titlePicture.jpeg);
+background-image: url(:/res/titlePicture.jpeg);
 background-position: right;
 }</string>
    </property>
@@ -2016,7 +2016,7 @@ background-position: right;
    </property>
    <property name="styleSheet">
     <string notr="true">QGroupBox{
-background-image: url(res/titlePicture.jpeg);\nbackground-position:center
+background-image: url(:/res/titlePicture.jpeg);background-position:center
 }</string>
    </property>
    <property name="title">

@@ -74,8 +74,8 @@ void PermissionGetDialog::initConnect() {
 
     connect(authenticateBtn,
             SIGNAL(clicked()),
-            this
-            , SLOT(beginAuthenticate()));
+            this,
+            SLOT(beginAuthenticate()));
 }
 
 void PermissionGetDialog::toAuthenticate() {

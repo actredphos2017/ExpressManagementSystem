@@ -209,7 +209,7 @@ bool DatabaseStatus::insertAccount(const accountGroup &ag, ostream &errorOs) {
             it ++;
         }
     }catch(exception& e) {
-        errorOs << "用户插入失败! 用户名与电话重复!";
+        errorOs << "用户插入失败! 输入值超出范围。";
         dbCon->reconnect();
         return false;
     }
@@ -367,21 +367,25 @@ string DatabaseStatus::checkPermissionCode(const string& code, ostream &errorOs)
 }
 
 bool DatabaseStatus::checkPrepareAccount(const AccountInfo &accoInfo, ostream &errorOs) {
-    if(!Sakuno::isLetter(accoInfo.userName[0])){
-        errorOs << "用户名不合法！";
-        return false;
+    if (!accoInfo.userName.empty()) {
+        if (!Sakuno::isLetter(accoInfo.userName[0])) {
+            errorOs << "用户名不合法！";
+            return false;
+        }
+        if (existSameUserName(accoInfo.userName)) {
+            errorOs << "数据库中已存在相同用户名的账户！";
+            return false;
+        }
     }
-    if(existSameUserName(accoInfo.userName)){
-        errorOs << "数据库中已存在相同用户名的账户！";
-        return false;
-    }
-    if(!Sakuno::isNumber(accoInfo.phoneNumber[0])){
-        errorOs << "手机号不合法！";
-        return false;
-    }
-    if(existSamePhoneNum(accoInfo.phoneNumber)){
-        errorOs << "数据库中已存在相同手机号的账户！";
-        return false;
+    if(!accoInfo.phoneNumber.empty()) {
+        if (!Sakuno::isNumber(accoInfo.phoneNumber[0])) {
+            errorOs << "手机号不合法！";
+            return false;
+        }
+        if (existSamePhoneNum(accoInfo.phoneNumber)) {
+            errorOs << "数据库中已存在相同手机号的账户！";
+            return false;
+        }
     }
     return true;
 }
