@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.23)
+cmake_minimum_required(VERSION 3.22.1)
 project(ExpressManagementSystem)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -37,12 +37,15 @@ add_executable(
         VisualWindows/RegisterDialog.ui
         VisualWindows/mainWindows/MenuForWaiter.cpp
         VisualWindows/mainWindows/MenuForWaiter.h
+        VisualWindows/mainWindows/MenuForWaiter.ui
         VisualWindows/mainWindows/MenuForCustomer.cpp
         VisualWindows/mainWindows/MenuForCustomer.h
+        VisualWindows/mainWindows/MenuForCustomer.ui
         VisualWindows/userObjects/ClickableLabel.h
         VisualWindows/PermissionGetDialog.cpp
         VisualWindows/PermissionGetDialog.h
-)
+        res.qrc
+        VisualWindows/userObjects/PickupQuickTag.cpp VisualWindows/userObjects/PickupQuickTag.h)
 
 target_link_libraries(ExpressManagementSystem
         Qt::Core
