@@ -85,6 +85,20 @@ void RegisterDialog::initConnect() {
             SIGNAL(clicked()),
             this,
             SLOT(switchToCustomerType()));
+
+    connect(
+            this,
+            SIGNAL(toAuthenticate()),
+            &authenticateInterface,
+            SLOT(toAuthenticate())
+    ); //连接注册界面与认证界面
+
+    connect(
+            &authenticateInterface,
+            SIGNAL(getPermissionCode(string, string)),
+            this,
+            SLOT(authenticateSuccess(string, string))
+    );
 }
 
 void RegisterDialog::backToLogin() {
@@ -176,12 +190,7 @@ void RegisterDialog::switchToCustomerType() {
     ui->checkPasswordLine->setEnabled(true);
 }
 
-void RegisterDialog::comeBack() {
-    show();
-}
-
 void RegisterDialog::goToAuthenticate() {
-    hide();
     emit toAuthenticate();
 }
 

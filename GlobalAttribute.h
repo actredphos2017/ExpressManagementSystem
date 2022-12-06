@@ -5,6 +5,8 @@
 #ifndef __GLOBAL_ATTRIBUTE_H__
 #define __GLOBAL_ATTRIBUTE_H__
 
+#include "SakunoFunctions.h"
+
 #include "DataVisit/DatabaseInfo.h"
 #include "DataVisit/DatabaseStatus.h"
 
@@ -27,43 +29,6 @@ namespace Sakuno{
     extern DatabaseStatus* databaseEntrance;
     extern bool connectSuccess;
     extern AccountInfo* onlineAccount;
-
-    static string toVarchar(const string& old){
-        return (string)"\'" + old + '\'';
-    }
-
-    static bool isNumber(const char& c){
-        return c >= '0' && c <= '9';
-    }
-
-    static bool isLetter(const char& c){
-        return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
-    }
-
-    static string getFileName(const string& fullDirName){
-        stringstream ss;
-        for(const char& it : fullDirName){
-            ss << it;
-            if(it == '/' || it == '\\')
-                ss.clear();
-        }
-        return ss.str();
-    }
-
-    static string getFileType(const string& fullDirName){
-        string fileName = getFileName(fullDirName);
-        bool isContent = false;
-        stringstream ss;
-        for(const char& it : fileName){
-            if(isContent)
-                ss << it;
-            if(it == '.'){
-                isContent = true;
-                ss.clear();
-            }
-        }
-        return ss.str();
-    }
 } // namespace Sakuno
 
 #endif // __GLOBAL_ATTRIBUTE_H__

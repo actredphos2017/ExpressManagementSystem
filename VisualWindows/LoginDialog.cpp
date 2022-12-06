@@ -10,7 +10,6 @@ LoginDialog::LoginDialog(QWidget *parent) :
     ui(new Ui::LoginDialog)
 {
     ui->setupUi(this);
-    //setFixedSize(469,335);
     initItem();
     initConnect();
     setWindowFlags(Qt::FramelessWindowHint);
@@ -85,10 +84,38 @@ void LoginDialog::initConnect() {
             this,
             SLOT(checkSave())
     );
+
+    connect (
+            this,
+            SIGNAL(pushDatabaseConfBtn()),
+            &databaseConfigInterface,
+            SLOT(toConfigDatabase())
+    ); //连接登录界面与数据库配置界面
+
+    connect (
+            &databaseConfigInterface,
+            SIGNAL(pushBackBtn()),
+            this,
+            SLOT(checkResult())
+    ); //返回登录界面
+
+
+    //信息传递
+    connect (
+            this,
+            SIGNAL(checkSaveDBInfo()),
+            &databaseConfigInterface,
+            SLOT(checkSave())
+    );
+    connect(
+            &databaseConfigInterface,
+            SIGNAL(checkFinish()),
+            this,
+            SLOT(checkResult())
+    );
 }
 
 void LoginDialog::toConfigDatabase(){
-    this->hide();
     emit pushDatabaseConfBtn();
 }
 
@@ -97,27 +124,23 @@ void LoginDialog::toRegister(){
     emit pushRegisterBtn();
 }
 
-
-void LoginDialog::comeBack(){
-    qDebug() << Sakuno::connectSuccess;
-    if(!Sakuno::connectSuccess){
-        ui->databaseStatusTitle->setStyleSheet("color: red;font-size: 12px;");
-        ui->databaseStatusTitle->setText(tr("未连接"));
-        ui->databaseStatusInfo->setStyleSheet("color: red;font-size: 12px;");
-        ui->databaseStatusInfo->setText(tr(""));
-        QMessageBox::information(this,tr("提示"),tr("未连接到数据库！请重试或重新配置连接！"));
-    }
-    else{
-        ui->databaseStatusTitle->setStyleSheet("color: green;font-size: 12px;");
-        ui->databaseStatusTitle->setText(tr("已连接到"));
-        ui->databaseStatusInfo->setStyleSheet("color: green;font-size: 12px;");
-        ui->databaseStatusInfo->setText(tr(Sakuno::dbInfo->connectName.c_str()));
-    }
-    show();
-}
-
 void LoginDialog::signIn() {
-
+    if(ui->userNameEdit->text().isEmpty() || ui->passwordEdit->text().isEmpty()){
+        QMessageBox::information(this, tr("提示"), tr("请填满信息框"));
+        return;
+    }
+    stringstream errorSs;
+    if(!Sakuno::databaseEntrance->loginAccount(ui->userNameEdit->text().toStdString(),
+                                              ui->passwordEdit->text().toStdString(),
+                                              errorSs)){
+        QMessageBox::information(this, tr("提示"), tr(errorSs.str().c_str()));
+        return;
+    }
+    if(Sakuno::onlineAccount->accountType == Customer)
+        emit customerLoginSuccess();
+    else
+        emit waiterLoginSuccess();
+    close();
 }
 
 void LoginDialog::init() {
@@ -144,8 +167,6 @@ void LoginDialog::checkResult() {
         ui->databaseStatusInfo->setStyleSheet("color: green;font-size: 12px;");
         ui->databaseStatusInfo->setText(tr(Sakuno::dbInfo->connectName.c_str()));
     }
-
-
 }
 
 
@@ -185,6 +206,10 @@ void LoginDialog::mouseReleaseEvent(QMouseEvent* event)
 {
     m_bDragging = false;
     QWidget::mouseReleaseEvent(event);
+}
+
+void LoginDialog::comeBack() {
+    show();
 }
 
 

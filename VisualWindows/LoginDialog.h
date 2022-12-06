@@ -12,6 +12,8 @@
 #include <QRect>
 #include <QGroupBox>
 
+#include "DatabaseOption.h"
+
 namespace Ui {
 class LoginDialog;
 }
@@ -36,6 +38,7 @@ public:
 private:
     Ui::LoginDialog *ui;
 
+    DatabaseOption  databaseConfigInterface;
     bool m_bDragging;
     QPoint m_poStartPosition;
     QPoint m_poFramePosition;
@@ -48,11 +51,13 @@ signals:
     void pushDatabaseConfBtn();
     void pushRegisterBtn();
     void checkSaveDBInfo();
+    void customerLoginSuccess();
+    void waiterLoginSuccess();
 
 public slots:
+    void comeBack();
     void toRegister();
     void toConfigDatabase();
-    void comeBack();
     void signIn();
     void checkResult();
     void checkSave();

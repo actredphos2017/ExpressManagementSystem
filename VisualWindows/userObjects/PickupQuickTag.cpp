@@ -3,12 +3,13 @@
 //
 
 #include <QLabel>
+#include <utility>
 #include "PickupQuickTag.h"
 
-PickupQuickTag::PickupQuickTag(const QString& sender, const QString& receiver, const QString& pickCode, QGroupBox *parent) :
+PickupQuickTag::PickupQuickTag(QString  sender, QString  receiver, const QString& pickCode, QGroupBox *parent) :
     QGroupBox(parent),
-    sender(sender),
-    receiver(receiver),
+    sender(std::move(sender)),
+    receiver(std::move(receiver)),
     pickCode(pickCode)
 {
     auto widgetSize = QSize(375, 80);
@@ -67,11 +68,13 @@ void PickupQuickTag::paintEvent(QPaintEvent *e) {
     QGroupBox::paintEvent(e);
 
     QPainter backgroundDrawer(this);
-    QPainterPath clipPath(QPoint(12,0));
+
     int startLoc = 200;
     QLinearGradient linearEffect(QPoint(maximumWidth() - startLoc, 0), QPoint(maximumWidth(), 0));
     linearEffect.setColorAt(0.0, QColor("white"));
     linearEffect.setColorAt(1.0, QColor(98, 160, 234));//"#4169e1"
+
+    QPainterPath clipPath(QPoint(12,0));
     clipPath.lineTo(maximumWidth() - 12, 0);
     clipPath.arcTo(QRect(QPoint(maximumWidth() - 24, 0),QPoint(maximumWidth(), 24)), 90, -90);
     clipPath.lineTo(maximumWidth(), maximumHeight() - 12);
@@ -81,14 +84,13 @@ void PickupQuickTag::paintEvent(QPaintEvent *e) {
     clipPath.lineTo(0, 12);
     clipPath.arcTo(QRect(QPoint(0, 0), QPoint(24, 24)), 180, -90);
     backgroundDrawer.setClipPath(clipPath);
+
     backgroundDrawer.setRenderHint(QPainter::Antialiasing);
     backgroundDrawer.drawPixmap(-50, -5, QPixmap(":/res/expressBox.jpeg").scaled(QSize(120, 120), Qt::KeepAspectRatio));
     backgroundDrawer.fillRect(QRect(QPoint(maximumWidth() - startLoc, 0), QPoint(maximumWidth(), maximumHeight())), linearEffect);
 
-
-
-    QColor sendColorMap[2] = {QColor("#ff6100"),QColor("#ff8000")};
-    QColor receiveColorMap[2] = {QColor("#191970"),QColor("#4169e1")};
+    QColor sendColorMap[2] = {"#ff6100","#ff8000"};
+    QColor receiveColorMap[2] = {"#191970","#4169e1"};
     circleAndText(QPoint(52, 25),
                   "发",
                   sendColorMap,
@@ -97,6 +99,4 @@ void PickupQuickTag::paintEvent(QPaintEvent *e) {
                   "收",
                   receiveColorMap,
                   receiver);
-
-
 }

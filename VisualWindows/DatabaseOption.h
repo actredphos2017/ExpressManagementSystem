@@ -48,7 +48,7 @@ private:
     void createSave();
     void connectFailed();
 public:
-    DatabaseOption();
+    explicit DatabaseOption(QWidget* parent = nullptr);
     void readSave();
 signals:
     void pushBackBtn();

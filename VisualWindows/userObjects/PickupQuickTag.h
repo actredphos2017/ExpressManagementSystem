@@ -23,7 +23,7 @@ private:
 
 public:
 
-    PickupQuickTag(const QString& sender, const QString& receiver, const QString& pickCode, QGroupBox* parent = nullptr);
+    PickupQuickTag(QString  sender, QString  receiver, const QString& pickCode, QGroupBox* parent = nullptr);
 
 protected:
 

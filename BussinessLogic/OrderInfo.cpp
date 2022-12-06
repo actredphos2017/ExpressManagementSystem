@@ -18,24 +18,27 @@ OrderInfo::OrderInfo(string trackNumber,
                      int senderPost,
                      float itemWeight,
                      string pickCode,
+                     const string& warehousingTime,
                      bool hasBeenTaken):
-        trackNumber(std::move(trackNumber)),
-        company(std::move(company)),
-        recipentName(std::move(recipentName)),
-        recipentPhoneNum(std::move(recipentPhoneNum)),
-        recipentLocation(std::move(recipentLocation)),
-        recipentPost(recipentPost),
-        senderName(std::move(senderName)),
-        senderPhoneNum(std::move(senderPhoneNum)),
-        senderLocation(std::move(senderLocation)),
-        senderPost(senderPost),
-        itemWeight(itemWeight),
-        pickCode(std::move(pickCode)),
-        hasBeenTaken(hasBeenTaken)
-        {}
+    trackNumber(std::move(trackNumber)),
+    company(std::move(company)),
+    recipentName(std::move(recipentName)),
+    recipentPhoneNum(std::move(recipentPhoneNum)),
+    recipentLocation(std::move(recipentLocation)),
+    recipentPost(recipentPost),
+    senderName(std::move(senderName)),
+    senderPhoneNum(std::move(senderPhoneNum)),
+    senderLocation(std::move(senderLocation)),
+    senderPost(senderPost),
+    itemWeight(itemWeight),
+    pickCode(std::move(pickCode)),
+    warehousingTime(new Sakuno::Time(warehousingTime)),
+    hasBeenTaken(hasBeenTaken){}
 
 OrderInfo& OrderInfo::taken() {
     bool old = hasBeenTaken;
     hasBeenTaken = true;
     return *this;
 }
+
+

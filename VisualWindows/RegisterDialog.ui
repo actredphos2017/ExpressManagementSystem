@@ -100,6 +100,10 @@ border-left-width:0px;
  
 QLineEdit:hover {
 border-color: rgb(255, 120, 0);
+}
+
+QLineEdit[readOnly=&quot;true&quot;]{
+border-color: rgb(192, 191, 188);
 }</string>
       </property>
       <property name="alignment">
@@ -132,6 +136,10 @@ border-left-width:0px;
  
 QLineEdit:hover {
 border-color: rgb(255, 120, 0);
+}
+
+QLineEdit[readOnly=&quot;true&quot;]{
+border-color: rgb(192, 191, 188);
 }</string>
       </property>
       <property name="alignment">
@@ -164,6 +172,10 @@ border-left-width:0px;
  
 QLineEdit:hover {
 border-color: rgb(255, 120, 0);
+}
+
+QLineEdit[readOnly=&quot;true&quot;]{
+border-color: rgb(192, 191, 188);
 }</string>
       </property>
       <property name="alignment">
@@ -196,6 +208,10 @@ border-left-width:0px;
  
 QLineEdit:hover {
 border-color: rgb(255, 120, 0);
+}
+
+QLineEdit[readOnly=&quot;true&quot;]{
+border-color: rgb(192, 191, 188);
 }</string>
       </property>
       <property name="alignment">

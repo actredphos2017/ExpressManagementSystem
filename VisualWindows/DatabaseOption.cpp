@@ -145,9 +145,12 @@ void DatabaseOption::initConnect() {
     connect(checkBtn, SIGNAL(clicked()), this, SLOT(checkDatabase()));
 }
 
-DatabaseOption::DatabaseOption() {
+DatabaseOption::DatabaseOption(QWidget* parent) :
+    QDialog(parent){
+    setWindowModality(Qt::ApplicationModal);
     initItem();
     initConnect();
+    setWindowFlags(Qt::FramelessWindowHint);
 }
 
 void DatabaseOption::backToLogin() {

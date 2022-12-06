@@ -3,8 +3,8 @@
 #include "../userObjects/PickupQuickTag.h"
 
 #include <QLayout>
-#include <QGroupBox>
 #include <QGraphicsEffect>
+#include <QMessageBox>
 
 MenuForCustomer::MenuForCustomer(QWidget *parent) :
     QMainWindow(parent),
@@ -12,25 +12,41 @@ MenuForCustomer::MenuForCustomer(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QVBoxLayout* tempLayout = new QVBoxLayout;
-    PickupQuickTag* Test;
-    QGraphicsDropShadowEffect* effect;
-    int y = 10;
-    for(int i = 0; i < 10; i ++){
-        Test = new PickupQuickTag("戴先生", "郭先生", "00-0-0000");
-        tempLayout->addWidget(Test);
-        effect = new QGraphicsDropShadowEffect;
-        effect->setColor("#666666");
-        effect->setBlurRadius(8);
-        Test->setGraphicsEffect(effect);
-    }
-    QWidget* widget = new QWidget;
-    widget->setLayout(tempLayout);
-    ui->scrollArea->setWidget(widget);
-    //ui->scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 }
 
 MenuForCustomer::~MenuForCustomer()
 {
     delete ui;
+}
+
+void MenuForCustomer::initQuickBox(){
+    auto tempLayout = new QVBoxLayout;
+    PickupQuickTag* Test;
+
+    stringstream errorSs;
+    customerPackage = Sakuno::databaseEntrance->getCustomerOrders(Sakuno::onlineAccount->phoneNumber, errorSs);
+    if(customerPackage->empty())
+        QMessageBox::information(this, tr("提示"), tr(errorSs.str().c_str()));
+    for(const auto& it : *customerPackage)
+        addQuickTag(tempLayout, new PickupQuickTag(it.senderName.c_str(), it.recipentName.c_str(), it.pickCode.c_str()));
+    auto widget = new QWidget;
+    widget->setLayout(tempLayout);
+    ui->quickPickupCodeArea->setWidget(widget);
+}
+
+void MenuForCustomer::initConnect(){
+
+};
+
+void MenuForCustomer::addQuickTag(QVBoxLayout* quickTagsGroup,PickupQuickTag* quickTag){
+    auto effect = new QGraphicsDropShadowEffect;
+    effect->setColor("#666666");
+    effect->setBlurRadius(8);
+    quickTagsGroup->addWidget(quickTag);
+    quickTag->setGraphicsEffect(effect);
+}
+
+void MenuForCustomer::loginSuccess() {
+    initQuickBox();
+    this->show();
 }

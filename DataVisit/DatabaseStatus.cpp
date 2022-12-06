@@ -70,27 +70,6 @@ bool DatabaseStatus::connect(const DatabaseInfo &dbi, ostream &errorOs) {
     dbSta = dbCon->createStatement();
     return true;
 }
-/*
-drop table if exists OrderInfo;
-create table OrderInfo(
-    trackNumber varchar(20) not null,
-    company varchar(10) not null,
-    recipentName varchar(10) not null,
-    recipentPhoneNum varchar(15) not null,
-    recipentLocation varchar(15) not null,
-    recipentPost int,
-    senderName varchar(10) not null,
-    senderPhoneNum varchar(15) not null,
-    senderLocation varchar(15) not null,
-    senderPost int,
-    itemWeight float,
-    pickCode varchar(10),
-    warehousingTime datetime default now(),
-    hasBeenTaken boolean default true,
-    primary key(trackNumber),
-    index(pickCode)
-)engine=InnoDB, charset=utf8;
- */
 
 bool DatabaseStatus::insertOrder(const orderGroup &og, ostream &errorOs) {
     auto it = og.begin();
@@ -129,8 +108,6 @@ bool DatabaseStatus::insertOrder(const orderGroup &og, ostream &errorOs) {
 
             dbPreSta->executeUpdate();
 
-            //Sakuno::close(dbPreSta);
-
             it ++;
         }
     }catch(exception& e) {
@@ -143,15 +120,15 @@ bool DatabaseStatus::insertOrder(const orderGroup &og, ostream &errorOs) {
 }
 
 orderGroup* DatabaseStatus::selectOrder(const string& condition, ostream &errorOs) {
+    qDebug() << ("select * from orderInfo where " + condition).c_str();
     dbSta = dbCon->createStatement();
     try{
         dbRes = condition.empty() ?
-                dbSta->executeQuery("select * from OrderInfo") :
-                dbSta->executeQuery("select * from OrderInfo where " + condition);
+                dbSta->executeQuery("select * from orderInfo") :
+                dbSta->executeQuery("select * from orderInfo where " + condition);
     }catch(exception& e){
         errorOs << "订单信息查找错误! 请查找语法!";
-        //Sakuno::close(dbRes);
-        return new orderGroup;
+        return nullptr;
     }
     auto res = new orderGroup;
     while(dbRes->next()){
@@ -168,10 +145,10 @@ orderGroup* DatabaseStatus::selectOrder(const string& condition, ostream &errorO
                 dbRes->getInt(10),
                 (float)dbRes->getDouble(11),
                 dbRes->getString(12).asStdString(),
-                dbRes->getBoolean(13)
+                dbRes->getString(13).asStdString(),
+                dbRes->getBoolean(14)
                 ));
     }
-    //Sakuno::close(dbRes);
     return res;
 }
 
@@ -181,11 +158,9 @@ bool DatabaseStatus::updateOrder(const string& condition, const string& change, 
         dbPreSta->executeQuery();
     }catch(exception& e){
         errorOs << "订单关系数据更新错误! 请检查条件与改变表达式!";
-        //Sakuno::close(dbPreSta);
         dbCon->reconnect();
         return false;
     }
-    //Sakuno::close(dbPreSta);
     dbCon->commit();
     return true;
 }
@@ -203,8 +178,6 @@ bool DatabaseStatus::insertAccount(const accountGroup &ag, ostream &errorOs) {
             dbPreSta->setString (4  , it->password);
 
             dbPreSta->executeUpdate();
-
-            //Sakuno::close(dbPreSta);
 
             it ++;
         }
@@ -226,7 +199,6 @@ accountGroup *DatabaseStatus::selectAccount(const string& condition, ostream &er
                 dbSta->executeQuery("select * from account where " + condition);
     }catch(exception& e){
         errorOs << "用户信息查找错误! 请查找语法!";
-        //Sakuno::close(dbRes);
         return res;
     }
     while(dbRes->next()){
@@ -241,8 +213,6 @@ accountGroup *DatabaseStatus::selectAccount(const string& condition, ostream &er
                                         dbRes->getString(4).asStdString());
         res->push_back(accoInfo);
     }
-    //Sakuno::close(dbRes);
-    //Sakuno::close(dbSta);
     return res;
 }
 
@@ -252,11 +222,9 @@ bool DatabaseStatus::updateAccount(const string& condition, const string& change
         dbPreSta->executeQuery();
     }catch(exception& e){
         errorOs << "用户关系数据更新错误! 请检查条件与改变表达式!";
-        //Sakuno::close(dbPreSta);
         dbCon->reconnect();
         return false;
     }
-    //Sakuno::close(dbPreSta);
     dbCon->commit();
     return true;
 }
@@ -330,7 +298,6 @@ string DatabaseStatus::getPermissionCode(const AccountInfo &waiterInfo, ostream 
         dbRes = dbPreSta->executeQuery();
     }catch(exception& e){
         errorOs << "输入值错误，请检查输入值";
-        //Sakuno::close(dbRes);
         return "";
     }
     if(!dbRes->next()){
@@ -338,8 +305,6 @@ string DatabaseStatus::getPermissionCode(const AccountInfo &waiterInfo, ostream 
         return "";
     }
     return dbRes->getString(1).asStdString();
-    //Sakuno::close(dbRes);
-    //Sakuno::close(dbSta);
 }
 
 bool DatabaseStatus::registerWaiterAccount(const AccountInfo &accoInfo, const string &permissionCode, ostream &errorOs) {
@@ -388,4 +353,14 @@ bool DatabaseStatus::checkPrepareAccount(const AccountInfo &accoInfo, ostream &e
         }
     }
     return true;
+}
+
+orderGroup *DatabaseStatus::getCustomerOrders(const string &phoneNum, ostream &errorOs) {
+    orderGroup *res = selectOrder("senderPhoneNum = " + Sakuno::toVarchar(phoneNum), errorOs);
+    if(res != nullptr){
+        if(res->empty())
+            errorOs << "暂无包裹入库";
+    }else
+        res = new orderGroup;
+    return res;
 }

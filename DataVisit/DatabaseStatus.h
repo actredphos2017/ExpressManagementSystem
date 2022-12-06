@@ -47,14 +47,14 @@ public:
     string checkPermissionCode(const string& code, ostream &errorOs = cout);
 
     bool checkPrepareAccount(const AccountInfo &accoInfo, ostream &errorOs = cout);
-
     bool registerWaiterAccount(const AccountInfo& accoInfo, const string& permissionCode, ostream& errorOs = cout);
 
     bool existSameUserName(const string& userName);
     bool existSamePhoneNum(const string& phoneNum);
     bool registerUserAccount(const AccountInfo& accoInfo, ostream& errorOs = cout);
     bool loginAccount(const string& userNameOrPhoneNum, const string& password, ostream& errorOs = cout);
-};
 
+    orderGroup* getCustomerOrders (const string& phoneNum, ostream& errorOs = cout);
+};
 
 #endif //EXPRESSMANAGEMENTSYSTEM_DATABASESTATUS_H

@@ -6,6 +6,7 @@
 #include <QDialog>
 #include <QMouseEvent>
 
+#include "PermissionGetDialog.h"
 
 namespace Ui {
 class RegisterDialog;
@@ -27,6 +28,8 @@ private:
 
     Ui::RegisterDialog *ui;
 
+    PermissionGetDialog authenticateInterface;
+
     bool haveAsked = false;
     string permissionCode;
 
@@ -47,7 +50,6 @@ signals:
 
 
 public slots:
-    void comeBack();
     void toRegister();
     void goToAuthenticate();
     void backToLogin();

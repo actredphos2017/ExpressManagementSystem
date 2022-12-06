@@ -36,7 +36,6 @@ private:
 signals:
 
     void getPermissionCode(string, string);
-    void comeBack();
 
 public slots:
 
@@ -47,7 +46,7 @@ public slots:
     void backToRegister();
 
 public:
-    PermissionGetDialog();
+    PermissionGetDialog(QWidget* parent = nullptr);
 };
 
 

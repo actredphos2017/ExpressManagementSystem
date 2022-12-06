@@ -49,11 +49,14 @@ void PermissionGetDialog::initItem() {
     setLayout(mainLayout);
 }
 
-PermissionGetDialog::PermissionGetDialog() {
+PermissionGetDialog::PermissionGetDialog(QWidget* parent):
+    QDialog(parent){
+    setWindowModality(Qt::ApplicationModal);
     initItem();
     initConnect();
     fromCode->setChecked(true);
     switchToCode();
+    setWindowFlags(Qt::FramelessWindowHint);
 }
 
 void PermissionGetDialog::initConnect() {
@@ -84,7 +87,6 @@ void PermissionGetDialog::toAuthenticate() {
 
 void PermissionGetDialog::backToRegister() {
     close();
-    emit comeBack();
 }
 
 void PermissionGetDialog::switchToCode() {
@@ -113,6 +115,7 @@ void PermissionGetDialog::beginAuthenticate() {
         }
         QMessageBox::information(this, tr("提示"), tr("认证成功"));
         emit getPermissionCode(userName, code);
+        close();
     }
     else if(fromAccount->isChecked()){
         if (userNameOrPhoneNumLine->text().isEmpty() ||
@@ -141,5 +144,6 @@ void PermissionGetDialog::beginAuthenticate() {
         QMessageBox::information(this, tr("提示"), tr("认证成功"));
         backToRegister();
         emit getPermissionCode(userNameOrPhoneNumLine->text().toStdString(), code);
+        close();
     }
 }

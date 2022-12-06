@@ -6,9 +6,13 @@
 #define EXPRESSMANAGEMENTSYSTEM_ORDERINFO_H
 
 #include <string>
+#include <sstream>
 #include <vector>
+#include <QDebug>
 
 using namespace std;
+
+#include "../SakunoFunctions.h"
 
 class OrderInfo {
 public:
@@ -25,6 +29,7 @@ public:
                int senderPost,
                float itemWeight,
                string pickCode,
+               const string& warehousingTime,
                bool hasBeenTaken);
     OrderInfo& taken();
 public:
@@ -39,6 +44,7 @@ public:
     string senderLocation;
     int senderPost{};
     float itemWeight{};
+    Sakuno::Time* warehousingTime;
     string pickCode;
     bool hasBeenTaken{};
 };
