@@ -12,7 +12,7 @@ PickupQuickTag::PickupQuickTag(QString  sender, QString  receiver, const QString
     receiver(std::move(receiver)),
     pickCode(pickCode)
 {
-    auto widgetSize = QSize(375, 80);
+    auto widgetSize = QSize(350, 80);
     setMaximumSize(widgetSize);
     setMinimumSize(widgetSize);
     setStyleSheet("border-radius: 12px; border-style: 2px black; background-color: white; padding: 4px 4px");
@@ -25,7 +25,7 @@ PickupQuickTag::PickupQuickTag(QString  sender, QString  receiver, const QString
 
     pickCodeLabel->setStyleSheet("background-color: transparent");
     pickCodeLabel->setAlignment(Qt::AlignCenter);
-    pickCodeLabel->move(140, 20);
+    pickCodeLabel->move(130, 20);
     pickCodeLabel->setMaximumSize(200, 40);
     pickCodeLabel->show();
 }

@@ -11,7 +11,7 @@ MenuForCustomer::MenuForCustomer(QWidget *parent) :
     ui(new Ui::MenuForCustomer)
 {
     ui->setupUi(this);
-
+    initItems();
 }
 
 MenuForCustomer::~MenuForCustomer()
@@ -34,16 +34,28 @@ void MenuForCustomer::initQuickBox(){
     ui->quickPickupCodeArea->setWidget(widget);
 }
 
+void MenuForCustomer::initItems(){
+    addShadow(ui->pickupMessage);
+    addShadow(ui->btnGroupBox);
+    addShadow(ui->greetGroupBox);
+    addShadow(ui->infoGroupBox);
+}
+
 void MenuForCustomer::initConnect(){
 
 };
 
-void MenuForCustomer::addQuickTag(QVBoxLayout* quickTagsGroup,PickupQuickTag* quickTag){
+void MenuForCustomer::addShadow(QWidget* widget){
     auto effect = new QGraphicsDropShadowEffect;
     effect->setColor("#666666");
     effect->setBlurRadius(8);
+    effect->setOffset(2, 2);
+    widget->setGraphicsEffect(effect);
+}
+
+void MenuForCustomer::addQuickTag(QVBoxLayout* quickTagsGroup,PickupQuickTag* quickTag){
     quickTagsGroup->addWidget(quickTag);
-    quickTag->setGraphicsEffect(effect);
+    addShadow(quickTag);
 }
 
 void MenuForCustomer::loginSuccess() {

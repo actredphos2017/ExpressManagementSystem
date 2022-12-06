@@ -21,14 +21,15 @@ public:
     ~MenuForCustomer();
 
 private:
-    ;
+    void addShadow(QWidget *widget);
     orderGroup* customerPackage{};
 
     Ui::MenuForCustomer *ui;
-    //void initItem();
-    void initConnect();
     void addQuickTag(QVBoxLayout *quickTagsGroup, PickupQuickTag *quickTag);
     void initQuickBox();
+
+    void initItems();
+    void initConnect();
 
 public slots:
     void loginSuccess();
