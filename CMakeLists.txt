@@ -45,7 +45,7 @@ add_executable(
         VisualWindows/PermissionGetDialog.cpp
         VisualWindows/PermissionGetDialog.h
         res.qrc
-        VisualWindows/userObjects/PickupQuickTag.cpp VisualWindows/userObjects/PickupQuickTag.h SakunoFunctions.cpp SakunoFunctions.h)
+        VisualWindows/userObjects/PickupQuickTag.cpp VisualWindows/userObjects/PickupQuickTag.h SakunoFunctions.cpp SakunoFunctions.h VisualWindows/userObjects/CircleProgressBar.cpp VisualWindows/userObjects/CircleProgressBar.h)
 
 target_link_libraries(ExpressManagementSystem
         Qt::Core
