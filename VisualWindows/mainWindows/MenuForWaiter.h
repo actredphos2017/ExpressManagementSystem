@@ -17,6 +17,9 @@ public:
 
 private:
     Ui::MenuForWaiter *ui;
+
+public slots:
+    void loginSuccess();
 };
 
 #endif // MENUFORWAITER_H

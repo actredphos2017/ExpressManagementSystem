@@ -12,3 +12,7 @@ MenuForWaiter::~MenuForWaiter()
 {
     delete ui;
 }
+
+void MenuForWaiter::loginSuccess() {
+    show();
+}
