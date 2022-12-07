@@ -50,55 +50,58 @@ void LoginDialog::initItem() {
 }
 
 void LoginDialog::initConnect() {
-    connect(
-            ui->databaseOptionEntrance,
+    connect(ui->databaseOptionEntrance,
             SIGNAL(clicked()),
             this,
             SLOT(toConfigDatabase())
     ); //数据库配置
 
-    connect(
-            ui->cancelBtn,
+    connect(ui->cancelBtn,
             SIGNAL(clicked()),
             this,
             SLOT(close())
     ); //退出
 
-    connect(
-            ui->registerBtn,
+    connect(ui->registerBtn,
             SIGNAL(clicked()),
             this,
             SLOT(toRegister())
     ); //注册
 
-    connect(
-            ui->loginBtn,
+    connect(ui->loginBtn,
             SIGNAL(clicked()),
             this,
             SLOT(signIn())
     ); //登录
 
-    connect(
-            ui->databaseConnectRetry,
+    connect(ui->databaseConnectRetry,
             SIGNAL(clicked()),
             this,
             SLOT(checkSave())
     );
 
-    connect (
-            this,
+    connect(this,
             SIGNAL(pushDatabaseConfBtn()),
             &databaseConfigInterface,
             SLOT(toConfigDatabase())
     ); //连接登录界面与数据库配置界面
 
-    connect (
-            &databaseConfigInterface,
+    connect(&databaseConfigInterface,
             SIGNAL(pushBackBtn()),
             this,
             SLOT(checkResult())
     ); //返回登录界面
 
+    connect(ui->passwordEdit,
+            SIGNAL(returnPressed()),
+            this,
+            SLOT(signIn()));
+
+    connect(ui->userNameEdit,
+            SIGNAL(returnPressed()),
+            this,
+            SLOT(signIn()));
+    //回车键登录
 
     //信息传递
     connect (
@@ -170,40 +173,31 @@ void LoginDialog::checkResult() {
 }
 
 
-void LoginDialog::mousePressEvent(QMouseEvent* event)
-{
+void LoginDialog::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton)
-    {
         for(auto it : dragSpaces){
             QRect rect = it->rect();
             rect.setBottom(rect.top() + 220);
-            if (rect.contains(event->pos()))
-            {
+            if (rect.contains(event->pos())){
                 m_bDragging = true;
                 m_poStartPosition = event->globalPos();
                 m_poFramePosition = frameGeometry().topLeft();
                 break;
             }
         }
-    }
     QWidget::mousePressEvent(event);
 }
 
-void LoginDialog::mouseMoveEvent(QMouseEvent* event)
-{
+void LoginDialog::mouseMoveEvent(QMouseEvent* event){
     if (event->buttons() & Qt::LeftButton)
-    {
-        if (m_bDragging)
-        {
+        if (m_bDragging){
             QPoint delta = event->globalPos() - m_poStartPosition;
             move(m_poFramePosition + delta);
         }
-    }
     QWidget::mouseMoveEvent(event);
 }
 
-void LoginDialog::mouseReleaseEvent(QMouseEvent* event)
-{
+void LoginDialog::mouseReleaseEvent(QMouseEvent* event){
     m_bDragging = false;
     QWidget::mouseReleaseEvent(event);
 }
@@ -211,5 +205,3 @@ void LoginDialog::mouseReleaseEvent(QMouseEvent* event)
 void LoginDialog::comeBack() {
     show();
 }
-
-
