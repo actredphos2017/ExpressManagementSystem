@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>801</width>
     <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="pushButton">
@@ -37,7 +40,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>添加订单</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="quickPickup">
@@ -45,9 +48,16 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>311</width>
+      <width>361</width>
       <height>241</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox{
+	background-color: rgba(246, 245, 244, 200);
+	border-radius: 12px;
+	border:2px black;
+}</string>
     </property>
     <property name="title">
      <string/>
@@ -72,7 +82,7 @@
         <widget class="QGroupBox" name="horizontalGroupBox">
          <property name="maximumSize">
           <size>
-           <width>82</width>
+           <width>100</width>
            <height>16777215</height>
           </size>
          </property>
@@ -120,25 +130,64 @@
      </item>
      <item>
       <widget class="QPushButton" name="pickBtn">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>24</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton{
+	border-radius: 12px;
+	border: 2px black;
+	background-color: white;
+}
+
+QPushButton:hover{
+background-color:rgb(28, 113, 216); 
+}
+
+QPushButton:pressed{
+background-color:rgb(98, 160, 234);
+border-style: inset;}
+</string>
+       </property>
        <property name="text">
-        <string>PushButton</string>
+        <string>  </string>
        </property>
       </widget>
      </item>
     </layout>
    </widget>
-   <widget class="QGroupBox" name="groupBox">
+   <widget class="QGroupBox" name="statusGroup">
     <property name="geometry">
      <rect>
-      <x>330</x>
+      <x>380</x>
       <y>10</y>
-      <width>461</width>
+      <width>411</width>
       <height>241</height>
      </rect>
     </property>
     <property name="title">
      <string/>
     </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="leftMargin">
+      <number>1</number>
+     </property>
+     <property name="topMargin">
+      <number>1</number>
+     </property>
+     <property name="rightMargin">
+      <number>1</number>
+     </property>
+     <property name="bottomMargin">
+      <number>1</number>
+     </property>
+     <item>
+      <layout class="QHBoxLayout" name="statusLayout"/>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -146,7 +195,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>801</width>
      <height>32</height>
     </rect>
    </property>

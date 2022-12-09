@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+
+#include "../userObjects/CircleProgressBar.h"
+
 namespace Ui {
 class MenuForWaiter;
 }
@@ -17,6 +20,10 @@ public:
 
 private:
     Ui::MenuForWaiter *ui;
+    CircleProgressBar *dayResAndPick;
+    CircleProgressBar *allResAndPick;
+
+    void setShadow(QWidget* widget);
 
 public slots:
     void loginSuccess();
