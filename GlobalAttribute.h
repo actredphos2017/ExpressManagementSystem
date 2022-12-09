@@ -17,7 +17,7 @@
 #include <QDebug>
 
 #define DB_INFO_FILENAME ".dbInfo"
-#define PROGRAM_DATA_SAVE_DIR "/.ExpressManagementSystemSavement/" //从用户根目录开始
+#define PROGRAM_DATA_SAVE_DIR "/.ExpressManagementSystemSavement/"
 
 #define SAKUNO_DEBUG_MODE true
 

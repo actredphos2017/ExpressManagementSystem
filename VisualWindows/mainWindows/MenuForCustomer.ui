@@ -253,7 +253,7 @@
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
-          <widget class="QLabel" name="label">
+          <widget class="QLabel" name="numLabel">
            <property name="font">
             <font>
              <pointsize>12</pointsize>
