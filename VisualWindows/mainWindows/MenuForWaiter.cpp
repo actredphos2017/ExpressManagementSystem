@@ -15,8 +15,8 @@ MenuForWaiter::MenuForWaiter(QWidget *parent) :
     ui->statusLayout->addWidget(dayResAndPick);
     ui->statusLayout->addSpacing(20);
     ui->statusLayout->addWidget(allResAndPick);
-    //setShadow(dayResAndPick);
-    //setShadow(allResAndPick);
+    setShadow(dayResAndPick);
+    setShadow(allResAndPick);
 }
 
 void MenuForWaiter::setShadow(QWidget* widget){
