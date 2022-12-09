@@ -6,6 +6,7 @@
 #define EXPRESSMANAGEMENTSYSTEM_CIRCLEPROGRESSBAR_H
 
 #include <QGroupBox>
+#include <QLabel>
 
 class CircleProgressBar : public QGroupBox{
 
@@ -14,6 +15,9 @@ class CircleProgressBar : public QGroupBox{
 private:
     unsigned numerator, denominator;
 
+    QLabel* numLabel;
+    QLabel* denLabel;
+public:
     CircleProgressBar(unsigned num, unsigned den, QGroupBox* parent = nullptr);
     void paintEvent(QPaintEvent* event) override;
 };
