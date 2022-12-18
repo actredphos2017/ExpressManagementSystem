@@ -435,6 +435,7 @@ bool DatabaseStatus::updateSingleOrder(const string &trackNum, const OrderInfo &
     changeInfo << "pickCode = " + Sakuno::toVarchar(newOrder.pickCode) + ", ";
     changeInfo << "warehousingTime = " + newOrder.warehousingTime->sqlTime() + ", ";
     changeInfo << "hasBeenTaken = " + to_string((int)newOrder.hasBeenTaken);
+    qDebug() << "ChangeInfo: " << changeInfo.str().c_str();
     if(!updateOrder("trackNumber = " + Sakuno::toVarchar(trackNum), changeInfo.str(), errorOs))
         return false;
     return true;

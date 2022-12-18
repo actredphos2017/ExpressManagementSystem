@@ -30,6 +30,8 @@ private:
     string editingOrderTrackNum;
     ExpressEdit* editWin{};
 
+    bool selectAllExpress;
+
     void initItems();
     void initConnects();
 

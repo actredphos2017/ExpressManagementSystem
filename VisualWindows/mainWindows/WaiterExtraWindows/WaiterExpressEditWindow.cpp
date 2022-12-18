@@ -26,24 +26,15 @@ void WaiterExpressEditWindow::initItems() {
 }
 
 void WaiterExpressEditWindow::showAllExpress() {
-    viewOrders = Sakuno::databaseEntrance->getAllOrders();
-    fleshTable();
+    selectAllExpress = true;
     show();
+    fleshTable();
 }
 
 void WaiterExpressEditWindow::showDayExpress() {
-    auto thisDate = new Sakuno::Time;
-    thisDate->year = QDate::currentDate().year();
-    thisDate->month = QDate::currentDate().month();
-    thisDate->mDay = QDate::currentDate().day();
-    viewOrders = Sakuno::databaseEntrance->getDayOrders(thisDate);
-    if(viewOrders->empty()){
-        QMessageBox::information(this, "提示", "当天没有快递入库");
-        viewOrders = nullptr;
-        return;
-    }
-    fleshTable();
+    selectAllExpress = false;
     show();
+    fleshTable();
 }
 
 void WaiterExpressEditWindow::initConnects() {
@@ -55,7 +46,21 @@ void WaiterExpressEditWindow::initConnects() {
 }
 
 void WaiterExpressEditWindow::fleshTable() {
-
+    if(selectAllExpress)
+        viewOrders = Sakuno::databaseEntrance->getAllOrders();
+    else {
+        auto thisDate = new Sakuno::Time;
+        thisDate->year = QDate::currentDate().year();
+        thisDate->month = QDate::currentDate().month();
+        thisDate->mDay = QDate::currentDate().day();
+        viewOrders = Sakuno::databaseEntrance->getDayOrders(thisDate);
+    }
+    if(viewOrders->empty()){
+        QMessageBox::information(this, "提示", "暂无快件");
+        close();
+        delete viewOrders;
+        return;
+    }
     ui->expressTable->clear();
     ui->expressTable->setRowCount(viewOrders->size());
     QStringList hList;
@@ -86,7 +91,7 @@ void WaiterExpressEditWindow::fleshTable() {
     ui->expressTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
-[[maybe_unused]] void WaiterExpressEditWindow::setHasTaken(bool ifTaken) {
+void WaiterExpressEditWindow::setHasTaken(bool ifTaken) {
     if(ui->expressTable->currentRow() == -1)
         return;
     stringstream errorSs;

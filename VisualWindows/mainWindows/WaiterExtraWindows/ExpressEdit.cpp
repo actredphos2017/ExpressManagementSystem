@@ -195,6 +195,7 @@ void ExpressEdit::pushOkButton() {
     resOrder->warehousingTime->hour = warehousingTimeEdit->dateTime().time().hour();
     resOrder->warehousingTime->min = warehousingTimeEdit->dateTime().time().minute();
     resOrder->warehousingTime->second = warehousingTimeEdit->dateTime().time().second();
+    resOrder->hasBeenTaken = ifTakenBox->isChecked();
     close();
     emit doneEdit(resOrder);
 }
