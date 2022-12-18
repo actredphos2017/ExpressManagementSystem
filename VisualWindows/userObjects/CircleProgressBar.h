@@ -20,6 +20,8 @@ private:
 public:
     CircleProgressBar(unsigned num, unsigned den, QGroupBox* parent = nullptr);
     void paintEvent(QPaintEvent* event) override;
+
+    void updateData(unsigned int num, unsigned int den);
 };
 
 

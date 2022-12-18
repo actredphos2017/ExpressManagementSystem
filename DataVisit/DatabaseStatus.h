@@ -61,10 +61,11 @@ public:
     OrderGroup* getAllOrders (ostream& errorOs = cout);
     OrderGroup* getDayOrders(Sakuno::Time *day, ostream &errorOs = cout);
     OrderInfo* getOrder(const string& trackNum, ostream& errorOs = cout);
+    OrderInfo* getQuickOrder(const string& codeNum, ostream& errorOs = cout);
     bool deleteSingleOrder(const string& trackNum, ostream& errorOs = cout);
     bool updateSingleOrder(const string& trackNum, const OrderInfo& newOrder, ostream& errorOs = cout);
     bool setHasTaken(const OrderInfo& order, bool ifTaken, ostream& errorOs = cout);
-
+    vector<int> warehousing_takenMap(Sakuno::Time *day, ostream &errorOs = cout);
 };
 
 #endif //EXPRESSMANAGEMENTSYSTEM_DATABASESTATUS_H

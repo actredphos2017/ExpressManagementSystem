@@ -411,7 +411,7 @@ OrderInfo *DatabaseStatus::getOrder(const string &trackNum, ostream &errorOs) {
     if(!resGroup)
         return nullptr;
     if(resGroup->empty()){
-        errorOs << "制定快递不存在";
+        errorOs << "指定快递不存在";
         return nullptr;
     }
     return &(*resGroup)[0];
@@ -445,4 +445,32 @@ bool DatabaseStatus::deleteSingleOrder(const string &trackNum, ostream &errorOs)
     if(!getOrder(trackNum, errorOs))
         return false;
     return deleteOrder("trackNumber = " + trackNum, errorOs);
+}
+
+vector<int> DatabaseStatus::warehousing_takenMap(Sakuno::Time *day, ostream &errorOs) {
+    vector<int> res(4);
+    auto dayOrder = getDayOrders(day, errorOs);
+    auto allOrder = getAllOrders(errorOs);
+    for(auto it : *dayOrder){
+        res[1] ++;
+        if(it.hasBeenTaken)
+            res[0] ++;
+    }
+    for(auto it : *allOrder){
+        res[3] ++;
+        if(it.hasBeenTaken)
+            res[2] ++;
+    }
+    return res;
+}
+
+OrderInfo *DatabaseStatus::getQuickOrder(const string &codeNum, ostream &errorOs) {
+    OrderGroup* resGroup = selectOrder("pickCode = " + Sakuno::toVarchar(codeNum), errorOs);
+    if(!resGroup)
+        return nullptr;
+    if(resGroup->empty()){
+        errorOs << "指定快递不存在";
+        return nullptr;
+    }
+    return &(*resGroup)[0];
 }

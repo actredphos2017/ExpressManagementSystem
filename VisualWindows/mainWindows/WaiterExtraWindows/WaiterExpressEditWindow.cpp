@@ -43,6 +43,8 @@ void WaiterExpressEditWindow::initConnects() {
     connect(this, SIGNAL(toEdit(OrderInfo *)), editWin, SLOT(editOrder(OrderInfo *)));
     connect(editWin, SIGNAL(doneEdit(OrderInfo *)), this, SLOT(pushEdit(OrderInfo *)));
     connect(ui->deleteBtn, SIGNAL(clicked()), this, SLOT(removeItem()));
+    connect(ui->comeBackBtn, SIGNAL(clicked()), this, SLOT(close()));
+    connect(ui->comeBackBtn, SIGNAL(clicked()), parent(), SLOT(updateProgresBar()));
 }
 
 void WaiterExpressEditWindow::fleshTable() {

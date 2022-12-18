@@ -89,3 +89,11 @@ void CircleProgressBar::paintEvent(QPaintEvent *event) {
 
     numLabel->show();
 }
+
+void CircleProgressBar::updateData(unsigned int num, unsigned int den){
+    numerator = num;
+    denominator = den;
+    numLabel->setText(std::to_string(num).c_str());
+    denLabel->setText(std::to_string(den).c_str());
+    update();
+}

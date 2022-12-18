@@ -27,6 +27,8 @@ private:
     QPushButton* dayResBtn;
     QPushButton* allResBtn;
     WaiterExpressEditWindow* expressWindow;
+    vector<int> taken_wareInfo;
+    OrderInfo* quickOrder;
 
     void initItems();
     void initConnects();
@@ -34,6 +36,9 @@ private:
 
 public slots:
     void loginSuccess();
+    void quickInfo(const QString &);
+    void updateProgresBar();
+    void setPick();
 };
 
 #endif // MENUFORWAITER_H
