@@ -6,8 +6,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-set(CMAKE_PREFIX_PATH "/opt/Qt/6.4.1/gcc_64")
-set(FULL_DIR_TO_CPP_SQL_CONNECTOR /home/sakunoakarinn/ProjectLibrarys/mysql-connector-c++-8.0.31-64)
+set(CMAKE_PREFIX_PATH "/home/sakuno/Qt/6.4.1/gcc_64")
+set(FULL_DIR_TO_CPP_SQL_CONNECTOR /home/sakuno/RequiredLibrarys/mysql-connector-c++-8.0.31-linux-glibc2.27-x86-64bit)
 
 find_package(Qt6 COMPONENTS
         Core
@@ -45,7 +45,12 @@ add_executable(
         VisualWindows/PermissionGetDialog.cpp
         VisualWindows/PermissionGetDialog.h
         res.qrc
-        VisualWindows/userObjects/PickupQuickTag.cpp VisualWindows/userObjects/PickupQuickTag.h SakunoFunctions.cpp SakunoFunctions.h VisualWindows/userObjects/CircleProgressBar.cpp VisualWindows/userObjects/CircleProgressBar.h)
+        VisualWindows/userObjects/PickupQuickTag.cpp
+        VisualWindows/userObjects/PickupQuickTag.h
+        SakunoFunctions.cpp SakunoFunctions.h
+        VisualWindows/userObjects/CircleProgressBar.cpp
+        VisualWindows/userObjects/CircleProgressBar.h
+        VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.cpp VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.h VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.ui)
 
 target_link_libraries(ExpressManagementSystem
         Qt::Core
