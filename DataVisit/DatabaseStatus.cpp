@@ -356,7 +356,7 @@ bool DatabaseStatus::checkPrepareAccount(const AccountInfo &accoInfo, ostream &e
 }
 
 orderGroup *DatabaseStatus::getCustomerOrders(const string &phoneNum, ostream &errorOs) {
-    orderGroup *res = selectOrder("senderPhoneNum = " + Sakuno::toVarchar(phoneNum), errorOs);
+    orderGroup *res = selectOrder("recipentPhoneNum = " + Sakuno::toVarchar(phoneNum) + " or senderPhoneNum = " + Sakuno::toVarchar(phoneNum), errorOs);
     if(res != nullptr){
         if(res->empty())
             errorOs << "暂无包裹入库";
