@@ -29,7 +29,7 @@ create table orderInfo(
     itemWeight float default 1.0,
     pickCode varchar(10),
     warehousingTime datetime default now(),
-    hasBeenTaken boolean default true,
+    hasBeenTaken boolean default false,
     primary key(trackNumber),
     index(pickCode)
 )engine=InnoDB, charset=utf8;

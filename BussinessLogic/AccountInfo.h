@@ -35,6 +35,6 @@ public:
     string password;
 };
 
-typedef vector<AccountInfo> accountGroup;
+typedef vector<AccountInfo> AccountGroup;
 
 #endif //EXPRESSMANAGEMENTSYSTEM_ACCOUNTINFO_H

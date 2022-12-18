@@ -30,9 +30,6 @@ bool DatabaseStatus::connect(const DatabaseInfo &dbi, ostream &errorOs) {
                                dbi.password);
     }catch(exception& e){
         errorOs << "连接失败！请检查数据库信息。";
-#if SAKUNO_DEBUG_MODE
-        qDebug() << dbi.hostName.c_str() << dbi.userName.c_str() << dbi.password.c_str();
-#endif
         Sakuno::close(dbCon);
         return false;
     }
@@ -60,10 +57,7 @@ bool DatabaseStatus::connect(const DatabaseInfo &dbi, ostream &errorOs) {
         if(!hasTargetTable[0] || !hasTargetTable[1])
             throw(2);
     }catch(int e){
-        errorOs << "错误！该数据库不符合要求！";
-#if SAKUNO_DEBUG_MODE
-        qDebug() << e;
-#endif
+        errorOs << "错误！该数据库不符合要求！\n错误代码：" << e;
         Sakuno::close(dbCon);
         return false;
     }
@@ -71,47 +65,36 @@ bool DatabaseStatus::connect(const DatabaseInfo &dbi, ostream &errorOs) {
     return true;
 }
 
-bool DatabaseStatus::insertOrder(const orderGroup &og, ostream &errorOs) {
+bool DatabaseStatus::insertOrder(const OrderGroup &og, ostream &errorOs) {
     auto it = og.begin();
+    stringstream prepareCommand;
     try {
         while (it != og.end()) {
+            dbSta = dbCon->createStatement();
 
-            dbPreSta = dbCon->prepareStatement("insert into OrderInfo ("
-                                                    "trackNumber, "
-                                                    "company, "
-                                                    "recipentName, "
-                                                    "recipentPhoneNum, "
-                                                    "recipentLocation, "
-                                                    "recipentPost, "
-                                                    "senderName, "
-                                                    "senderPhoneNum, "
-                                                    "senderLocation, "
-                                                    "senderPost, "
-                                                    "itemWeight, "
-                                                    "pickCode, "
-                                                    "hasBeenTaken"
-                                                    ") values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            prepareCommand << "insert into orderInfo values (";
+            prepareCommand << Sakuno::toVarchar(it->trackNumber) << ", ";
+            prepareCommand << Sakuno::toVarchar(it->company) << ", ";
+            prepareCommand << Sakuno::toVarchar(it->recipentName) << ", ";
+            prepareCommand << Sakuno::toVarchar(it->recipentPhoneNum) << ", ";
+            prepareCommand << Sakuno::toVarchar(it->recipentLocation) << ", ";
+            prepareCommand << it->recipentPost << ", ";
+            prepareCommand << Sakuno::toVarchar(it->senderName) << ", ";
+            prepareCommand << Sakuno::toVarchar(it->senderPhoneNum) << ", ";
+            prepareCommand << Sakuno::toVarchar(it->senderLocation) << ", ";
+            prepareCommand << it->senderPost << ", ";
+            prepareCommand << it->itemWeight << ", ";
+            prepareCommand << Sakuno::toVarchar(it->pickCode) << ", ";
+            prepareCommand << it->warehousingTime->sqlTime() << ", ";
+            prepareCommand << it->hasBeenTaken << ")";
 
-            dbPreSta->setString (1  , it->trackNumber);
-            dbPreSta->setString (2  , it->company);
-            dbPreSta->setString (3  , it->recipentName);
-            dbPreSta->setString (4  , it->recipentPhoneNum);
-            dbPreSta->setString (5  , it->recipentLocation);
-            dbPreSta->setInt    (6  , it->recipentPost);
-            dbPreSta->setString (7  , it->senderName);
-            dbPreSta->setString (8  , it->senderPhoneNum);
-            dbPreSta->setString (9  , it->senderLocation);
-            dbPreSta->setInt    (10 , it->senderPost);
-            dbPreSta->setDouble (11 , it->itemWeight);
-            dbPreSta->setString (12 , it->pickCode);
-            dbPreSta->setBoolean(13 , it->hasBeenTaken);
-
-            dbPreSta->executeUpdate();
+            dbSta->execute(prepareCommand.str());
 
             it ++;
         }
     }catch(exception& e) {
-        errorOs << "订单插入失败! 运单号重复!";
+        errorOs << prepareCommand.str() << endl;
+        errorOs << "订单插入失败! 运单号重复或输入值错误!";
         dbCon->reconnect();
         return false;
     }
@@ -119,7 +102,24 @@ bool DatabaseStatus::insertOrder(const orderGroup &og, ostream &errorOs) {
     return true;
 }
 
-orderGroup* DatabaseStatus::selectOrder(const string& condition, ostream &errorOs) {
+bool DatabaseStatus::deleteOrder(const string &condition, ostream &errorOs) {
+    if(condition.empty()){
+        errorOs << "不带条件的删除是不安全的！";
+        return false;
+    }
+    dbSta = dbCon->createStatement();
+    try{
+        dbSta->execute("delete from orderInfo where " + condition);
+    }catch(exception& e){
+        errorOs << "delete from orderInfo where " + condition << endl;
+        errorOs << "删除失败，请检查语法！";
+        return false;
+    }
+    dbCon->commit();
+    return true;
+}
+
+OrderGroup* DatabaseStatus::selectOrder(const string& condition, ostream &errorOs) {
     qDebug() << ("select * from orderInfo where " + condition).c_str();
     dbSta = dbCon->createStatement();
     try{
@@ -130,7 +130,7 @@ orderGroup* DatabaseStatus::selectOrder(const string& condition, ostream &errorO
         errorOs << "订单信息查找错误! 请查找语法!";
         return nullptr;
     }
-    auto res = new orderGroup;
+    auto res = new OrderGroup;
     while(dbRes->next()){
         res->push_back(OrderInfo(
                 dbRes->getString(1).asStdString(),
@@ -154,9 +154,10 @@ orderGroup* DatabaseStatus::selectOrder(const string& condition, ostream &errorO
 
 bool DatabaseStatus::updateOrder(const string& condition, const string& change, ostream &errorOs) {
     try{
-        dbPreSta = dbCon->prepareStatement("update OrderInfo set " + change + " where " + condition);
+        dbPreSta = dbCon->prepareStatement("update orderInfo set " + change + " where " + condition);
         dbPreSta->executeQuery();
     }catch(exception& e){
+        errorOs << "update orderInfo set " + change + " where " + condition;
         errorOs << "订单关系数据更新错误! 请检查条件与改变表达式!";
         dbCon->reconnect();
         return false;
@@ -165,7 +166,7 @@ bool DatabaseStatus::updateOrder(const string& condition, const string& change, 
     return true;
 }
 
-bool DatabaseStatus::insertAccount(const accountGroup &ag, ostream &errorOs) {
+bool DatabaseStatus::insertAccount(const AccountGroup &ag, ostream &errorOs) {
     auto it = ag.begin();
     try {
         while (it != ag.end()) {
@@ -190,8 +191,24 @@ bool DatabaseStatus::insertAccount(const accountGroup &ag, ostream &errorOs) {
     return true;
 }
 
-accountGroup *DatabaseStatus::selectAccount(const string& condition, ostream &errorOs) {
-    auto res = new accountGroup;
+bool DatabaseStatus::deleteAccount(const string &condition, ostream &errorOs) {
+    if(condition.empty()){
+        errorOs << "不带条件的删除是不安全的！";
+        return false;
+    }
+    dbSta = dbCon->createStatement();
+    try{
+        dbSta->execute("delete from account where " + condition);
+    }catch(exception& e){
+        errorOs << "delete from account where " + condition << endl;
+        errorOs << "删除失败，请检查语法！";
+        return false;
+    }
+    return true;
+}
+
+AccountGroup *DatabaseStatus::selectAccount(const string& condition, ostream &errorOs) {
+    auto res = new AccountGroup;
     dbSta = dbCon->createStatement();
     try{
         dbRes = condition.empty() ?
@@ -248,7 +265,7 @@ bool DatabaseStatus::registerUserAccount(const AccountInfo &accoInfo, ostream& e
         return false;
     }
 
-    accountGroup ag;
+    AccountGroup ag;
     ag.push_back(accoInfo);
     return insertAccount(ag, errorOs);
 }
@@ -321,13 +338,13 @@ bool DatabaseStatus::registerWaiterAccount(const AccountInfo &accoInfo, const st
         return false;
     }
 
-    accountGroup ag;
+    AccountGroup ag;
     ag.push_back(accoInfo);
     return insertAccount(ag, errorOs);
 }
 
 string DatabaseStatus::checkPermissionCode(const string& code, ostream &errorOs) {
-    accountGroup* ag = selectAccount("permissionCode = " + Sakuno::toVarchar(code) , errorOs);
+    AccountGroup* ag = selectAccount("permissionCode = " + Sakuno::toVarchar(code) , errorOs);
     return ag->empty() ? "" : (*ag)[0].userName;
 }
 
@@ -355,12 +372,76 @@ bool DatabaseStatus::checkPrepareAccount(const AccountInfo &accoInfo, ostream &e
     return true;
 }
 
-orderGroup *DatabaseStatus::getCustomerOrders(const string &phoneNum, ostream &errorOs) {
-    orderGroup *res = selectOrder("recipentPhoneNum = " + Sakuno::toVarchar(phoneNum) + " or senderPhoneNum = " + Sakuno::toVarchar(phoneNum), errorOs);
+OrderGroup *DatabaseStatus::getCustomerOrders(const string &phoneNum, ostream &errorOs) {
+    OrderGroup *res = selectOrder("recipentPhoneNum = " + Sakuno::toVarchar(phoneNum) + " or senderPhoneNum = " + Sakuno::toVarchar(phoneNum), errorOs);
     if(res != nullptr){
         if(res->empty())
             errorOs << "暂无包裹入库";
     }else
-        res = new orderGroup;
+        res = new OrderGroup;
     return res;
+}
+
+OrderGroup *DatabaseStatus::getAllOrders(ostream &errorOs) {
+    return selectOrder("true", errorOs);
+}
+
+OrderGroup *DatabaseStatus::getDayOrders(Sakuno::Time* day, ostream &errorOs) {
+    stringstream prepareCondition;
+    Sakuno::Time fromTime = *day;
+    Sakuno::Time toTime = *day;
+    fromTime.hour = fromTime.min = fromTime.second = 0;
+    toTime.hour = 23;
+    toTime.min = 59;
+    toTime.second = 59;
+
+    prepareCondition << "warehousingTime >= " << fromTime.sqlTime();
+    prepareCondition << " and ";
+    prepareCondition << "warehousingTime <= " << toTime.sqlTime();
+
+    return selectOrder(prepareCondition.str()  , errorOs);
+}
+
+bool DatabaseStatus::setHasTaken(const OrderInfo &order, bool ifTaken, ostream &errorOs) {
+    return updateOrder("trackNumber = " + order.trackNumber, "hasBeenTaken = " + to_string((int)ifTaken), errorOs);
+}
+
+OrderInfo *DatabaseStatus::getOrder(const string &trackNum, ostream &errorOs) {
+    OrderGroup* resGroup = selectOrder("trackNumber = " + Sakuno::toVarchar(trackNum), errorOs);
+    if(!resGroup)
+        return nullptr;
+    if(resGroup->empty()){
+        errorOs << "制定快递不存在";
+        return nullptr;
+    }
+    return &(*resGroup)[0];
+}
+
+bool DatabaseStatus::updateSingleOrder(const string &trackNum, const OrderInfo &newOrder, ostream &errorOs) {
+    if(!getOrder(trackNum, errorOs))
+        return false;
+    stringstream changeInfo;
+    changeInfo << "trackNumber = " + Sakuno::toVarchar(newOrder.trackNumber) + ", ";
+    changeInfo << "company = " + Sakuno::toVarchar(newOrder.company) + ", ";
+    changeInfo << "recipentName = " + Sakuno::toVarchar(newOrder.recipentName) + ", ";
+    changeInfo << "recipentPhoneNum = " + Sakuno::toVarchar(newOrder.recipentPhoneNum) + ", ";
+    changeInfo << "recipentLocation = " + Sakuno::toVarchar(newOrder.recipentLocation) + ", ";
+    changeInfo << "recipentPost = " + Sakuno::toVarchar(to_string(newOrder.recipentPost)) + ", ";
+    changeInfo << "senderName = " + Sakuno::toVarchar(newOrder.senderName) + ", ";
+    changeInfo << "senderPhoneNum = " + Sakuno::toVarchar(newOrder.senderPhoneNum) + ", ";
+    changeInfo << "senderLocation = " + Sakuno::toVarchar(newOrder.senderLocation) + ", ";
+    changeInfo << "senderPost = " + Sakuno::toVarchar(to_string(newOrder.senderPost)) + ", ";
+    changeInfo << "itemWeight = " + to_string(newOrder.itemWeight) + ", ";
+    changeInfo << "pickCode = " + Sakuno::toVarchar(newOrder.pickCode) + ", ";
+    changeInfo << "warehousingTime = " + newOrder.warehousingTime->sqlTime() + ", ";
+    changeInfo << "hasBeenTaken = " + to_string((int)newOrder.hasBeenTaken);
+    if(!updateOrder("trackNumber = " + Sakuno::toVarchar(trackNum), changeInfo.str(), errorOs))
+        return false;
+    return true;
+}
+
+bool DatabaseStatus::deleteSingleOrder(const string &trackNum, ostream &errorOs) {
+    if(!getOrder(trackNum, errorOs))
+        return false;
+    return deleteOrder("trackNumber = " + trackNum, errorOs);
 }

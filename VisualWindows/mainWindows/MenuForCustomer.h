@@ -22,7 +22,7 @@ public:
 
 private:
     void addShadow(QWidget *widget);
-    orderGroup* customerPackage{};
+    OrderGroup* customerPackage{};
 
     Ui::MenuForCustomer *ui;
     void addQuickTag(QVBoxLayout *quickTagsGroup, PickupQuickTag *quickTag);

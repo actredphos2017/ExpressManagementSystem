@@ -35,13 +35,16 @@ public:
     bool connect(const DatabaseInfo& dbi, ostream& errorOs = cout);
     bool available ();
 
-    bool insertAccount (const accountGroup& ag, ostream& errorOs = cout);
-    accountGroup* selectAccount (const string& condition, ostream &errorOs = cout);
+    bool insertAccount (const AccountGroup& ag, ostream& errorOs = cout);
+    bool deleteAccount (const string& condition, ostream &errorOs = cout);
     bool updateAccount (const string& condition, const string& change, ostream &errorOs = cout);
+    AccountGroup* selectAccount (const string& condition, ostream &errorOs = cout);
 
-    bool insertOrder (const orderGroup& og, ostream &errorOs = cout);
-    orderGroup* selectOrder (const string& condition, ostream &errorOs = cout);
+    bool insertOrder (const OrderGroup& og, ostream &errorOs = cout);
+    bool deleteOrder (const string& condition, ostream &errorOs = cout);
     bool updateOrder (const string& condition, const string& change, ostream &errorOs = cout);
+    OrderGroup* selectOrder (const string& condition, ostream &errorOs = cout);
+
 
     string getPermissionCode(const AccountInfo& waiterInfo, ostream &errorOs = cout);
     string checkPermissionCode(const string& code, ostream &errorOs = cout);
@@ -54,7 +57,14 @@ public:
     bool registerUserAccount(const AccountInfo& accoInfo, ostream& errorOs = cout);
     bool loginAccount(const string& userNameOrPhoneNum, const string& password, ostream& errorOs = cout);
 
-    orderGroup* getCustomerOrders (const string& phoneNum, ostream& errorOs = cout);
+    OrderGroup* getCustomerOrders (const string& phoneNum, ostream& errorOs = cout);
+    OrderGroup* getAllOrders (ostream& errorOs = cout);
+    OrderGroup* getDayOrders(Sakuno::Time *day, ostream &errorOs = cout);
+    OrderInfo* getOrder(const string& trackNum, ostream& errorOs = cout);
+    bool deleteSingleOrder(const string& trackNum, ostream& errorOs = cout);
+    bool updateSingleOrder(const string& trackNum, const OrderInfo& newOrder, ostream& errorOs = cout);
+    bool setHasTaken(const OrderInfo& order, bool ifTaken, ostream& errorOs = cout);
+
 };
 
 #endif //EXPRESSMANAGEMENTSYSTEM_DATABASESTATUS_H

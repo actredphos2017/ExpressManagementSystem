@@ -50,8 +50,6 @@ int Sakuno::toInt(const string &old) {
     return res;
 }
 
-//2022-12-06 16:30:03
-
 Sakuno::Time::Time(const string& sqlOutputDateTime) {
     year = Sakuno::toInt(sqlOutputDateTime.substr(0, 4));
     month = Sakuno::toInt(sqlOutputDateTime.substr(5, 2));
@@ -59,4 +57,24 @@ Sakuno::Time::Time(const string& sqlOutputDateTime) {
     hour = Sakuno::toInt(sqlOutputDateTime.substr(11, 2));
     min = Sakuno::toInt(sqlOutputDateTime.substr(14, 2));
     second = Sakuno::toInt(sqlOutputDateTime.substr(17, 2));
+}
+
+string Sakuno::Time::s_date() {
+    return to_string(month) + "月" + to_string(mDay) + "日";
+}
+
+string Sakuno::Time::s_time() {
+    return to_string(hour) + ':' + to_string(min) + ':' + to_string(second);
+}
+
+string Sakuno::Time::baseTime() {
+    stringstream resSs;
+    resSs << year << '-' << month << '-' << mDay << ' ' << hour << ':' << min << ':' << second;
+    return resSs.str();
+}
+
+string Sakuno::Time::sqlTime() {
+    stringstream resSs;
+    resSs << '\'' << year << '-' << month << '-' << mDay << ' ' << hour << ':' << min << ':' << second << '\'';
+    return resSs.str();
 }

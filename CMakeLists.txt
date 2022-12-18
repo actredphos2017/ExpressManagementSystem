@@ -50,7 +50,7 @@ add_executable(
         SakunoFunctions.cpp SakunoFunctions.h
         VisualWindows/userObjects/CircleProgressBar.cpp
         VisualWindows/userObjects/CircleProgressBar.h
-        VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.cpp VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.h VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.ui)
+        VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.cpp VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.h VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.ui VisualWindows/mainWindows/WaiterExtraWindows/ExpressEdit.cpp VisualWindows/mainWindows/WaiterExtraWindows/ExpressEdit.h)
 
 target_link_libraries(ExpressManagementSystem
         Qt::Core

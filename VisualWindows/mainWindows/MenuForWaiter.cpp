@@ -50,9 +50,6 @@ void MenuForWaiter::initItems() {
             "QPushButton:hover{"
             "   background-color: white;"
             "}"
-            "QPushButton:pressed{"
-            "   border-style: inset;"
-            "}"
     );
     dayRes->addWidget(dayResAndPick);
     dayRes->addWidget(dayResBtn);
@@ -72,9 +69,6 @@ void MenuForWaiter::initItems() {
             ""
             "QPushButton:hover{"
             "   background-color: white;"
-            "}"
-            "QPushButton:pressed{"
-            "   border-style: inset;"
             "}"
     );
     allRes->addWidget(allResAndPick);
@@ -99,4 +93,8 @@ void MenuForWaiter::initConnects() {
             SIGNAL(clicked()),
             expressWindow,
             SLOT(showAllExpress()));
+    connect(dayResBtn,
+            SIGNAL(clicked()),
+            expressWindow,
+            SLOT(showDayExpress()));
 }

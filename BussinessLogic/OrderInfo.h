@@ -31,7 +31,6 @@ public:
                string pickCode,
                const string& warehousingTime,
                bool hasBeenTaken);
-    OrderInfo& taken();
 public:
     string trackNumber;
     string company;
@@ -49,6 +48,6 @@ public:
     bool hasBeenTaken{};
 };
 
-typedef vector<OrderInfo> orderGroup;
+typedef vector<OrderInfo> OrderGroup;
 
 #endif //EXPRESSMANAGEMENTSYSTEM_ORDERINFO_H

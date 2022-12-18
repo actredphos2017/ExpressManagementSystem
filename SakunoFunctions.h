@@ -14,6 +14,7 @@ using namespace std;
 namespace Sakuno {
 
     struct Time{
+        Time() = default;
         explicit Time(const string &sqlOutputDateTime);
 
         int year{};
@@ -22,6 +23,11 @@ namespace Sakuno {
         int hour{};
         int min{};
         int second{};
+
+        string baseTime();
+        string sqlTime();
+        string s_date();
+        string s_time();
     };
 
     int toInt(const string& old);

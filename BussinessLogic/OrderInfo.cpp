@@ -34,11 +34,3 @@ OrderInfo::OrderInfo(string trackNumber,
     pickCode(std::move(pickCode)),
     warehousingTime(new Sakuno::Time(warehousingTime)),
     hasBeenTaken(hasBeenTaken){}
-
-OrderInfo& OrderInfo::taken() {
-    bool old = hasBeenTaken;
-    hasBeenTaken = true;
-    return *this;
-}
-
-
