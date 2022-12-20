@@ -55,10 +55,12 @@ private:
 
     QCheckBox* ifTakenBox;
     QPushButton* yesBtn;
-    QPushButton* cancelBtn;
 
     void initItem();
     void initConnect();
+
+protected:
+    void closeEvent(QCloseEvent* event) override;
 
 public slots:
     void editOrder(OrderInfo* order);
@@ -67,6 +69,7 @@ public slots:
 
 signals:
     void doneEdit(OrderInfo*);
+    void closeWindow();
 };
 
 

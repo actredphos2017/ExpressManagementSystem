@@ -8,6 +8,7 @@
 #include "../userObjects/CircleProgressBar.h"
 #include "WaiterExtraWindows/WaiterExpressEditWindow.h"
 #include "WaiterExtraWindows/AccountEditWindow.h"
+#include "Settings.h"
 
 namespace Ui {
 class MenuForWaiter;
@@ -20,6 +21,8 @@ class MenuForWaiter : public QMainWindow
 public:
     explicit MenuForWaiter(QWidget *parent = nullptr);
     ~MenuForWaiter() override;
+
+    Settings* settingWin;
 
 private:
     Ui::MenuForWaiter *ui;

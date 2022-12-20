@@ -12,6 +12,8 @@ ExpressEdit::ExpressEdit(QWidget *parent) :
     QDialog(parent) {
     initItem();
     initConnect();
+    setWindowModality(Qt::ApplicationModal);
+    setWindowTitle("快件设置");
 }
 
 ExpressEdit::~ExpressEdit() {
@@ -122,9 +124,6 @@ void ExpressEdit::initItem() {
 
             yesBtn = new QPushButton("确定");
             btnLayout->addWidget(yesBtn);
-
-            cancelBtn = new QPushButton("取消");
-            btnLayout->addWidget(cancelBtn);
         }
         mainLayout->addLayout(btnLayout);
     }
@@ -171,7 +170,6 @@ void ExpressEdit::addOrder() {
 
 void ExpressEdit::initConnect() {
     connect(yesBtn, SIGNAL(clicked()), this, SLOT(pushOkButton()));
-    connect(cancelBtn, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 void ExpressEdit::pushOkButton() {
@@ -196,6 +194,11 @@ void ExpressEdit::pushOkButton() {
     resOrder->warehousingTime->min = warehousingTimeEdit->dateTime().time().minute();
     resOrder->warehousingTime->second = warehousingTimeEdit->dateTime().time().second();
     resOrder->hasBeenTaken = ifTakenBox->isChecked();
-    close();
     emit doneEdit(resOrder);
+    close();
+}
+
+void ExpressEdit::closeEvent(QCloseEvent *event) {
+    emit closeWindow();
+    QDialog::closeEvent(event);
 }

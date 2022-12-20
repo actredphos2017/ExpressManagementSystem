@@ -94,6 +94,7 @@ void MenuForWaiter::initItems() {
     setShadow(ui->settingBtn);
     expressWindow = new WaiterExpressEditWindow(this);
     accountWindow = new AccountEditWindow(this);
+    settingWin = new Settings(this);
 }
 
 void MenuForWaiter::initConnects() {
@@ -117,6 +118,14 @@ void MenuForWaiter::initConnects() {
             SIGNAL(clicked()),
             accountWindow,
             SLOT(toManageAccount()));
+    connect(ui->settingBtn,
+            SIGNAL(clicked()),
+            settingWin,
+            SLOT(toSetting()));
+    connect(settingWin,
+            SIGNAL(toLeave()),
+            this,
+            SLOT(close()));
 }
 
 void MenuForWaiter::updateProgresBar() {

@@ -35,6 +35,9 @@ private:
     void initItems();
     void initConnects();
 
+protected:
+    void closeEvent(QCloseEvent* event) override;
+
 public slots:
     void showAllExpress();
     void showDayExpress();
@@ -44,9 +47,11 @@ public slots:
     void prepareEdit();
     void pushEdit(OrderInfo *order);
     void removeItem();
+    void cancelEdit();
 
 signals:
     void toEdit(OrderInfo *order);
+    void comeBack();
 };
 
 

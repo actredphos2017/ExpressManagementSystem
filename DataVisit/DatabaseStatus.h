@@ -45,6 +45,8 @@ public:
     bool updateOrder (const string& condition, const string& change, ostream &errorOs = cout);
     OrderGroup* selectOrder (const string& condition, ostream &errorOs = cout);
 
+//Generic
+    bool resetPassword (const AccountInfo& account, const string& newPassword, ostream &errorOs = cout);
 
 //About Accounts
 

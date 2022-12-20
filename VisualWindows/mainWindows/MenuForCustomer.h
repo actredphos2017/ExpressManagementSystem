@@ -3,6 +3,7 @@
 
 #include "../../GlobalAttribute.h"
 #include "../userObjects/PickupQuickTag.h"
+#include "Settings.h"
 
 #include <QMainWindow>
 #include <QVBoxLayout>
@@ -19,6 +20,8 @@ class MenuForCustomer : public QMainWindow
 public:
     explicit MenuForCustomer(QWidget *parent = nullptr);
     ~MenuForCustomer();
+
+    Settings* settingWin{};
 
 private:
     void addShadow(QWidget *widget);

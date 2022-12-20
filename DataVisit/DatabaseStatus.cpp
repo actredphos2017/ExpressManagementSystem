@@ -601,3 +601,23 @@ bool DatabaseStatus::deleteSingleAccount(const AccountInfo &account, ostream &er
 
     return deleteAccount(prepareCondition.str(), errorOs);
 }
+
+bool DatabaseStatus::resetPassword(const AccountInfo &account, const string &newPassword, ostream &errorOs) {
+    stringstream prepareCondition;
+    if(!account.userName.empty())
+        prepareCondition << "userName = " << Sakuno::toVarchar(account.userName);
+    else
+        prepareCondition << " true ";
+
+    prepareCondition << " and ";
+
+    if(!account.phoneNumber.empty())
+        prepareCondition << "phoneNumber = " << Sakuno::toVarchar(account.phoneNumber);
+    else
+        prepareCondition << "true";
+
+    stringstream prepareChange;
+
+    prepareChange << "password = "<< Sakuno::toVarchar(newPassword);
+    return updateAccount(prepareCondition.str(), prepareChange.str(), errorOs);
+}

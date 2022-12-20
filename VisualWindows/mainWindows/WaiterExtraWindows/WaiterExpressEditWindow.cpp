@@ -14,6 +14,7 @@ WaiterExpressEditWindow::WaiterExpressEditWindow(QWidget *parent) :
     ui->setupUi(this);
     setFixedSize(1500, 927);
     setWindowModality(Qt::ApplicationModal);
+    setWindowTitle("编辑快件");
     initItems();
     initConnects();
 }
@@ -23,7 +24,7 @@ WaiterExpressEditWindow::~WaiterExpressEditWindow() {
 }
 
 void WaiterExpressEditWindow::initItems() {
-    editWin = new ExpressEdit;
+    editWin = new ExpressEdit(this);
 }
 
 void WaiterExpressEditWindow::showAllExpress() {
@@ -44,8 +45,8 @@ void WaiterExpressEditWindow::initConnects() {
     connect(this, SIGNAL(toEdit(OrderInfo *)), editWin, SLOT(editOrder(OrderInfo *)));
     connect(editWin, SIGNAL(doneEdit(OrderInfo *)), this, SLOT(pushEdit(OrderInfo *)));
     connect(ui->deleteBtn, SIGNAL(clicked()), this, SLOT(removeItem()));
-    connect(ui->comeBackBtn, SIGNAL(clicked()), this, SLOT(close()));
-    connect(ui->comeBackBtn, SIGNAL(clicked()), parent(), SLOT(updateProgresBar()));
+    connect(this, SIGNAL(comeBack()), parent(), SLOT(updateProgresBar()));
+    connect(editWin, SIGNAL(closeWindow()), this, SLOT(cancelEdit()));
 }
 
 void WaiterExpressEditWindow::fleshTable() {
@@ -106,8 +107,10 @@ void WaiterExpressEditWindow::setHasTaken(bool ifTaken) {
 }
 
 void WaiterExpressEditWindow::prepareEdit() {
+    if(ui->expressTable->currentRow() < 0)
+        return;
     stringstream errorSs;
-    OrderInfo* prepareOrder = Sakuno::databaseEntrance->getOrder(ui->expressTable->item(ui->expressTable->currentRow(), 0)->text().toStdString(), errorSs);
+    auto prepareOrder = Sakuno::databaseEntrance->getOrder(ui->expressTable->item(ui->expressTable->currentRow(), 0)->text().toStdString(), errorSs);
     if(!prepareOrder){
         QMessageBox::information(this, tr("提示"), errorSs.str().c_str());
         return;
@@ -145,4 +148,14 @@ void WaiterExpressEditWindow::removeItem() {
         return;
     }
     fleshTable();
+}
+
+void WaiterExpressEditWindow::cancelEdit() {
+    editingOrderTrackNum.clear();
+    fleshTable();
+}
+
+void WaiterExpressEditWindow::closeEvent(QCloseEvent *event) {
+    emit comeBack();
+    QDialog::closeEvent(event);
 }

@@ -12,6 +12,7 @@ MenuForCustomer::MenuForCustomer(QWidget *parent) :
 {
     ui->setupUi(this);
     initItems();
+    initConnect();
 }
 
 MenuForCustomer::~MenuForCustomer()
@@ -35,6 +36,7 @@ void MenuForCustomer::initQuickBox(){
 }
 
 void MenuForCustomer::initItems(){
+    settingWin = new Settings(this);
     addShadow(ui->pickupMessage);
     addShadow(ui->btnGroupBox);
     addShadow(ui->greetGroupBox);
@@ -42,7 +44,10 @@ void MenuForCustomer::initItems(){
 }
 
 void MenuForCustomer::initConnect(){
-
+    connect(settingWin,
+            SIGNAL(toLeave()),
+            this,
+            SLOT(close()));
 };
 
 void MenuForCustomer::addShadow(QWidget* widget){
