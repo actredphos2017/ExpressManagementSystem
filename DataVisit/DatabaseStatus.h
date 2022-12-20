@@ -24,12 +24,6 @@ using namespace std;
 using namespace sql;
 
 class DatabaseStatus {
-private:
-    Driver              *dbDri{};
-    Connection          *dbCon{};
-    Statement           *dbSta{};
-    PreparedStatement   *dbPreSta{};
-    ResultSet           *dbRes{};
 public:
     DatabaseStatus () = default;
     bool connect(const DatabaseInfo& dbi, ostream& errorOs = cout);
@@ -46,6 +40,7 @@ public:
     OrderGroup* selectOrder (const string& condition, ostream &errorOs = cout);
 
 //Generic
+
     bool resetPassword (const AccountInfo& account, const string& newPassword, ostream &errorOs = cout);
 
 //About Accounts
@@ -65,7 +60,8 @@ public:
     AccountGroup* getAllAccounts(ostream& errorOs = cout);
     AccountInfo* getAccount(const string& userName, const string& phoneNum, ostream& errorOs = cout);
     bool updateSingleAccount(const AccountInfo& oldInfo, const AccountInfo& newInfo, ostream& errorOs = cout);
-//About Orders
+
+    //About Orders
 
     OrderGroup* getCustomerOrders (const string& phoneNum, ostream& errorOs = cout);
     OrderGroup* getAllOrders (ostream& errorOs = cout);
@@ -76,6 +72,13 @@ public:
     bool updateSingleOrder(const string& trackNum, const OrderInfo& newOrder, ostream& errorOs = cout);
     bool setHasTaken(const OrderInfo& order, bool ifTaken, ostream& errorOs = cout);
     vector<int> warehousing_takenMap(Sakuno::Time *day, ostream &errorOs = cout);
+
+private:
+    Driver              *dbDri{};
+    Connection          *dbCon{};
+    Statement           *dbSta{};
+    PreparedStatement   *dbPreSta{};
+    ResultSet           *dbRes{};
 };
 
 #endif //EXPRESSMANAGEMENTSYSTEM_DATABASESTATUS_H

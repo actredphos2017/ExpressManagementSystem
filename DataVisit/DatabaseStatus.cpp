@@ -6,16 +6,6 @@
 #include "DatabaseStatus.h"
 #include <sstream>
 
-namespace Sakuno{
-    template<class T>
-    void close(T* item){
-        if(item == nullptr)
-            return;
-        item->close();
-        delete item;
-    }
-}
-
 bool DatabaseStatus::available() {
     if(dbCon == nullptr)
         return false;
@@ -30,7 +20,7 @@ bool DatabaseStatus::connect(const DatabaseInfo &dbi, ostream &errorOs) {
                                dbi.password);
     }catch(exception& e){
         errorOs << "连接失败！请检查数据库信息。";
-        Sakuno::close(dbCon);
+        dbCon->close();
         return false;
     }
     try{
@@ -58,7 +48,7 @@ bool DatabaseStatus::connect(const DatabaseInfo &dbi, ostream &errorOs) {
             throw(2);
     }catch(int e){
         errorOs << "错误！该数据库不符合要求！\n错误代码：" << e;
-        Sakuno::close(dbCon);
+        dbCon->close();
         return false;
     }
     dbSta = dbCon->createStatement();
