@@ -41,3 +41,29 @@ void AccountInfo::setWaiterAccount(const string &un,
 bool AccountInfo::operator==(const AccountInfo &account) {
     return (userName == account.userName && phoneNumber == account.phoneNumber);
 }
+
+AccountGroup *selectAccounts(const AccountGroup& oldAccount, bool ifSearch, const string& str){
+    if(!ifSearch)
+        return new AccountGroup(oldAccount);
+    auto res = new AccountGroup;
+    bool conform;
+    for(const auto& it : oldAccount){
+        conform =
+                it.phoneNumber.find(str) != string::npos ||
+                it.userName.find(str) != string::npos;
+        if(conform)
+            res->push_back(AccountInfo(it));
+    }
+    return res;
+}
+
+AccountGroup *typeAccounts(const AccountGroup& oldAccount, bool ifSearch, AccountType type){
+    if(!ifSearch)
+        return new AccountGroup(oldAccount);
+    auto res = new AccountGroup;
+    bool conform;
+    for(const auto& it : oldAccount)
+        if(it.accountType == type)
+            res->push_back(AccountInfo(it));
+    return res;
+}

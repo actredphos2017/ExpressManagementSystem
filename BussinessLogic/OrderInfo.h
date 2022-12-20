@@ -50,4 +50,8 @@ public:
 
 typedef vector<OrderInfo> OrderGroup;
 
+OrderGroup *selectOrder(const OrderGroup &oldOrders, bool search = false, const string& str = "");
+OrderGroup *typeOrder(const OrderGroup &oldOrders, bool ifSelect = false, bool hasBeenTaken = false);
+
+
 #endif //EXPRESSMANAGEMENTSYSTEM_ORDERINFO_H

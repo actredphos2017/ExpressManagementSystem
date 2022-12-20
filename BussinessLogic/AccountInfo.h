@@ -38,4 +38,7 @@ public:
 
 typedef vector<AccountInfo> AccountGroup;
 
+AccountGroup *selectAccounts(const AccountGroup& oldAccount, bool ifSearch = false, const string& str = "");
+AccountGroup *typeAccounts(const AccountGroup& oldAccount, bool ifSearch = false, AccountType type = Customer);
+
 #endif //EXPRESSMANAGEMENTSYSTEM_ACCOUNTINFO_H
