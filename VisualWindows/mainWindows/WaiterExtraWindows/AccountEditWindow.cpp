@@ -26,8 +26,13 @@ void AccountEditWindow::toManageAccount() {
 
 void AccountEditWindow::fleshData() {
     stringstream errorSs;
-    viewAccount = Sakuno::databaseEntrance->getAllAccounts(errorSs);
-    if(viewAccount->empty()){
+    viewAccount = typeAccounts(*selectAccounts(
+            *Sakuno::databaseEntrance->getAllAccounts(errorSs),
+            !ui->searchLine->text().isEmpty(),
+            ui->searchLine->text().toStdString()),
+                   !(ui->typeBox->currentText() == "全部"),
+                   ui->typeBox->currentText() == "管理员" ? Waiter : Customer);
+    if(viewAccount->empty() && !errorSs.str().empty()){
         QMessageBox::information(this, "提示", errorSs.str().c_str());
         return;
     }
@@ -79,6 +84,10 @@ void AccountEditWindow::initConnect() {
             SIGNAL(closeWindow()),
             this,
             SLOT(cancelEdit()));
+    connect(ui->searchBtn,
+            SIGNAL(clicked()),
+            this,
+            SLOT(fleshData()));
 }
 
 void AccountEditWindow::prepareEditAccount() {

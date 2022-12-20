@@ -26,7 +26,7 @@
       <item>
        <widget class="QLineEdit" name="searchLine">
         <property name="placeholderText">
-         <string>快递单号</string>
+         <string>搜索任意内容</string>
         </property>
        </widget>
       </item>

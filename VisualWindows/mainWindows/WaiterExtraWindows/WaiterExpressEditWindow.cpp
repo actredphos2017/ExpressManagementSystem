@@ -24,6 +24,9 @@ WaiterExpressEditWindow::~WaiterExpressEditWindow() {
 }
 
 void WaiterExpressEditWindow::initItems() {
+    QStringList typeList;
+    typeList << "全部" << "已取" << "未取";
+    ui->typeBox->addItems(typeList);
     editWin = new ExpressEdit(this);
 }
 
@@ -47,6 +50,7 @@ void WaiterExpressEditWindow::initConnects() {
     connect(ui->deleteBtn, SIGNAL(clicked()), this, SLOT(removeItem()));
     connect(this, SIGNAL(comeBack()), parent(), SLOT(updateProgresBar()));
     connect(editWin, SIGNAL(closeWindow()), this, SLOT(cancelEdit()));
+    connect(ui->searchBtn, SIGNAL(clicked()), this, SLOT(fleshTable()));
 }
 
 void WaiterExpressEditWindow::fleshTable() {
@@ -59,12 +63,13 @@ void WaiterExpressEditWindow::fleshTable() {
         thisDate->mDay = QDate::currentDate().day();
         viewOrders = Sakuno::databaseEntrance->getDayOrders(thisDate);
     }
-    if(viewOrders->empty()){
-        QMessageBox::information(this, "提示", "暂无快件");
-        close();
-        delete viewOrders;
-        return;
-    }
+
+    viewOrders = selectOrder(*typeOrder(
+            *viewOrders,
+            !(ui->typeBox->currentText() == "全部"),
+            ui->typeBox->currentText() == "已取"),
+                    !ui->searchLine->text().isEmpty(),
+                    ui->searchLine->text().toStdString());
     QStringList hList;
     hList << "订单号" << "取件码" << "快递公司" << "接收者姓名" << "接收者手机号" << "接收者地址" << "接收者邮编"
           << "发送者姓名" << "发送者手机号" << "发送者地址" << "发送者邮编" << "快件重量" << "入库时间" << "是否取出";

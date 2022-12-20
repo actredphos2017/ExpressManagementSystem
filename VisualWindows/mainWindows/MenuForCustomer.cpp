@@ -25,7 +25,9 @@ void MenuForCustomer::initQuickBox(){
     auto tempLayout = new QVBoxLayout;
     PickupQuickTag* Test;
     stringstream errorSs;
-    customerPackage = Sakuno::databaseEntrance->getCustomerOrders(Sakuno::onlineAccount->phoneNumber, errorSs);
+    customerPackage = typeOrder(*Sakuno::databaseEntrance->getCustomerOrders(Sakuno::onlineAccount->phoneNumber, errorSs),
+                                true,
+                                false);
     if(customerPackage->empty())
         QMessageBox::information(this, tr("提示"), tr(errorSs.str().c_str()));
     for(const auto& it : *customerPackage)
@@ -41,7 +43,6 @@ void MenuForCustomer::initItems(){
     addShadow(ui->pickupMessage);
     addShadow(ui->btnGroupBox);
     addShadow(ui->greetGroupBox);
-    addShadow(ui->infoGroupBox);
 }
 
 void MenuForCustomer::initConnect(){

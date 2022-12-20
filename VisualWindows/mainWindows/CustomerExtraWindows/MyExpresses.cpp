@@ -30,12 +30,15 @@ void MyExpresses::initItem() {
 void MyExpresses::fleshData() {
     stringstream errorSs;
     viewOrders =
-            Sakuno::databaseEntrance->getCustomerOrders(
+            selectOrder(*typeOrder(*Sakuno::databaseEntrance->getCustomerOrders(
                     Sakuno::onlineAccount->phoneNumber,
                     errorSs,
-                    false,
                     !selectAllExpress,
-                    Sakuno::Time(QDateTime::currentDateTime()));
+                    Sakuno::Time(QDateTime::currentDateTime())),
+                      ui->typeBox->currentText() != "全部",
+                      ui->typeBox->currentText() == "已取"),
+                        !ui->searchLine->text().isEmpty(),
+                        ui->searchLine->text().toStdString());
     if(!viewOrders){
         QMessageBox::information(this, "提示", errorSs.str().c_str());
         return;
@@ -77,7 +80,7 @@ void MyExpresses::fleshData() {
 }
 
 void MyExpresses::initConnect() {
-
+    connect(ui->searchBtn, SIGNAL(clicked()), this, SLOT(fleshData()));
 }
 
 void MyExpresses::toSeeAllPackages() {
