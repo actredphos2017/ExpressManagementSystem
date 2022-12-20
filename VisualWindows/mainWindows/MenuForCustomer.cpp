@@ -12,6 +12,7 @@ MenuForCustomer::MenuForCustomer(QWidget *parent) :
 {
     ui->setupUi(this);
     settingWin = new Settings(this);
+    setWindowTitle("我的快件");
     initItems();
     initConnect();
 }
