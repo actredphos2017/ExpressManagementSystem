@@ -3,6 +3,5 @@
         <file>res/titlePicture.jpeg</file>
         <file>res/registerBackground.jpeg</file>
         <file>res/expressBox.jpeg</file>
-        <file>res/settingLogo.png</file>
     </qresource>
 </RCC>
