@@ -46,16 +46,23 @@ public:
     OrderGroup* selectOrder (const string& condition, ostream &errorOs = cout);
 
 
+//About Accounts
+
     string getPermissionCode(const AccountInfo& waiterInfo, ostream &errorOs = cout);
     string checkPermissionCode(const string& code, ostream &errorOs = cout);
 
-    bool checkPrepareAccount(const AccountInfo &accoInfo, ostream &errorOs = cout);
+    bool checkPrepareAccount(const AccountInfo &accoInfo, ostream &errorOs = cout, AccountInfo* oldAccount = nullptr);
     bool registerWaiterAccount(const AccountInfo& accoInfo, const string& permissionCode, ostream& errorOs = cout);
 
     bool existSameUserName(const string& userName);
     bool existSamePhoneNum(const string& phoneNum);
     bool registerUserAccount(const AccountInfo& accoInfo, ostream& errorOs = cout);
     bool loginAccount(const string& userNameOrPhoneNum, const string& password, ostream& errorOs = cout);
+
+    AccountGroup* getAllAccounts(ostream& errorOs = cout);
+    AccountInfo* getAccount(const string& userName, const string& phoneNum, ostream& errorOs = cout);
+    bool updateSingleAccount(const AccountInfo& oldInfo, const AccountInfo& newInfo, ostream& errorOs = cout);
+//About Orders
 
     OrderGroup* getCustomerOrders (const string& phoneNum, ostream& errorOs = cout);
     OrderGroup* getAllOrders (ostream& errorOs = cout);

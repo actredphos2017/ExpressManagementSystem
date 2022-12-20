@@ -230,6 +230,8 @@ AccountGroup *DatabaseStatus::selectAccount(const string& condition, ostream &er
                                         dbRes->getString(4).asStdString());
         res->push_back(accoInfo);
     }
+    if(res->empty())
+        errorOs << "暂无用户";
     return res;
 }
 
@@ -238,6 +240,7 @@ bool DatabaseStatus::updateAccount(const string& condition, const string& change
         dbPreSta = dbCon->prepareStatement("update account set " + change + " where " + condition);
         dbPreSta->executeQuery();
     }catch(exception& e){
+        errorOs << "update account set " + change + " where " + condition << '\n';
         errorOs << "用户关系数据更新错误! 请检查条件与改变表达式!";
         dbCon->reconnect();
         return false;
@@ -348,15 +351,22 @@ string DatabaseStatus::checkPermissionCode(const string& code, ostream &errorOs)
     return ag->empty() ? "" : (*ag)[0].userName;
 }
 
-bool DatabaseStatus::checkPrepareAccount(const AccountInfo &accoInfo, ostream &errorOs) {
+bool DatabaseStatus::checkPrepareAccount(const AccountInfo &accoInfo, ostream &errorOs, AccountInfo* oldAccount) {
     if (!accoInfo.userName.empty()) {
         if (!Sakuno::isLetter(accoInfo.userName[0])) {
             errorOs << "用户名不合法！";
             return false;
         }
-        if (existSameUserName(accoInfo.userName)) {
-            errorOs << "数据库中已存在相同用户名的账户！";
-            return false;
+        else if (existSameUserName(accoInfo.userName)) {
+            if(oldAccount){
+                if (accoInfo.userName != oldAccount->userName){
+                    errorOs << "数据库中已存在相同用户名的账户！";
+                    return false;
+                }
+            }else{
+                errorOs << "数据库中已存在相同用户名的账户！";
+                return false;
+            }
         }
     }
     if(!accoInfo.phoneNumber.empty()) {
@@ -365,8 +375,15 @@ bool DatabaseStatus::checkPrepareAccount(const AccountInfo &accoInfo, ostream &e
             return false;
         }
         if (existSamePhoneNum(accoInfo.phoneNumber)) {
-            errorOs << "数据库中已存在相同手机号的账户！";
-            return false;
+            if(oldAccount){
+                if(accoInfo.phoneNumber != oldAccount->phoneNumber){
+                    errorOs << "数据库中已存在相同手机号的账户！";
+                    return false;
+                }
+            }else{
+                errorOs << "数据库中已存在相同手机号的账户！";
+                return false;
+            }
         }
     }
     return true;
@@ -473,4 +490,75 @@ OrderInfo *DatabaseStatus::getQuickOrder(const string &codeNum, ostream &errorOs
         return nullptr;
     }
     return &(*resGroup)[0];
+}
+
+AccountGroup* DatabaseStatus::getAllAccounts(ostream &errorOs) {
+    return selectAccount("true", errorOs);
+}
+
+AccountInfo *DatabaseStatus::getAccount(const string &userName, const string &phoneNum, ostream &errorOs) {
+    stringstream prepareCondition;
+    if(!userName.empty())
+        prepareCondition << "userName = " << Sakuno::toVarchar(userName);
+    else
+        prepareCondition << " true ";
+
+    prepareCondition << " and ";
+
+    if(!phoneNum.empty())
+        prepareCondition << "phoneNumber = " << Sakuno::toVarchar(phoneNum);
+    else
+        prepareCondition << "true";
+
+    AccountGroup* account = selectAccount(prepareCondition.str(), errorOs);
+    if(account->empty() || account->size() > 1){
+        errorOs << "查找错误！请检查输入值！";
+        return nullptr;
+    }
+    return &(*account)[0];
+}
+
+bool DatabaseStatus::updateSingleAccount(const AccountInfo &oldInfo, const AccountInfo &newInfo, ostream &errorOs) {
+    bool breakRootPower = oldInfo.userName == "root" && (newInfo.userName != "root" || newInfo.accountType != Waiter || !newInfo.phoneNumber.empty());
+    if(breakRootPower){
+        errorOs << "根管理员只能修改密码";
+        return false;
+    }
+
+    stringstream prepareCondition, prepareChange;
+
+    if(!oldInfo.userName.empty())
+        prepareCondition << "userName = " << Sakuno::toVarchar(oldInfo.userName);
+    else
+        prepareCondition << " true ";
+
+    prepareCondition << " and ";
+
+    if(!oldInfo.phoneNumber.empty())
+        prepareCondition << "phoneNumber = " << Sakuno::toVarchar(oldInfo.phoneNumber);
+    else
+        prepareCondition << "true";
+
+
+    prepareChange << "password = " << Sakuno::toVarchar(newInfo.password);
+
+    prepareChange << " , ";
+
+    prepareChange << "isWaiter = " << (int)(newInfo.accountType == Waiter);
+
+    prepareChange << " , ";
+
+    if(!newInfo.userName.empty())
+        prepareChange << "userName = " << Sakuno::toVarchar(newInfo.userName);
+    else
+        prepareChange << " true ";
+
+    prepareChange << " , ";
+
+    if(!newInfo.phoneNumber.empty())
+        prepareChange << "phoneNumber = " << Sakuno::toVarchar(newInfo.phoneNumber);
+    else
+        prepareChange << "true";
+
+    return updateAccount(prepareCondition.str(), prepareChange.str(), errorOs);
 }

@@ -7,6 +7,7 @@
 
 #include "../userObjects/CircleProgressBar.h"
 #include "WaiterExtraWindows/WaiterExpressEditWindow.h"
+#include "WaiterExtraWindows/AccountEditWindow.h"
 
 namespace Ui {
 class MenuForWaiter;
@@ -22,11 +23,15 @@ public:
 
 private:
     Ui::MenuForWaiter *ui;
+
     CircleProgressBar *dayResAndPick;
     CircleProgressBar *allResAndPick;
     QPushButton* dayResBtn;
     QPushButton* allResBtn;
+
     WaiterExpressEditWindow* expressWindow;
+    AccountEditWindow* accountWindow;
+
     vector<int> taken_wareInfo;
     OrderInfo* quickOrder;
 

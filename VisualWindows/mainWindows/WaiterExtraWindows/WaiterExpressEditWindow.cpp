@@ -63,13 +63,14 @@ void WaiterExpressEditWindow::fleshTable() {
         delete viewOrders;
         return;
     }
-    ui->expressTable->clear();
-    ui->expressTable->setRowCount(viewOrders->size());
     QStringList hList;
     hList << "订单号" << "取件码" << "快递公司" << "接收者姓名" << "接收者手机号" << "接收者地址" << "接收者邮编"
           << "发送者姓名" << "发送者手机号" << "发送者地址" << "发送者邮编" << "快件重量" << "入库时间" << "是否取出";
+    ui->expressTable->clear();
+    ui->expressTable->setRowCount(viewOrders->size());
     ui->expressTable->setColumnCount(hList.size());
     ui->expressTable->setHorizontalHeaderLabels(hList);
+    ui->expressTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     for(int i = 0; i < hList.size(); i ++)
         ui->expressTable->setColumnWidth(i, viewOrders->size());
     int rowI = 0;
@@ -90,7 +91,6 @@ void WaiterExpressEditWindow::fleshTable() {
         ui->expressTable->setItem(rowI, 13, new QTableWidgetItem(it.hasBeenTaken ? "是" : "否"));
         rowI ++;
     }
-    ui->expressTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 }
 
 void WaiterExpressEditWindow::setHasTaken(bool ifTaken) {
