@@ -569,13 +569,13 @@ bool DatabaseStatus::updateSingleAccount(const AccountInfo &oldInfo, const Accou
     return updateAccount(prepareCondition.str(), prepareChange.str(), errorOs);
 }
 
-bool DatabaseStatus::deleteSingleAccount(const AccountInfo &account, ostream &errorOs) {
+bool DatabaseStatus::deleteSingleAccount(const AccountInfo &account, ostream &errorOs, bool ifUnregistering) {
     if(account.userName == "root"){
         errorOs << "不能删除根用户！";
         return false;
     }
     if(Sakuno::onlineAccount)
-        if(*Sakuno::onlineAccount == account){
+        if(*Sakuno::onlineAccount == account && !ifUnregistering){
             errorOs << "不能删除正在登录的账户！";
             return false;
         }

@@ -61,7 +61,7 @@ public:
     bool registerUserAccount(const AccountInfo& accoInfo, ostream& errorOs = cout);
     bool loginAccount(const string& userNameOrPhoneNum, const string& password, ostream& errorOs = cout);
 
-    bool deleteSingleAccount(const AccountInfo& account, ostream& errorOs = cout);
+    bool deleteSingleAccount(const AccountInfo& account, ostream& errorOs = cout, bool ifUnregistering = false);
     AccountGroup* getAllAccounts(ostream& errorOs = cout);
     AccountInfo* getAccount(const string& userName, const string& phoneNum, ostream& errorOs = cout);
     bool updateSingleAccount(const AccountInfo& oldInfo, const AccountInfo& newInfo, ostream& errorOs = cout);

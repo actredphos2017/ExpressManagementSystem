@@ -11,6 +11,7 @@ MenuForWaiter::MenuForWaiter(QWidget *parent) :
     ui(new Ui::MenuForWaiter)
 {
     ui->setupUi(this);
+    settingWin = new Settings(this);
     setMaximumSize(790, 320);
     setMinimumSize(790, 320);
 }
@@ -94,7 +95,7 @@ void MenuForWaiter::initItems() {
     setShadow(ui->settingBtn);
     expressWindow = new WaiterExpressEditWindow(this);
     accountWindow = new AccountEditWindow(this);
-    settingWin = new Settings(this);
+
 }
 
 void MenuForWaiter::initConnects() {

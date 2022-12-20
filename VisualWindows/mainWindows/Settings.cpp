@@ -35,7 +35,7 @@ void Settings::initItem() {
 
 void Settings::initDynamicItem(){
     settingStatusLabel->setText(tr("当前账号: ") + Sakuno::onlineAccount->userName.c_str());
-    unregisterBtn->setCheckable(!(Sakuno::onlineAccount->userName == "root"));
+    unregisterBtn->setDisabled(Sakuno::onlineAccount->userName == "root");
 }
 
 void Settings::initConnect() {
@@ -47,6 +47,10 @@ void Settings::initConnect() {
             SIGNAL(clicked()),
             this,
             SLOT(prepareLeave()));
+    connect(unregisterBtn,
+            SIGNAL(clicked()),
+            this,
+            SLOT(prepareUnregister()));
 }
 
 void Settings::toSetting() {
@@ -57,6 +61,19 @@ void Settings::toSetting() {
 void Settings::prepareLeave() {
     if(QMessageBox::information(this, "提示", "确定退出登录？", QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
         return;
+    emit toLeave();
+    delete Sakuno::onlineAccount;
+    Sakuno::onlineAccount = nullptr;
+}
+
+void Settings::prepareUnregister() {
+    if(QMessageBox::warning(this, "提示", "确定注销此账号？", QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
+        return;
+    stringstream errorSs;
+    if(!Sakuno::databaseEntrance->deleteSingleAccount(*Sakuno::onlineAccount, errorSs, true)){
+        QMessageBox::information(this, "提示", errorSs.str().c_str());
+        return;
+    }
     emit toLeave();
     delete Sakuno::onlineAccount;
     Sakuno::onlineAccount = nullptr;
