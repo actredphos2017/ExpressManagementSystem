@@ -2,6 +2,7 @@
 #define MENUFORCUSTOMER_H
 
 #include "../../GlobalAttribute.h"
+#include "CustomerExtraWindows/MyExpresses.h"
 #include "../userObjects/PickupQuickTag.h"
 #include "Settings.h"
 
@@ -26,12 +27,14 @@ public:
 private:
     void addShadow(QWidget *widget);
     OrderGroup* customerPackage{};
+    MyExpresses* expressWindow;
 
     Ui::MenuForCustomer *ui;
     void addQuickTag(QVBoxLayout *quickTagsGroup, PickupQuickTag *quickTag);
     void initQuickBox();
 
     void initItems();
+    void initDynamicItems();
     void initConnect();
 
 public slots:

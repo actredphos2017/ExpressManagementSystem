@@ -24,7 +24,6 @@ MenuForCustomer::~MenuForCustomer()
 void MenuForCustomer::initQuickBox(){
     auto tempLayout = new QVBoxLayout;
     PickupQuickTag* Test;
-
     stringstream errorSs;
     customerPackage = Sakuno::databaseEntrance->getCustomerOrders(Sakuno::onlineAccount->phoneNumber, errorSs);
     if(customerPackage->empty())
@@ -36,7 +35,9 @@ void MenuForCustomer::initQuickBox(){
     ui->quickPickupCodeArea->setWidget(widget);
 }
 
+
 void MenuForCustomer::initItems(){
+    expressWindow = new MyExpresses(this);
     addShadow(ui->pickupMessage);
     addShadow(ui->btnGroupBox);
     addShadow(ui->greetGroupBox);
@@ -44,10 +45,18 @@ void MenuForCustomer::initItems(){
 }
 
 void MenuForCustomer::initConnect(){
-    connect(settingWin,
-            SIGNAL(toLeave()),
-            this,
-            SLOT(close()));
+    connect(ui->settings,
+            SIGNAL(clicked()),
+            settingWin,
+            SLOT(toSetting()));
+    connect(ui->allExpresses,
+            SIGNAL(clicked()),
+            expressWindow,
+            SLOT(toSeeAllPackages()));
+    connect(ui->nowadaysExpresses,
+            SIGNAL(clicked()),
+            expressWindow,
+            SLOT(toSeeNowadaysPackages()));
 };
 
 void MenuForCustomer::addShadow(QWidget* widget){
@@ -64,6 +73,15 @@ void MenuForCustomer::addQuickTag(QVBoxLayout* quickTagsGroup,PickupQuickTag* qu
 }
 
 void MenuForCustomer::loginSuccess() {
+    initDynamicItems();
+    show();
+}
+
+void MenuForCustomer::initDynamicItems() {
     initQuickBox();
-    this->show();
+    ui->greetsUsername->setText((
+            Sakuno::onlineAccount->userName.empty() ?
+            Sakuno::onlineAccount->phoneNumber :
+            Sakuno::onlineAccount->userName).c_str());
+    ui->packageNumLabel->setText(tr(to_string(customerPackage->size()).c_str()) + "件");
 }

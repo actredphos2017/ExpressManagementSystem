@@ -309,7 +309,13 @@ border-style: inset;}
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
-        <widget class="QPushButton" name="addOrderBtn">
+        <widget class="QPushButton" name="manageAccountBtn">
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
            <width>50</width>
@@ -339,47 +345,31 @@ border-style: inset;}
 </string>
          </property>
          <property name="text">
-          <string>+</string>
+          <string>用户</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="manageAccountBtn">
-         <property name="maximumSize">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
           <size>
-           <width>50</width>
-           <height>50</height>
+           <width>20</width>
+           <height>40</height>
           </size>
          </property>
-         <property name="sizeIncrement">
-          <size>
-           <width>50</width>
-           <height>50</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton{
-	border-radius: 25px;
-	border: 2px black;
-	background-color: white;
-}
-
-QPushButton:hover{
-background-color:rgb(28, 113, 216); 
-}
-
-QPushButton:pressed{
-background-color:rgb(98, 160, 234);
-border-style: inset;}
-</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
+        </spacer>
        </item>
        <item>
         <widget class="QPushButton" name="settingBtn">
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
+         </property>
          <property name="maximumSize">
           <size>
            <width>50</width>
@@ -409,7 +399,7 @@ border-style: inset;}
 </string>
          </property>
          <property name="text">
-          <string/>
+          <string>设置</string>
          </property>
         </widget>
        </item>

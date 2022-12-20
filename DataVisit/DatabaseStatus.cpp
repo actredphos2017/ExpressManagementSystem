@@ -389,8 +389,14 @@ bool DatabaseStatus::checkPrepareAccount(const AccountInfo &accoInfo, ostream &e
     return true;
 }
 
-OrderGroup *DatabaseStatus::getCustomerOrders(const string &phoneNum, ostream &errorOs) {
-    OrderGroup *res = selectOrder("recipentPhoneNum = " + Sakuno::toVarchar(phoneNum) + " or senderPhoneNum = " + Sakuno::toVarchar(phoneNum), errorOs);
+OrderGroup *DatabaseStatus::getCustomerOrders(const string &phoneNum, ostream &errorOs, bool onlyUnpicked, bool showNowadays, Sakuno::Time time) {
+    stringstream prepareCondition;
+    prepareCondition << "recipentPhoneNum = " << Sakuno::toVarchar(phoneNum) << " or senderPhoneNum = " << Sakuno::toVarchar(phoneNum);
+    if(onlyUnpicked)
+        prepareCondition << " and hasBeenTaken = false";
+    if(showNowadays)
+        prepareCondition << " and warehousingTime >= " << time.subDays(7).sqlTime();
+    OrderGroup *res = selectOrder(prepareCondition.str(), errorOs);
     if(res != nullptr){
         if(res->empty())
             errorOs << "暂无包裹入库";

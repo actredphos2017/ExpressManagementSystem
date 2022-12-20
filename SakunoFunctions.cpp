@@ -78,3 +78,21 @@ string Sakuno::Time::sqlTime() {
     resSs << '\'' << year << '-' << month << '-' << mDay << ' ' << hour << ':' << min << ':' << second << '\'';
     return resSs.str();
 }
+
+Sakuno::Time Sakuno::Time::subDays(int days) {
+    QDate date(year, month, mDay);
+    date.addDays(days*(-1));
+    Sakuno::Time time = *this;
+    time.year = date.year();
+    time.month = date.month();
+    time.mDay = date.day();
+    return time;
+}
+
+Sakuno::Time::Time(const QDateTime &dateTime):
+    year(dateTime.date().year()),
+    month(dateTime.date().month()),
+    mDay(dateTime.date().day()),
+    hour(dateTime.time().hour()),
+    min(dateTime.time().minute()),
+    second(dateTime.time().second()){}

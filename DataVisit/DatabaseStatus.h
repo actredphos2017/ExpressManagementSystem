@@ -63,7 +63,7 @@ public:
 
     //About Orders
 
-    OrderGroup* getCustomerOrders (const string& phoneNum, ostream& errorOs = cout);
+    OrderGroup* getCustomerOrders (const string& phoneNum, ostream& errorOs = cout, bool onlyUnpicked = true, bool showNowadays = false, Sakuno::Time time = Sakuno::Time());
     OrderGroup* getAllOrders (ostream& errorOs = cout);
     OrderGroup* getDayOrders(Sakuno::Time *day, ostream &errorOs = cout);
     OrderInfo* getOrder(const string& trackNum, ostream& errorOs = cout);

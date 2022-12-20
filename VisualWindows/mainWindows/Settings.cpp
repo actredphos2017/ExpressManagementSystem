@@ -3,6 +3,7 @@
 //
 
 #include <QVBoxLayout>
+#include <QApplication>
 #include "Settings.h"
 
 Settings::Settings(QWidget *parent):
@@ -61,9 +62,9 @@ void Settings::toSetting() {
 void Settings::prepareLeave() {
     if(QMessageBox::information(this, "提示", "确定退出登录？", QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Cancel) == QMessageBox::Cancel)
         return;
-    emit toLeave();
     delete Sakuno::onlineAccount;
     Sakuno::onlineAccount = nullptr;
+    qApp->quit();
 }
 
 void Settings::prepareUnregister() {
@@ -74,7 +75,7 @@ void Settings::prepareUnregister() {
         QMessageBox::information(this, "提示", errorSs.str().c_str());
         return;
     }
-    emit toLeave();
     delete Sakuno::onlineAccount;
     Sakuno::onlineAccount = nullptr;
+    qApp->quit();
 }

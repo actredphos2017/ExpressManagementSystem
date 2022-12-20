@@ -5,6 +5,7 @@
 #include <QGraphicsBlurEffect>
 #include <QSpacerItem>
 #include <QMessageBox>
+#include <QPainter>
 
 MenuForWaiter::MenuForWaiter(QWidget *parent) :
     QMainWindow(parent),
@@ -21,7 +22,6 @@ void MenuForWaiter::setShadow(QWidget* widget){
     effect->setColor("#666666");
     effect->setBlurRadius(12);
     effect->setOffset(5);
-    widget->setGraphicsEffect(effect);
 }
 
 MenuForWaiter::~MenuForWaiter()
@@ -33,6 +33,7 @@ void MenuForWaiter::loginSuccess() {
     initItems();
     initConnects();
     setWindowTitle(tr("欢迎 ") + Sakuno::onlineAccount->userName.c_str());
+    initPaint();
     show();
 }
 
@@ -90,7 +91,6 @@ void MenuForWaiter::initItems() {
     setShadow(allResAndPick);
     setShadow(ui->statusGroup);
     setShadow(ui->quickPickupGroup);
-    setShadow(ui->addOrderBtn);
     setShadow(ui->manageAccountBtn);
     setShadow(ui->settingBtn);
     expressWindow = new WaiterExpressEditWindow(this);
@@ -123,10 +123,6 @@ void MenuForWaiter::initConnects() {
             SIGNAL(clicked()),
             settingWin,
             SLOT(toSetting()));
-    connect(settingWin,
-            SIGNAL(toLeave()),
-            this,
-            SLOT(close()));
 }
 
 void MenuForWaiter::updateProgresBar() {
@@ -185,3 +181,7 @@ void MenuForWaiter::setPick() {
     updateProgresBar();
 }
 
+void MenuForWaiter::initPaint() {
+    QPainter picPainter(ui->settingBtn);
+    picPainter.drawPixmap(-50, -5, QPixmap(":/res/settingLogo.png").scaled(QSize(50, 50), Qt::KeepAspectRatio));
+}

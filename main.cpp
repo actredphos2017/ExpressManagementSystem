@@ -29,6 +29,7 @@ using namespace Qt;
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
+    qDebug() << &a;
 
     LoginDialog     loginInterface;
 
@@ -74,22 +75,8 @@ int main(int argc, char *argv[]) {
                 &waiterMainMenu,
                 SLOT(loginSuccess())
         ); //服务员登录成功
-
-        QObject::connect (
-                waiterMainMenu.settingWin,
-                SIGNAL(toLeave()),
-                &loginInterface,
-                SLOT(comeback())
-        );
-        QObject::connect (
-                customerMainMenu.settingWin,
-                SIGNAL(toLeave()),
-                &loginInterface,
-                SLOT(comeback())
-        );
     }
 
     loginInterface.init();
-    //customerMainMenu.show();
     return QApplication::exec();
 }

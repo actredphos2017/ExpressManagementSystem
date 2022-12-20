@@ -89,7 +89,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QLabel" name="text1">
+           <widget class="QLabel" name="packageNumTitle1">
             <property name="font">
              <font>
               <pointsize>14</pointsize>
@@ -104,7 +104,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="text2">
+           <widget class="QLabel" name="packageNumLabel">
             <property name="font">
              <font>
               <pointsize>16</pointsize>
@@ -120,7 +120,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="text3">
+           <widget class="QLabel" name="packageNumTitle2">
             <property name="font">
              <font>
               <pointsize>14</pointsize>
@@ -254,6 +254,18 @@
         <layout class="QVBoxLayout" name="verticalLayout_5">
          <item>
           <widget class="QLabel" name="numLabel">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>32</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>32</height>
+            </size>
+           </property>
            <property name="font">
             <font>
              <pointsize>12</pointsize>
@@ -270,6 +282,34 @@
          </item>
          <item>
           <widget class="QPushButton" name="nowadaysExpresses">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+	border-radius: 12px;
+	border: 2px black;
+	background-color: white;
+}
+
+QPushButton:hover{
+background-color:rgb(28, 113, 216); 
+}
+
+QPushButton:pressed{
+background-color:rgb(98, 160, 234);
+border-style: inset;}
+</string>
+           </property>
            <property name="text">
             <string>近期件数</string>
            </property>
@@ -277,15 +317,71 @@
          </item>
          <item>
           <widget class="QPushButton" name="allExpresses">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+	border-radius: 12px;
+	border: 2px black;
+	background-color: white;
+}
+
+QPushButton:hover{
+background-color:rgb(28, 113, 216); 
+}
+
+QPushButton:pressed{
+background-color:rgb(98, 160, 234);
+border-style: inset;}
+\</string>
+           </property>
            <property name="text">
-            <string>all expresses</string>
+            <string>所有快件</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QPushButton" name="settings">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+	border-radius: 12px;
+	border: 2px black;
+	background-color: white;
+}
+
+QPushButton:hover{
+background-color:rgb(28, 113, 216); 
+}
+
+QPushButton:pressed{
+background-color:rgb(98, 160, 234);
+border-style: inset;}
+</string>
+           </property>
            <property name="text">
-            <string>settings</string>
+            <string>设置</string>
            </property>
           </widget>
          </item>

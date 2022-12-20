@@ -29,9 +29,6 @@ private:
 public:
     explicit Settings(QWidget* parent = nullptr);
 
-signals:
-    void toLeave();
-
 public slots:
     void toSetting();
     void prepareLeave();
