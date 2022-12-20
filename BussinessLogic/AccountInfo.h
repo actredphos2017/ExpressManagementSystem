@@ -28,6 +28,7 @@ public:
     void setWaiterAccount(const string &un,
                           const string &pn,
                           const string &pw);
+    bool operator==(const AccountInfo& account);
 public:
     AccountType accountType = Customer;
     string userName;

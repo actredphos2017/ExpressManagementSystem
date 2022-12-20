@@ -352,6 +352,16 @@ string DatabaseStatus::checkPermissionCode(const string& code, ostream &errorOs)
 }
 
 bool DatabaseStatus::checkPrepareAccount(const AccountInfo &accoInfo, ostream &errorOs, AccountInfo* oldAccount) {
+    if(accoInfo.accountType == Waiter && accoInfo.userName.empty()){
+        errorOs << "管理员账户必须输入用户名！";
+        return false;
+    }
+
+    if(accoInfo.accountType == Customer && accoInfo.phoneNumber.empty()){
+        errorOs << "用户账号必须输入手机号！";
+        return false;
+    }
+
     if (!accoInfo.userName.empty()) {
         if (!Sakuno::isLetter(accoInfo.userName[0])) {
             errorOs << "用户名不合法！";
@@ -561,4 +571,37 @@ bool DatabaseStatus::updateSingleAccount(const AccountInfo &oldInfo, const Accou
         prepareChange << "true";
 
     return updateAccount(prepareCondition.str(), prepareChange.str(), errorOs);
+}
+
+bool DatabaseStatus::deleteSingleAccount(const AccountInfo &account, ostream &errorOs) {
+    if(account.userName == "root"){
+        errorOs << "不能删除根用户！";
+        return false;
+    }
+    if(Sakuno::onlineAccount)
+        if(*Sakuno::onlineAccount == account){
+            errorOs << "不能删除正在登录的账户！";
+            return false;
+        }
+    stringstream prepareCondition;
+    if(!account.userName.empty())
+        prepareCondition << "userName = " << Sakuno::toVarchar(account.userName);
+    else
+        prepareCondition << " true ";
+
+    prepareCondition << " and ";
+
+    if(!account.phoneNumber.empty())
+        prepareCondition << "phoneNumber = " << Sakuno::toVarchar(account.phoneNumber);
+    else
+        prepareCondition << "true";
+
+    int accountNum = selectAccount(prepareCondition.str(), errorOs)->size();
+
+    if(accountNum != 1){
+        errorOs << "符合要求的账户数量不为1";
+        return false;
+    }
+
+    return deleteAccount(prepareCondition.str(), errorOs);
 }

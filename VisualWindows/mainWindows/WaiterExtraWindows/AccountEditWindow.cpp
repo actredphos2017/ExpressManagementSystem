@@ -69,6 +69,10 @@ void AccountEditWindow::initConnect() {
             SIGNAL(clicked()),
             editWin,
             SLOT(toAddAccount()));
+    connect(ui->deleteBtn,
+            SIGNAL(clicked()),
+            this,
+            SLOT(deleteAccount()));
 }
 
 void AccountEditWindow::prepareEditAccount() {
@@ -99,11 +103,29 @@ void AccountEditWindow::finishEdit(AccountInfo *newInfo) {
         QMessageBox::information(this, "提示", "添加成功");
     }else{
         stringstream errorSs;
-        if(!Sakuno::databaseEntrance->updateSingleAccount(*editTargetAccount, *newInfo, errorSs))
+        if(!Sakuno::databaseEntrance->updateSingleAccount(*editTargetAccount, *newInfo, errorSs)){
             QMessageBox::information(this, "提示", errorSs.str().c_str());
-
+            return;
+        }
         delete editTargetAccount;
+        editTargetAccount = nullptr;
         QMessageBox::information(this, "提示", "修改成功");
+    }
+    fleshData();
+}
+
+void AccountEditWindow::deleteAccount() {
+    if(ui->accountTable->currentRow() < 0)
+        return;
+    AccountInfo account;
+    account.userName = ui->accountTable->item(ui->accountTable->currentRow(), 0)->text().toStdString();
+    account.phoneNumber = ui->accountTable->item(ui->accountTable->currentRow(), 1)->text().toStdString();
+    account.password = ui->accountTable->item(ui->accountTable->currentRow(), 2)->text().toStdString();
+    account.accountType = ui->accountTable->item(ui->accountTable->currentRow(), 3)->text() == "是" ? Waiter : Customer;
+    stringstream errorSs;
+    if(!Sakuno::databaseEntrance->deleteSingleAccount(account, errorSs)){
+        QMessageBox::information(this, "提示", errorSs.str().c_str());
+        return;
     }
     fleshData();
 }

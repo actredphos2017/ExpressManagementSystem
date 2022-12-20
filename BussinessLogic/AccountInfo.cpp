@@ -37,3 +37,7 @@ void AccountInfo::setWaiterAccount(const string &un,
     phoneNumber = pn;
     password = pw;
 }
+
+bool AccountInfo::operator==(const AccountInfo &account) {
+    return (userName == account.userName && phoneNumber == account.phoneNumber);
+}

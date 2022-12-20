@@ -29,7 +29,7 @@ private:
     AccountEdit* editWin;
 
     AccountGroup* viewAccount;
-    AccountInfo* editTargetAccount;
+    AccountInfo* editTargetAccount = nullptr;
 
     void initItem();
     void initConnect();
@@ -39,6 +39,7 @@ public slots:
     void toManageAccount();
     void prepareEditAccount();
     void finishEdit(AccountInfo * newInfo);
+    void deleteAccount();
 
 signals:
     void editAccount(AccountInfo *);

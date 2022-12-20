@@ -41,24 +41,24 @@ void AccountEdit::initItem() {
                 passwordLine  = new QLineEdit;
                 lineLayout->addWidget(passwordLine);
             }
-            titleLayout->addLayout(lineLayout);
-
-            auto btnLayout = new QHBoxLayout;
-            {
-                btnLayout->addStretch();
-
-                ifWaiterBox = new QCheckBox(tr("管理员"));
-                btnLayout->addWidget(ifWaiterBox);
-
-                yesBtn = new QPushButton("确定");
-                btnLayout->addWidget(yesBtn);
-
-                cancelBtn = new QPushButton("取消");
-                btnLayout->addWidget(cancelBtn);
-            }
-            mainLayout->addLayout(btnLayout);
+            enterLayout->addLayout(lineLayout);
         }
         mainLayout->addLayout(enterLayout);
+
+        auto btnLayout = new QHBoxLayout;
+        {
+            btnLayout->addStretch();
+
+            ifWaiterBox = new QCheckBox(tr("管理员"));
+            btnLayout->addWidget(ifWaiterBox);
+
+            yesBtn = new QPushButton("确定");
+            btnLayout->addWidget(yesBtn);
+
+            cancelBtn = new QPushButton("取消");
+            btnLayout->addWidget(cancelBtn);
+        }
+        mainLayout->addLayout(btnLayout);
     }
     setLayout(mainLayout);
 }
@@ -89,6 +89,7 @@ void AccountEdit::toAddAccount() {
     phoneNumLine->setText("");
     passwordLine->setText("");
     ifWaiterBox->setChecked(false);
+    oldAccount = nullptr;
     show();
 }
 
