@@ -101,7 +101,7 @@ void AccountEdit::clickYes() {
     doneAccount->accountType = ifWaiterBox->isChecked() ? Waiter : Customer;
     doneAccount->phoneNumber = phoneNumLine->text().toStdString();
     doneAccount->userName = userNameLine->text().toStdString();
-    doneAccount->password = userNameLine->text().toStdString();
+    doneAccount->password = passwordLine->text().toStdString();
     stringstream errorSs;
     if(!Sakuno::databaseEntrance->checkPrepareAccount(*doneAccount, errorSs, oldAccount)){
         QMessageBox::information(this, "提示", errorSs.str().c_str());
