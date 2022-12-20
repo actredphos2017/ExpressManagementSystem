@@ -13,6 +13,7 @@ WaiterExpressEditWindow::WaiterExpressEditWindow(QWidget *parent) :
     ui(new Ui::WaiterExpressEditWindow) {
     ui->setupUi(this);
     setFixedSize(1500, 927);
+    setWindowModality(Qt::ApplicationModal);
     initItems();
     initConnects();
 }

@@ -28,12 +28,14 @@ private:
     QCheckBox* ifWaiterBox{};
 
     QPushButton* yesBtn{};
-    QPushButton* cancelBtn{};
 
     AccountInfo* oldAccount{};
 
     void initItem();
     void initConnect();
+
+protected:
+    void closeEvent(QCloseEvent* event) override;
 
 public:
     explicit AccountEdit(QWidget* parent = nullptr);
@@ -45,6 +47,7 @@ public slots:
 
 signals:
     void doneEdit(AccountInfo*);
+    void closeWindow();
 };
 
 

@@ -133,7 +133,6 @@ void DatabaseOption::initItem() {
     switchToFile(true);
 
     setLayout(mainLayout);
-    setWindowTitle(tr("连接配置"));
 }
 
 void DatabaseOption::initConnect() {
@@ -148,9 +147,10 @@ void DatabaseOption::initConnect() {
 DatabaseOption::DatabaseOption(QWidget* parent) :
     QDialog(parent){
     setWindowModality(Qt::ApplicationModal);
+    setWindowTitle(tr("连接配置"));
+    setWindowFlags(Qt::FramelessWindowHint);
     initItem();
     initConnect();
-    setWindowFlags(Qt::FramelessWindowHint);
 }
 
 void DatabaseOption::backToLogin() {

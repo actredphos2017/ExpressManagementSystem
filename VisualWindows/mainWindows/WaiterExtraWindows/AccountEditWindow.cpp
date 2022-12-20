@@ -9,6 +9,8 @@
 AccountEditWindow::AccountEditWindow(QWidget *parent) :
     QDialog(parent), ui(new Ui::AccountEditWindow) {
     ui->setupUi(this);
+    setWindowModality(Qt::ApplicationModal);
+    setWindowTitle("用户编辑");
     initItem();
     initConnect();
 }
@@ -73,6 +75,10 @@ void AccountEditWindow::initConnect() {
             SIGNAL(clicked()),
             this,
             SLOT(deleteAccount()));
+    connect(editWin,
+            SIGNAL(closeWindow()),
+            this,
+            SLOT(cancelEdit()));
 }
 
 void AccountEditWindow::prepareEditAccount() {
@@ -127,5 +133,12 @@ void AccountEditWindow::deleteAccount() {
         QMessageBox::information(this, "提示", errorSs.str().c_str());
         return;
     }
+    fleshData();
+}
+
+void AccountEditWindow::cancelEdit() {
+    qDebug() << "hello";
+    delete editTargetAccount;
+    editTargetAccount = nullptr;
     fleshData();
 }

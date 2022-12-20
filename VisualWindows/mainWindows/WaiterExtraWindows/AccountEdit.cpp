@@ -8,6 +8,8 @@
 
 AccountEdit::AccountEdit(QWidget* parent):
     QDialog(parent){
+    setWindowModality(Qt::ApplicationModal);
+    setWindowTitle("设置账号");
     initItem();
     initConnect();
 }
@@ -54,9 +56,6 @@ void AccountEdit::initItem() {
 
             yesBtn = new QPushButton("确定");
             btnLayout->addWidget(yesBtn);
-
-            cancelBtn = new QPushButton("取消");
-            btnLayout->addWidget(cancelBtn);
         }
         mainLayout->addLayout(btnLayout);
     }
@@ -111,4 +110,9 @@ void AccountEdit::clickYes() {
     }
     emit doneEdit(doneAccount);
     close();
+}
+
+void AccountEdit::closeEvent(QCloseEvent *event) {
+    emit closeWindow();
+    QDialog::closeEvent(event);
 }

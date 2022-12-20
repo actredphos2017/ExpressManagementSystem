@@ -31,6 +31,7 @@ MenuForWaiter::~MenuForWaiter()
 void MenuForWaiter::loginSuccess() {
     initItems();
     initConnects();
+    setWindowTitle(tr("欢迎 ") + Sakuno::onlineAccount->userName.c_str());
     show();
 }
 

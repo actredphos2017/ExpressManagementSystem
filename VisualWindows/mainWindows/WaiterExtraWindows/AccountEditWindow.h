@@ -40,6 +40,7 @@ public slots:
     void prepareEditAccount();
     void finishEdit(AccountInfo * newInfo);
     void deleteAccount();
+    void cancelEdit();
 
 signals:
     void editAccount(AccountInfo *);

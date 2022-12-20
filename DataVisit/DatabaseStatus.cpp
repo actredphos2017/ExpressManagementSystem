@@ -535,7 +535,7 @@ bool DatabaseStatus::updateSingleAccount(const AccountInfo &oldInfo, const Accou
         return false;
     }
 
-    stringstream prepareCondition, prepareChange;
+    stringstream prepareCondition;
 
     if(!oldInfo.userName.empty())
         prepareCondition << "userName = " << Sakuno::toVarchar(oldInfo.userName);
@@ -550,6 +550,8 @@ bool DatabaseStatus::updateSingleAccount(const AccountInfo &oldInfo, const Accou
         prepareCondition << "true";
 
 
+    stringstream prepareChange;
+
     prepareChange << "password = " << Sakuno::toVarchar(newInfo.password);
 
     prepareChange << " , ";
@@ -558,17 +560,11 @@ bool DatabaseStatus::updateSingleAccount(const AccountInfo &oldInfo, const Accou
 
     prepareChange << " , ";
 
-    if(!newInfo.userName.empty())
-        prepareChange << "userName = " << Sakuno::toVarchar(newInfo.userName);
-    else
-        prepareChange << " true ";
+    prepareChange << "userName = " << Sakuno::toVarchar(newInfo.userName);
 
     prepareChange << " , ";
 
-    if(!newInfo.phoneNumber.empty())
-        prepareChange << "phoneNumber = " << Sakuno::toVarchar(newInfo.phoneNumber);
-    else
-        prepareChange << "true";
+    prepareChange << "phoneNumber = " << Sakuno::toVarchar(newInfo.phoneNumber);
 
     return updateAccount(prepareCondition.str(), prepareChange.str(), errorOs);
 }
