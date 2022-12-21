@@ -19,8 +19,8 @@ add_executable(
         ExpressManagementSystem 
         main.cpp
         GlobalAttribute.h
-        DataVisit/DatabaseStatus.cpp
-        DataVisit/DatabaseStatus.h
+        DataVisit/DataEntrance.cpp
+        DataVisit/DataEntrance.h
         DataVisit/DatabaseInfo.cpp
         DataVisit/DatabaseInfo.h
         BussinessLogic/OrderInfo.cpp

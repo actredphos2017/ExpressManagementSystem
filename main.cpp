@@ -3,7 +3,7 @@
 //
 
 #include "DataVisit/DatabaseInfo.h"
-#include "DataVisit/DatabaseStatus.h"
+#include "DataVisit/DataEntrance.h"
 
 #include "BussinessLogic/AccountInfo.h"
 #include "BussinessLogic/OrderInfo.h"
@@ -12,7 +12,7 @@
 namespace Sakuno{
     DatabaseInfo* dbInfo = new DatabaseInfo;
     bool haveDBInfo = false;
-    DatabaseStatus* databaseEntrance = new DatabaseStatus;
+    DataEntrance* databaseEntrance = new DataEntrance;
     bool connectSuccess = new AccountInfo;
     AccountInfo* onlineAccount = nullptr;
 }
@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
     {
         Sakuno::dbInfo = new DatabaseInfo;
         Sakuno::haveDBInfo = false;
-        Sakuno::databaseEntrance = new DatabaseStatus;
+        Sakuno::databaseEntrance = new DataEntrance;
         Sakuno::connectSuccess = false;
         Sakuno::onlineAccount = new AccountInfo;
     }

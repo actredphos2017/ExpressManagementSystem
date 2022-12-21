@@ -105,6 +105,7 @@ void ExpressEdit::initItem() {
                 enterLayout->addWidget(itemWeightBox);
 
                 pickCodeLine = new QLineEdit;
+                pickCodeLine->setPlaceholderText("不填则自动生成");
                 enterLayout->addWidget(pickCodeLine);
 
                 warehousingTimeEdit = new QDateTimeEdit(QDateTime(QDate::currentDate(), QTime::currentTime()));
@@ -164,7 +165,7 @@ void ExpressEdit::addOrder() {
     itemWeightBox->setValue(1.0);
     warehousingTimeEdit->setDateTime(QDateTime::currentDateTime());
     pickCodeLine->setText("");
-    ifTakenBox->setChecked("");
+    ifTakenBox->setChecked(false);
     show();
 }
 
@@ -194,7 +195,7 @@ void ExpressEdit::pushOkButton() {
     resOrder->warehousingTime->min = warehousingTimeEdit->dateTime().time().minute();
     resOrder->warehousingTime->second = warehousingTimeEdit->dateTime().time().second();
     resOrder->hasBeenTaken = ifTakenBox->isChecked();
-    emit doneEdit(resOrder);
+    emit doneEdit(new OrderInfo(Sakuno::databaseEntrance->spawnTakenCode(*resOrder)));
     close();
 }
 

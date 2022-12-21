@@ -315,7 +315,7 @@ void DatabaseOption::readSave() {
             return;
         } else {
             Sakuno::haveDBInfo = true;
-            Sakuno::databaseEntrance = new DatabaseStatus;
+            Sakuno::databaseEntrance = new DataEntrance;
             if (!Sakuno::databaseEntrance->connect(*Sakuno::dbInfo)){
                 connectFailed();
                 return;
@@ -354,7 +354,7 @@ void DatabaseOption::connectFailed() {
     Sakuno::haveDBInfo = false;
     Sakuno::dbInfo = new DatabaseInfo;
     Sakuno::connectSuccess = false;
-    Sakuno::databaseEntrance = new DatabaseStatus;
+    Sakuno::databaseEntrance = new DataEntrance;
     selectedFileName->setText(tr("未选择"));
     connectStatusContent->setText(tr("未连接"));
 }

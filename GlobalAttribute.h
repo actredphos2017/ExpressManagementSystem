@@ -8,7 +8,7 @@
 #include "SakunoFunctions.h"
 
 #include "DataVisit/DatabaseInfo.h"
-#include "DataVisit/DatabaseStatus.h"
+#include "DataVisit/DataEntrance.h"
 
 #include "BussinessLogic/AccountInfo.h"
 #include "BussinessLogic/OrderInfo.h"
@@ -26,7 +26,7 @@ using namespace std;
 namespace Sakuno{
     extern DatabaseInfo* dbInfo;
     extern bool haveDBInfo;
-    extern DatabaseStatus* databaseEntrance;
+    extern DataEntrance* databaseEntrance;
     extern bool connectSuccess;
     extern AccountInfo* onlineAccount;
 } // namespace Sakuno

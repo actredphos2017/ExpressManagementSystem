@@ -70,6 +70,7 @@ void WaiterExpressEditWindow::fleshTable() {
             ui->typeBox->currentText() == "已取"),
                     !ui->searchLine->text().isEmpty(),
                     ui->searchLine->text().toStdString());
+
     QStringList hList;
     hList << "订单号" << "取件码" << "快递公司" << "接收者姓名" << "接收者手机号" << "接收者地址" << "接收者邮编"
           << "发送者姓名" << "发送者手机号" << "发送者地址" << "发送者邮编" << "快件重量" << "入库时间" << "是否取出";
@@ -81,7 +82,7 @@ void WaiterExpressEditWindow::fleshTable() {
     for(int i = 0; i < hList.size(); i ++)
         ui->expressTable->setColumnWidth(i, viewOrders->size());
     int rowI = 0;
-    for(auto it : *viewOrders){
+    for(const auto& it : *viewOrders){
         ui->expressTable->setItem(rowI, 0, new QTableWidgetItem(it.trackNumber.c_str()));
         ui->expressTable->setItem(rowI, 1, new QTableWidgetItem(it.pickCode.c_str()));
         ui->expressTable->setItem(rowI, 2, new QTableWidgetItem(it.company.c_str()));

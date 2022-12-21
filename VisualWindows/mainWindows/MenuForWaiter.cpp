@@ -33,7 +33,6 @@ void MenuForWaiter::loginSuccess() {
     initItems();
     initConnects();
     setWindowTitle(tr("欢迎 ") + Sakuno::onlineAccount->userName.c_str());
-    initPaint();
     show();
 }
 
@@ -44,7 +43,7 @@ void MenuForWaiter::initItems() {
     thisDate->year = QDate::currentDate().year();
     thisDate->month = QDate::currentDate().month();
     thisDate->mDay = QDate::currentDate().day();
-    taken_wareInfo = Sakuno::databaseEntrance->warehousing_takenMap(thisDate);
+    taken_wareInfo = Sakuno::databaseEntrance->statisticsData(thisDate);
     dayResAndPick = new CircleProgressBar(taken_wareInfo[0], taken_wareInfo[1]);
     dayResBtn = new QPushButton(tr("当日取出/当日入库"));
     dayResBtn->setMaximumHeight(30);
@@ -131,7 +130,7 @@ void MenuForWaiter::updateProgresBar() {
     thisDate->year = QDate::currentDate().year();
     thisDate->month = QDate::currentDate().month();
     thisDate->mDay = QDate::currentDate().day();
-    taken_wareInfo = Sakuno::databaseEntrance->warehousing_takenMap(thisDate);
+    taken_wareInfo = Sakuno::databaseEntrance->statisticsData(thisDate);
     dayResAndPick->updateData(taken_wareInfo[0], taken_wareInfo[1]);
     allResAndPick->updateData(taken_wareInfo[2], taken_wareInfo[3]);
 }
@@ -179,9 +178,4 @@ void MenuForWaiter::setPick() {
     ui->pickBtn->setDisabled(true);
     ui->pickBtn->setText("该件已经被取走");
     updateProgresBar();
-}
-
-void MenuForWaiter::initPaint() {
-    QPainter picPainter(ui->settingBtn);
-    picPainter.drawPixmap(-50, -5, QPixmap(":/res/settingLogo.png").scaled(QSize(50, 50), Qt::KeepAspectRatio));
 }

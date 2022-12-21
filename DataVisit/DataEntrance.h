@@ -3,8 +3,8 @@
 // 该类用于访问数据库
 //
 
-#ifndef EXPRESSMANAGEMENTSYSTEM_DATABASESTATUS_H
-#define EXPRESSMANAGEMENTSYSTEM_DATABASESTATUS_H
+#ifndef EXPRESSMANAGEMENTSYSTEM_DATAENTRANCE_H
+#define EXPRESSMANAGEMENTSYSTEM_DATAENTRANCE_H
 
 #include <iostream>
 
@@ -23,11 +23,16 @@
 using namespace std;
 using namespace sql;
 
-class DatabaseStatus {
+class DataEntrance {
 public:
-    DatabaseStatus () = default;
+
+//连接
+
+    DataEntrance () = default;
     bool connect(const DatabaseInfo& dbi, ostream& errorOs = cout);
     bool available ();
+
+//增删改查
 
     bool insertAccount (const AccountGroup& ag, ostream& errorOs = cout);
     bool deleteAccount (const string& condition, ostream &errorOs = cout);
@@ -39,11 +44,11 @@ public:
     bool updateOrder (const string& condition, const string& change, ostream &errorOs = cout);
     OrderGroup* selectOrder (const string& condition, ostream &errorOs = cout);
 
-//Generic
+//通用
 
     bool resetPassword (const AccountInfo& account, const string& newPassword, ostream &errorOs = cout);
 
-//About Accounts
+//关于账号
 
     string getPermissionCode(const AccountInfo& waiterInfo, ostream &errorOs = cout);
     string checkPermissionCode(const string& code, ostream &errorOs = cout);
@@ -61,17 +66,23 @@ public:
     AccountInfo* getAccount(const string& userName, const string& phoneNum, ostream& errorOs = cout);
     bool updateSingleAccount(const AccountInfo& oldInfo, const AccountInfo& newInfo, ostream& errorOs = cout);
 
-    //About Orders
+//关于订单
 
     OrderGroup* getCustomerOrders (const string& phoneNum, ostream& errorOs = cout, bool showNowadays = false, Sakuno::Time time = Sakuno::Time());
+
     OrderGroup* getAllOrders (ostream& errorOs = cout);
     OrderGroup* getDayOrders(Sakuno::Time *day, ostream &errorOs = cout);
+
     OrderInfo* getOrder(const string& trackNum, ostream& errorOs = cout);
     OrderInfo* getQuickOrder(const string& codeNum, ostream& errorOs = cout);
+
     bool deleteSingleOrder(const string& trackNum, ostream& errorOs = cout);
     bool updateSingleOrder(const string& trackNum, const OrderInfo& newOrder, ostream& errorOs = cout);
     bool setHasTaken(const OrderInfo& order, bool ifTaken, ostream& errorOs = cout);
-    vector<int> warehousing_takenMap(Sakuno::Time *day, ostream &errorOs = cout);
+
+    vector<int> statisticsData(Sakuno::Time *day, ostream &errorOs = cout);
+
+    OrderInfo spawnTakenCode(OrderInfo order, ostream &errorOs = cout);
 
 private:
     Driver              *dbDri{};
@@ -81,4 +92,4 @@ private:
     ResultSet           *dbRes{};
 };
 
-#endif //EXPRESSMANAGEMENTSYSTEM_DATABASESTATUS_H
+#endif //EXPRESSMANAGEMENTSYSTEM_DATAENTRANCE_H

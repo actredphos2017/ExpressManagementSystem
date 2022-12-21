@@ -40,7 +40,6 @@ private:
 
     void initItems();
     void initConnects();
-    void initPaint();
     void setShadow(QWidget* widget);
 
 public slots:

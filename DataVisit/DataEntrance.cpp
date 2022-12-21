@@ -3,21 +3,19 @@
 //
 #include "../GlobalAttribute.h"
 
-#include "DatabaseStatus.h"
+#include "DataEntrance.h"
 #include <sstream>
 
-bool DatabaseStatus::available() {
+bool DataEntrance::available() {
     if(dbCon == nullptr)
         return false;
     return !dbCon->isClosed();
 }
 
-bool DatabaseStatus::connect(const DatabaseInfo &dbi, ostream &errorOs) {
+bool DataEntrance::connect(const DatabaseInfo &dbi, ostream &errorOs) {
     dbDri = new mysql::MySQL_Driver;
     try{
-        dbCon = dbDri->connect(dbi.hostName,
-                               dbi.userName,
-                               dbi.password);
+        dbCon = dbDri->connect(dbi.hostName, dbi.userName, dbi.password);
     }catch(exception& e){
         errorOs << "连接失败！请检查数据库信息。";
         dbCon->close();
@@ -55,7 +53,7 @@ bool DatabaseStatus::connect(const DatabaseInfo &dbi, ostream &errorOs) {
     return true;
 }
 
-bool DatabaseStatus::insertOrder(const OrderGroup &og, ostream &errorOs) {
+bool DataEntrance::insertOrder(const OrderGroup &og, ostream &errorOs) {
     auto it = og.begin();
     stringstream prepareCommand;
     try {
@@ -92,7 +90,7 @@ bool DatabaseStatus::insertOrder(const OrderGroup &og, ostream &errorOs) {
     return true;
 }
 
-bool DatabaseStatus::deleteOrder(const string &condition, ostream &errorOs) {
+bool DataEntrance::deleteOrder(const string &condition, ostream &errorOs) {
     if(condition.empty()){
         errorOs << "不带条件的删除是不安全的！";
         return false;
@@ -109,7 +107,7 @@ bool DatabaseStatus::deleteOrder(const string &condition, ostream &errorOs) {
     return true;
 }
 
-OrderGroup* DatabaseStatus::selectOrder(const string& condition, ostream &errorOs) {
+OrderGroup* DataEntrance::selectOrder(const string& condition, ostream &errorOs) {
     qDebug() << ("select * from orderInfo where " + condition).c_str();
     dbSta = dbCon->createStatement();
     try{
@@ -142,7 +140,7 @@ OrderGroup* DatabaseStatus::selectOrder(const string& condition, ostream &errorO
     return res;
 }
 
-bool DatabaseStatus::updateOrder(const string& condition, const string& change, ostream &errorOs) {
+bool DataEntrance::updateOrder(const string& condition, const string& change, ostream &errorOs) {
     try{
         dbPreSta = dbCon->prepareStatement("update orderInfo set " + change + " where " + condition);
         dbPreSta->executeQuery();
@@ -156,7 +154,7 @@ bool DatabaseStatus::updateOrder(const string& condition, const string& change, 
     return true;
 }
 
-bool DatabaseStatus::insertAccount(const AccountGroup &ag, ostream &errorOs) {
+bool DataEntrance::insertAccount(const AccountGroup &ag, ostream &errorOs) {
     auto it = ag.begin();
     try {
         while (it != ag.end()) {
@@ -181,7 +179,7 @@ bool DatabaseStatus::insertAccount(const AccountGroup &ag, ostream &errorOs) {
     return true;
 }
 
-bool DatabaseStatus::deleteAccount(const string &condition, ostream &errorOs) {
+bool DataEntrance::deleteAccount(const string &condition, ostream &errorOs) {
     if(condition.empty()){
         errorOs << "不带条件的删除是不安全的！";
         return false;
@@ -197,7 +195,7 @@ bool DatabaseStatus::deleteAccount(const string &condition, ostream &errorOs) {
     return true;
 }
 
-AccountGroup *DatabaseStatus::selectAccount(const string& condition, ostream &errorOs) {
+AccountGroup *DataEntrance::selectAccount(const string& condition, ostream &errorOs) {
     auto res = new AccountGroup;
     dbSta = dbCon->createStatement();
     try{
@@ -225,7 +223,7 @@ AccountGroup *DatabaseStatus::selectAccount(const string& condition, ostream &er
     return res;
 }
 
-bool DatabaseStatus::updateAccount(const string& condition, const string& change, ostream &errorOs) {
+bool DataEntrance::updateAccount(const string& condition, const string& change, ostream &errorOs) {
     try{
         dbPreSta = dbCon->prepareStatement("update account set " + change + " where " + condition);
         dbPreSta->executeQuery();
@@ -240,15 +238,15 @@ bool DatabaseStatus::updateAccount(const string& condition, const string& change
 }
 
 
-bool DatabaseStatus::existSameUserName(const string &userName) {
+bool DataEntrance::existSameUserName(const string &userName) {
     return !selectAccount("userName = " + Sakuno::toVarchar(userName))->empty();
 }
 
-bool DatabaseStatus::existSamePhoneNum(const string &phoneNum) {
+bool DataEntrance::existSamePhoneNum(const string &phoneNum) {
     return !selectAccount("phoneNumber = " + Sakuno::toVarchar((phoneNum)))->empty();
 }
 
-bool DatabaseStatus::registerUserAccount(const AccountInfo &accoInfo, ostream& errorOs) {
+bool DataEntrance::registerUserAccount(const AccountInfo &accoInfo, ostream& errorOs) {
     if(accoInfo.accountType == Waiter){
         errorOs << "这是用于注册普通用户的函数！";
         return false;
@@ -263,7 +261,7 @@ bool DatabaseStatus::registerUserAccount(const AccountInfo &accoInfo, ostream& e
     return insertAccount(ag, errorOs);
 }
 
-bool DatabaseStatus::loginAccount(const string &userNameOrPhoneNum, const string &password, ostream &errorOs) {
+bool DataEntrance::loginAccount(const string &userNameOrPhoneNum, const string &password, ostream &errorOs) {
     if(Sakuno::isNumber(userNameOrPhoneNum[0])){
         AccountInfo realInfo;
         try{
@@ -292,7 +290,7 @@ bool DatabaseStatus::loginAccount(const string &userNameOrPhoneNum, const string
     return false;
 }
 
-string DatabaseStatus::getPermissionCode(const AccountInfo &waiterInfo, ostream &errorOs) {
+string DataEntrance::getPermissionCode(const AccountInfo &waiterInfo, ostream &errorOs) {
     if(waiterInfo.accountType != Waiter){
         errorOs << "该账户不为管理员";
         return "";
@@ -317,7 +315,7 @@ string DatabaseStatus::getPermissionCode(const AccountInfo &waiterInfo, ostream 
     return dbRes->getString(1).asStdString();
 }
 
-bool DatabaseStatus::registerWaiterAccount(const AccountInfo &accoInfo, const string &permissionCode, ostream &errorOs) {
+bool DataEntrance::registerWaiterAccount(const AccountInfo &accoInfo, const string &permissionCode, ostream &errorOs) {
     if(accoInfo.accountType == Customer){
         errorOs << "这是用于注册管理员的函数！";
         return false;
@@ -336,12 +334,12 @@ bool DatabaseStatus::registerWaiterAccount(const AccountInfo &accoInfo, const st
     return insertAccount(ag, errorOs);
 }
 
-string DatabaseStatus::checkPermissionCode(const string& code, ostream &errorOs) {
+string DataEntrance::checkPermissionCode(const string& code, ostream &errorOs) {
     AccountGroup* ag = selectAccount("permissionCode = " + Sakuno::toVarchar(code) , errorOs);
     return ag->empty() ? "" : (*ag)[0].userName;
 }
 
-bool DatabaseStatus::checkPrepareAccount(const AccountInfo &accoInfo, ostream &errorOs, AccountInfo* oldAccount) {
+bool DataEntrance::checkPrepareAccount(const AccountInfo &accoInfo, ostream &errorOs, AccountInfo* oldAccount) {
     if(accoInfo.accountType == Waiter && accoInfo.userName.empty()){
         errorOs << "管理员账户必须输入用户名！";
         return false;
@@ -389,7 +387,7 @@ bool DatabaseStatus::checkPrepareAccount(const AccountInfo &accoInfo, ostream &e
     return true;
 }
 
-OrderGroup *DatabaseStatus::getCustomerOrders(const string &phoneNum, ostream &errorOs, bool showNowadays, Sakuno::Time time) {
+OrderGroup *DataEntrance::getCustomerOrders(const string &phoneNum, ostream &errorOs, bool showNowadays, Sakuno::Time time) {
     stringstream prepareCondition;
     prepareCondition << "recipentPhoneNum = " << Sakuno::toVarchar(phoneNum) << " or senderPhoneNum = " << Sakuno::toVarchar(phoneNum);
     if(showNowadays)
@@ -403,11 +401,11 @@ OrderGroup *DatabaseStatus::getCustomerOrders(const string &phoneNum, ostream &e
     return res;
 }
 
-OrderGroup *DatabaseStatus::getAllOrders(ostream &errorOs) {
+OrderGroup *DataEntrance::getAllOrders(ostream &errorOs) {
     return selectOrder("true", errorOs);
 }
 
-OrderGroup *DatabaseStatus::getDayOrders(Sakuno::Time* day, ostream &errorOs) {
+OrderGroup *DataEntrance::getDayOrders(Sakuno::Time* day, ostream &errorOs) {
     stringstream prepareCondition;
     Sakuno::Time fromTime = *day;
     Sakuno::Time toTime = *day;
@@ -423,11 +421,11 @@ OrderGroup *DatabaseStatus::getDayOrders(Sakuno::Time* day, ostream &errorOs) {
     return selectOrder(prepareCondition.str()  , errorOs);
 }
 
-bool DatabaseStatus::setHasTaken(const OrderInfo &order, bool ifTaken, ostream &errorOs) {
+bool DataEntrance::setHasTaken(const OrderInfo &order, bool ifTaken, ostream &errorOs) {
     return updateOrder("trackNumber = " + order.trackNumber, "hasBeenTaken = " + to_string((int)ifTaken), errorOs);
 }
 
-OrderInfo *DatabaseStatus::getOrder(const string &trackNum, ostream &errorOs) {
+OrderInfo *DataEntrance::getOrder(const string &trackNum, ostream &errorOs) {
     OrderGroup* resGroup = selectOrder("trackNumber = " + Sakuno::toVarchar(trackNum), errorOs);
     if(!resGroup)
         return nullptr;
@@ -438,7 +436,7 @@ OrderInfo *DatabaseStatus::getOrder(const string &trackNum, ostream &errorOs) {
     return &(*resGroup)[0];
 }
 
-bool DatabaseStatus::updateSingleOrder(const string &trackNum, const OrderInfo &newOrder, ostream &errorOs) {
+bool DataEntrance::updateSingleOrder(const string &trackNum, const OrderInfo &newOrder, ostream &errorOs) {
     if(!getOrder(trackNum, errorOs))
         return false;
     stringstream changeInfo;
@@ -462,30 +460,34 @@ bool DatabaseStatus::updateSingleOrder(const string &trackNum, const OrderInfo &
     return true;
 }
 
-bool DatabaseStatus::deleteSingleOrder(const string &trackNum, ostream &errorOs) {
+bool DataEntrance::deleteSingleOrder(const string &trackNum, ostream &errorOs) {
     if(!getOrder(trackNum, errorOs))
         return false;
     return deleteOrder("trackNumber = " + trackNum, errorOs);
 }
 
-vector<int> DatabaseStatus::warehousing_takenMap(Sakuno::Time *day, ostream &errorOs) {
+vector<int> DataEntrance::statisticsData(Sakuno::Time *day, ostream &errorOs) {
     vector<int> res(4);
     auto dayOrder = getDayOrders(day, errorOs);
     auto allOrder = getAllOrders(errorOs);
-    for(auto it : *dayOrder){
-        res[1] ++;
-        if(it.hasBeenTaken)
-            res[0] ++;
+
+    if(dayOrder && allOrder){
+        for(const auto& it : *dayOrder){
+            res[1] ++;
+            if(it.hasBeenTaken)
+                res[0] ++;
+        }
+        for(const auto& it : *allOrder){
+            res[3] ++;
+            if(it.hasBeenTaken)
+                res[2] ++;
+        }
     }
-    for(auto it : *allOrder){
-        res[3] ++;
-        if(it.hasBeenTaken)
-            res[2] ++;
-    }
+
     return res;
 }
 
-OrderInfo *DatabaseStatus::getQuickOrder(const string &codeNum, ostream &errorOs) {
+OrderInfo *DataEntrance::getQuickOrder(const string &codeNum, ostream &errorOs) {
     OrderGroup* resGroup = selectOrder("pickCode = " + Sakuno::toVarchar(codeNum), errorOs);
     if(!resGroup)
         return nullptr;
@@ -496,11 +498,11 @@ OrderInfo *DatabaseStatus::getQuickOrder(const string &codeNum, ostream &errorOs
     return &(*resGroup)[0];
 }
 
-AccountGroup* DatabaseStatus::getAllAccounts(ostream &errorOs) {
+AccountGroup* DataEntrance::getAllAccounts(ostream &errorOs) {
     return selectAccount("true", errorOs);
 }
 
-AccountInfo *DatabaseStatus::getAccount(const string &userName, const string &phoneNum, ostream &errorOs) {
+AccountInfo *DataEntrance::getAccount(const string &userName, const string &phoneNum, ostream &errorOs) {
     stringstream prepareCondition;
     if(!userName.empty())
         prepareCondition << "userName = " << Sakuno::toVarchar(userName);
@@ -522,7 +524,7 @@ AccountInfo *DatabaseStatus::getAccount(const string &userName, const string &ph
     return &(*account)[0];
 }
 
-bool DatabaseStatus::updateSingleAccount(const AccountInfo &oldInfo, const AccountInfo &newInfo, ostream &errorOs) {
+bool DataEntrance::updateSingleAccount(const AccountInfo &oldInfo, const AccountInfo &newInfo, ostream &errorOs) {
     bool breakRootPower = oldInfo.userName == "root" && (newInfo.userName != "root" || newInfo.accountType != Waiter || !newInfo.phoneNumber.empty());
     if(breakRootPower){
         errorOs << "根管理员只能修改密码";
@@ -563,7 +565,7 @@ bool DatabaseStatus::updateSingleAccount(const AccountInfo &oldInfo, const Accou
     return updateAccount(prepareCondition.str(), prepareChange.str(), errorOs);
 }
 
-bool DatabaseStatus::deleteSingleAccount(const AccountInfo &account, ostream &errorOs, bool ifUnregistering) {
+bool DataEntrance::deleteSingleAccount(const AccountInfo &account, ostream &errorOs, bool ifUnregistering) {
     if(account.userName == "root"){
         errorOs << "不能删除根用户！";
         return false;
@@ -586,7 +588,7 @@ bool DatabaseStatus::deleteSingleAccount(const AccountInfo &account, ostream &er
     else
         prepareCondition << "true";
 
-    int accountNum = selectAccount(prepareCondition.str(), errorOs)->size();
+    int accountNum = (int)selectAccount(prepareCondition.str(), errorOs)->size();
 
     if(accountNum != 1){
         errorOs << "符合要求的账户数量不为1";
@@ -596,7 +598,7 @@ bool DatabaseStatus::deleteSingleAccount(const AccountInfo &account, ostream &er
     return deleteAccount(prepareCondition.str(), errorOs);
 }
 
-bool DatabaseStatus::resetPassword(const AccountInfo &account, const string &newPassword, ostream &errorOs) {
+bool DataEntrance::resetPassword(const AccountInfo &account, const string &newPassword, ostream &errorOs) {
     stringstream prepareCondition;
     if(!account.userName.empty())
         prepareCondition << "userName = " << Sakuno::toVarchar(account.userName);
@@ -614,4 +616,47 @@ bool DatabaseStatus::resetPassword(const AccountInfo &account, const string &new
 
     prepareChange << "password = "<< Sakuno::toVarchar(newPassword);
     return updateAccount(prepareCondition.str(), prepareChange.str(), errorOs);
+}
+
+OrderInfo DataEntrance::spawnTakenCode(OrderInfo order, ostream &errorOs) {
+    if(!order.pickCode.empty())
+        return order;
+    srandom(time(nullptr));
+    string res;
+    string prepareVal[3];
+    int prefixVal;
+    bool hasSame = false;
+    prefixVal = order.itemWeight < 1.0 ? 1 :
+                (order.itemWeight < 3.0 ? 6 :
+                 (order.itemWeight < 5.0 ? 11 :
+                  (order.itemWeight < 10.0 ? 16 :
+                   (order.itemWeight < 20.0 ? 21 : 26))));
+    do{
+        prepareVal[0] = to_string((prefixVal + random() % 5));
+        prepareVal[1] = to_string((1 + random() % 6));
+        prepareVal[2] = to_string((1 + random() % 9999));
+
+        while(prepareVal[0].size() < 2)
+            prepareVal[0] = "0" + prepareVal[0];
+        while(prepareVal[2].size() < 4)
+            prepareVal[2] = "0" + prepareVal[2];
+
+
+        stringstream prepareCommand;
+
+        prepareCommand << " select hasBeenTaken from orderInfo where"
+                       << " pickCode like " << Sakuno::toVarchar("__-_-" + prepareVal[2])
+                       << " group by hasBeenTaken";
+        dbSta = dbCon->createStatement();
+        dbRes = dbSta->executeQuery(prepareCommand.str());
+        while(dbRes->next())
+            if(!dbRes->getBoolean(1)){
+                hasSame = true;
+                continue;
+            }
+        res = prepareVal[0] + '-' + prepareVal[1] + '-' + prepareVal[2];
+        hasSame = false;
+    }while(hasSame);
+    order.pickCode = res;
+    return order;
 }
