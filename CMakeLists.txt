@@ -47,10 +47,28 @@ add_executable(
         res.qrc
         VisualWindows/userObjects/PickupQuickTag.cpp
         VisualWindows/userObjects/PickupQuickTag.h
-        SakunoFunctions.cpp SakunoFunctions.h
+        SakunoFunctions.cpp
+        SakunoFunctions.h
         VisualWindows/userObjects/CircleProgressBar.cpp
         VisualWindows/userObjects/CircleProgressBar.h
-        VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.cpp VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.h VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.ui VisualWindows/mainWindows/WaiterExtraWindows/ExpressEdit.cpp VisualWindows/mainWindows/WaiterExtraWindows/ExpressEdit.h VisualWindows/mainWindows/WaiterExtraWindows/AccountEditWindow.cpp VisualWindows/mainWindows/WaiterExtraWindows/AccountEditWindow.h VisualWindows/mainWindows/WaiterExtraWindows/AccountEditWindow.ui VisualWindows/mainWindows/WaiterExtraWindows/AccountEdit.cpp VisualWindows/mainWindows/WaiterExtraWindows/AccountEdit.h VisualWindows/mainWindows/Settings.cpp VisualWindows/mainWindows/Settings.h VisualWindows/mainWindows/ResetPassword.cpp VisualWindows/mainWindows/ResetPassword.h VisualWindows/mainWindows/CustomerExtraWindows/MyExpresses.cpp VisualWindows/mainWindows/CustomerExtraWindows/MyExpresses.h VisualWindows/mainWindows/CustomerExtraWindows/MyExpresses.ui)
+        VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.cpp
+        VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.h
+        VisualWindows/mainWindows/WaiterExtraWindows/WaiterExpressEditWindow.ui
+        VisualWindows/mainWindows/WaiterExtraWindows/ExpressEdit.cpp
+        VisualWindows/mainWindows/WaiterExtraWindows/ExpressEdit.h
+        VisualWindows/mainWindows/WaiterExtraWindows/AccountEditWindow.cpp
+        VisualWindows/mainWindows/WaiterExtraWindows/AccountEditWindow.h
+        VisualWindows/mainWindows/WaiterExtraWindows/AccountEditWindow.ui
+        VisualWindows/mainWindows/WaiterExtraWindows/AccountEdit.cpp
+        VisualWindows/mainWindows/WaiterExtraWindows/AccountEdit.h
+        VisualWindows/mainWindows/Settings.cpp
+        VisualWindows/mainWindows/Settings.h
+        VisualWindows/mainWindows/ResetPassword.cpp
+        VisualWindows/mainWindows/ResetPassword.h
+        VisualWindows/mainWindows/CustomerExtraWindows/MyExpresses.cpp
+        VisualWindows/mainWindows/CustomerExtraWindows/MyExpresses.h
+        VisualWindows/mainWindows/CustomerExtraWindows/MyExpresses.ui
+)
 
 target_link_libraries(ExpressManagementSystem
         Qt::Core
